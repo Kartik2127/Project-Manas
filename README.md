@@ -4,7 +4,7 @@ An anonymous mental health support platform for students in India.
 
 ##  About The Project
 
-Project Manas is a web platform created to address the stigma around mental health within our student community. It aims to provide a safe and anonymous space for students to find resources, connect with peers, and seek support without fear of judgment.
+Project Manas is a web platform created to address the stigma around mental health within our student community. It aims to provide a safe and anonymous space for students to find resources, connect with peers, and seek support without fear of judgment.We will Create a guest anonymous login for person requiring Help to maintain their privacy.
 
 ---
 
@@ -28,7 +28,6 @@ Project Manas is a web platform created to address the stigma around mental heal
 ---
 
 ## Getting Started
-Our goal is to build a scalable and robust platform.
 This project is currently in the initial setup phase. To get a local copy, you can clone the repository:
 
 ## Project Goal
