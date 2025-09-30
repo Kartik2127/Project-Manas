@@ -5,7 +5,7 @@ setup(
     name='ProjectManas',
     version='0.0.1',
     author='Kartik, Tushar and Nikhil',
-    author_email='your_email@example.com',
+    author_email='25m0753@iitb.ac.in',
     packages=find_packages(),
     install_requires=[],
 )
