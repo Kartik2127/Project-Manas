@@ -1,0 +1,12 @@
+prefix=e:/Project_Manas/manas_env/Library
+exec_prefix=e:/Project_Manas/manas_env/Library
+libdir=e:/Project_Manas/manas_env/Library/lib
+includedir=e:/Project_Manas/manas_env/Library/include
+
+Name: libzmq
+Description: 0MQ c++ library
+Version: 4.3.5
+Libs: -L${libdir} -lzmq
+Libs.private: 
+Requires.private: 
+Cflags: -I${includedir} 
