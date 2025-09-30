@@ -30,3 +30,6 @@ Project Manas is a web platform created to address the stigma around mental heal
 ## Getting Started
 
 This project is currently in the initial setup phase. To get a local copy, you can clone the repository:
+
+## Project Goal
+Our goal is to finish the MVP in 4 weeks.
