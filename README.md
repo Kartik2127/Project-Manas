@@ -20,7 +20,7 @@ Project Manas is a web platform created to address the stigma around mental heal
 
 ##  Our Tech Stack
 
-* **Frontend**: React (Next.js)
+* **Frontend**: React (Next.js),Inital Phase in HTML and CSS
 * **Backend**: Python (FastAPI)
 * **Database**: MongoDB
 * **AI/ML**: Hugging Face Transformers
