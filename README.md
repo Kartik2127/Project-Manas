@@ -32,4 +32,4 @@ Our goal is to build a scalable and robust platform.
 This project is currently in the initial setup phase. To get a local copy, you can clone the repository:
 
 ## Project Goal
-Our goal is to finish the MVP in 4 weeks and try to contribute as much as possible.
+Our goal is to finish the Work in 4 weeks and build a scalable and robust platform.
