@@ -1,0 +1,16 @@
+
+# Python virtual environment
+venv/
+/manas_env/
+.env
+
+# Python cache files
+__pycache__/
+*.pyc
+
+# IDE and editor folders
+.vscode/
+.idea/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
