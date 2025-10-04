@@ -1,0 +1,209 @@
+/*  GENERAL  */
+body {
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f5f9f9;
+  color: #2f4858;
+}
+
+h1, h2, h3 {
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+  color: #2f4858;
+}
+
+/*  NAVBAR */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 3rem;
+  background: #3a7d7c;
+  color: white;
+}
+
+.logo {
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.nav-links a {
+  margin: 0 0.75rem;
+  color: white;
+  font-weight: 500;
+}
+
+/*  HERO SECTION */
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4rem 3rem;
+  gap: 2rem;
+}
+
+.hero-text {
+  flex: 1;
+}
+
+.hero-text h1 {
+  font-size: 2.5rem;
+  color: #2f4858;
+}
+
+.hero-text p {
+  font-size: 1.1rem;
+  margin-top: 1rem;
+  line-height: 1.6;
+}
+
+.btn-first {
+  background: #3a7d7c;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.2rem;
+  border-radius: 8px;
+  margin-top: 1.5rem;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.hero-img img {
+  width: 320px;
+  max-width: 100%;
+}
+
+/*  FEATURES SECTION */
+.features {
+  text-align: center;
+  padding: 3rem 2rem;
+  background-color: #f5f9f9;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.feature-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+}
+
+/*  STORIES */
+.stories {
+  text-align: center;
+  background: #eaf4f4;
+  padding: 3rem 2rem;
+}
+
+.story-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.story {
+  background: white;
+  padding: 1.2rem;
+  border-radius: 10px;
+  max-width: 280px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  font-style: italic;
+}
+
+/*  HEALTHY LIFE TIPS */
+.tips {
+  background-color: #f5f9f9;
+  text-align: center;
+  padding: 3rem 2rem;
+}
+
+.tips h2 {
+  font-size: 1.8rem;
+  color: #2f4858;
+  margin-bottom: 1.5rem;
+}
+
+.tips-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto;
+  max-width: 500px;
+  text-align: left;
+}
+
+.tips-list li {
+  background: white;
+  margin: 0.6rem 0;
+  padding: 0.8rem 1rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  font-size: 1.05rem;
+  transition: transform 0.2s ease;
+}
+
+.tips-list li:hover {
+  transform: translateX(5px);
+}
+
+/*  FOOTER */
+.footer {
+  background: #3a7d7c;
+  color: white;
+  padding: 2rem 3rem;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.footer-content h3 {
+  margin-bottom: 0.5rem;
+}
+
+.footer-content ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-content a {
+  color: white;
+}
+
+.disclaimer {
+  text-align: center;
+  font-size: 0.9rem;
+  margin-top: 1.5rem;
+  opacity: 0.9;
+}
+
+/*  RESPONSIVE */
+@media (max-width: 768px) {
+  .hero {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .nav-links {
+    display: none; 
+  }
+}

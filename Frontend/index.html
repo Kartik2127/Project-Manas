@@ -1,62 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mental Peace</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project Manas </title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-    <!-- Header Section -->
-    <header>
-        <h1> Mental Peace</h1>
-        <nav>
-            <ul>
-                <li><a href="#about">About</a></li>
-                <li><a href="#tips">Peace Tips</a></li>
-                <li><a href="#meditation">Meditation</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
 
-    <!-- Main Content -->
-    <main>
-        <!-- Intro Section -->
-        <section id="hero">
-            <h2>Find Your Inner Calm</h2>
-            <p>Take a deep breath. Relax your mind. This space is for you to recharge and find peace within. Remember that you are not alone.</p>
-        </section>
+  <!-- HEADER -->
+  <header class="navbar">
+    <div class="logo"> Project Manas </div>
+    <nav class="nav-links">
+      <a href="#">Home</a>
+      <a href="#">Professionals</a>
+      <a href="#">Stories</a>
+      <a href="#">About</a>
+    </nav>
+  </header>
 
-        <!-- About Section -->
-        <section id="about">
-            <h2>About This Page</h2>
-            <p>This is a simple project to promote mindfulness, positivity, and mental well-being.</p>
-        </section>
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <div class="hero-text">
+      <h1>You’re Not Alone.</h1>
+      <p>
+        Talk, listen, and heal — safely and anonymously. Project Manas provides a secure space for students to find people to interact, share stories, and seek support.
+      </p>
+      <button class="btn-first">Start Your Journey</button>
+    </div>
+    <div class="hero-img">
+      <img src="meditation_hero.png" alt="Mental health illustration" />
+    </div>
+  </section>
 
-        <!-- Peace Tips -->
-        <section id="tips">
-            <h2>General Tips to live a Healthy Life</h2>
-            <ul>
-                <li>  Meditate for 10 minutes daily</li>
-                <li>  Read something calming</li>
-                <li>  Take mindful walks in nature</li>
-                <li>  Practice gratitude before sleep</li>
-            </ul>
-        </section>
+  <!-- FEATURES SECTION -->
+  <section class="features">
+    <h2>What We Offer</h2>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h3> Anonymous Access</h3>
+        <p>Get support without revealing your identity.</p>
+      </div>
+      <div class="feature-card">
+        <h3> Peer Support Forum</h3>
+        <p>Connect with others who understand what you’re going through.</p>
+      </div>
+      <div class="feature-card">
+        <h3> Verified Professionals</h3>
+        <p>Find certified mental health professionals for guidance.</p>
+      </div>
+      <div class="feature-card">
+        <h3> Stories of Hope</h3>
+        <p>Read inspiring journeys from others who’ve healed.</p>
+      </div>
+      <div class="feature-card">
+        <h3> AI Chatbot</h3>
+        <p>Talk to our friendly bot for instant guidance and resources.</p>
+      </div>
+    </div>
+  </section>
 
-        <!-- Meditation -->
-        <section id="meditation">
-            <h2>Guided Meditation</h2>
-            <p>Here is a quick guided meditation to help you relax:</p>
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/inpok4MKVLM" 
-                    title="Guided Meditation" frameborder="0" allowfullscreen></iframe>
-        </section>
-    </main>
+  <!-- STORIES SECTION -->
+  <section class="stories">
+    <h2>Stories of Hope</h2>
+    <div class="story-cards">
+      <div class="story">
+        <p>“When I felt alone in college, Manas helped me open up. I got to know that it is important to interact with people.”</p>
+        <span>– Anonymous Student, IIT Delhi</span>
+      </div>
+      <div class="story">
+        <p>“Once I believed that I am the only one who is going through so much, but my belief changed when I reached here.”</p>
+        <span>– Anonymous Student, NIT Trichy</span>
+      </div>
+      <div class="story">
+        <p>“The professionals were once at our place, that gave me courage to overcome my depression.”</p>
+        <span>– Anonymous Student, DTU</span>
+      </div>
+    </div>
+    <button class="btn-first">Read More Stories →</button>
+  </section>
 
-    <!-- Footer -->
-    <footer id="contact">
-        <p>&copy; 2025 Mental Peace Project | Contact us at <a href="mailto:peace@example.com">peace@example.com</a></p>
-    </footer>
+<!-- HEALTHY LIFE TIPS SECTION -->
+<section class="tips">
+  <h2>General Tips to Live a Healthy Life</h2>
+  <ul class="tips-list">
+    <li> Meditate for 10 minutes daily</li>
+    <li> Read something calming</li>
+    <li> Take mindful walks in nature</li>
+    <li> Practice gratitude before sleep</li>
+  </ul>
+</section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div>
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Forum</a></li>
+          <li><a href="#">Chatbot</a></li>
+          <li><a href="#">About</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="disclaimer">This platform is not a substitute for professional therapy or diagnosis.</p>
+  </footer>
+
 </body>
 </html>
