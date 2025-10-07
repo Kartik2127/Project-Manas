@@ -149,7 +149,7 @@ def get_response(user_message, knowledge_base, threshold=1):
 
     if conversation_state["awaiting_followup"]:
         conversation_state["awaiting_followup"] = False
-        return f"Thank you for sharing: {user_message}. That means a lot. 💙"
+        return f"Thank you for sharing: {user_message}. That means a lot."
 
     best_intent = None
     best_score = 0
