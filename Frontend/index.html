@@ -3,19 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Project Manas </title>
+  <title>Project Manas</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
   <!-- HEADER -->
   <header class="navbar">
-    <div class="logo"> Project Manas </div>
+    <div class="logo">Project Manas</div>
     <nav class="nav-links">
       <a href="#">Home</a>
       <a href="#">Professionals</a>
       <a href="#">Stories</a>
+      <a href="#">Chatbot</a>
       <a href="#">About</a>
+      <a href="login.html" class="btn-login">Login</a>
     </nav>
   </header>
 
@@ -26,7 +28,10 @@
       <p>
         Talk, listen, and heal — safely and anonymously. Project Manas provides a secure space for students to find people to interact, share stories, and seek support.
       </p>
-      <button class="btn-first">Start Your Journey</button>
+      <div class="hero-buttons">
+        <button class="btn-first" onclick="window.location.href='login.html'">Login / Join Anonymously</button>
+        <button class="btn-second" onclick="document.getElementById('features').scrollIntoView({behavior: 'smooth'})">Explore the Platform ↓</button>
+      </div>
     </div>
     <div class="hero-img">
       <img src="meditation_hero.png" alt="Mental health illustration" />
@@ -34,28 +39,28 @@
   </section>
 
   <!-- FEATURES SECTION -->
-  <section class="features">
+  <section class="features" id="features">
     <h2>What We Offer</h2>
     <div class="feature-grid">
       <div class="feature-card">
-        <h3> Anonymous Access</h3>
+        <h3>Anonymous Access</h3>
         <p>Get support without revealing your identity.</p>
       </div>
       <div class="feature-card">
-        <h3> Peer Support Forum</h3>
+        <h3>Peer Support Forum</h3>
         <p>Connect with others who understand what you’re going through.</p>
       </div>
       <div class="feature-card">
-        <h3> Verified Professionals</h3>
+        <h3>Verified Professionals</h3>
         <p>Find certified mental health professionals for guidance.</p>
       </div>
       <div class="feature-card">
-        <h3> Stories of Hope</h3>
+        <h3>Stories of Hope</h3>
         <p>Read inspiring journeys from others who’ve healed.</p>
       </div>
       <div class="feature-card">
-        <h3> AI Chatbot</h3>
-        <p>Talk to our friendly bot for instant guidance and resources.</p>
+        <h3>AI Chatbot</h3>
+        <p>Talk to our friendly bot for instant guidance and comfort.</p>
       </div>
     </div>
   </section>
@@ -65,31 +70,50 @@
     <h2>Stories of Hope</h2>
     <div class="story-cards">
       <div class="story">
-        <p>“When I felt alone in college, Manas helped me open up. I got to know that it is important to interact with people.”</p>
+        <p>“When I felt alone in college, Manas helped me open up and realize that it’s okay to seek help.”</p>
         <span>– Anonymous Student, IIT Delhi</span>
       </div>
       <div class="story">
-        <p>“Once I believed that I am the only one who is going through so much, but my belief changed when I reached here.”</p>
+        <p>“My belief that I was the only one struggling changed when I reached here.”</p>
         <span>– Anonymous Student, NIT Trichy</span>
       </div>
       <div class="story">
-        <p>“The professionals were once at our place, that gave me courage to overcome my depression.”</p>
+        <p>“Talking to a mentor who understood my pain gave me courage to overcome my anxiety.”</p>
         <span>– Anonymous Student, DTU</span>
       </div>
     </div>
-    <button class="btn-first">Read More Stories →</button>
+    <p class="story-note">Want to share your story? <a href="login.html">Login or Join Anonymously →</a></p>
   </section>
 
-<!-- HEALTHY LIFE TIPS SECTION -->
-<section class="tips">
-  <h2>General Tips to Live a Healthy Life</h2>
-  <ul class="tips-list">
-    <li> Meditate for 10 minutes daily</li>
-    <li> Read something calming</li>
-    <li> Take mindful walks in nature</li>
-    <li> Practice gratitude before sleep</li>
-  </ul>
-</section>
+  <!-- AI CHATBOT PREVIEW -->
+  <section class="chatbot-preview">
+    <h2>Meet ManasAI 🤖</h2>
+    <p>Our friendly bot is here to listen and guide. Try a small preview:</p>
+    <div class="chat-demo">
+      <div class="chat bot">Hi there, I’m ManasAI. How are you feeling today?</div>
+      <div class="chat user">A little stressed before exams...</div>
+      <div class="chat bot">That’s okay, You’re not alone. Would you like some breathing tips?</div>
+    </div>
+    <p class="cta-note">Want to chat freely? <a href="login.html">Login to talk more →</a></p>
+  </section>
+
+  <!-- HEALTHY LIFE TIPS -->
+  <section class="tips">
+    <h2>General Tips to Live a Healthy Life</h2>
+    <ul class="tips-list">
+      <li>Meditate for 10 minutes daily</li>
+      <li>Read something calming</li>
+      <li>Take mindful walks in nature</li>
+      <li>Practice gratitude before sleep</li>
+    </ul>
+  </section>
+
+  <!-- CTA SECTION -->
+  <section class="cta">
+    <h2>Ready to Begin Your Journey?</h2>
+    <p>Join anonymously or as a mentor — we’re here for you.</p>
+    <button class="btn-first" onclick="window.location.href='login.html'">Start Now →</button>
+  </section>
 
   <!-- FOOTER -->
   <footer class="footer">
