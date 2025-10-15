@@ -73,3 +73,8 @@ watchfiles==1.1.0
 wcwidth @ file:///home/conda/feedstock_root/build_artifacts/wcwidth_1758622279606/work
 websockets==15.0.1
 zipp @ file:///home/conda/feedstock_root/build_artifacts/zipp_1749421620841/work
+transformers
+datasets
+torch
+scikit-learn
+pandas
