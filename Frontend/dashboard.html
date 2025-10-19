@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard | Project Manas</title>
+  <link rel="stylesheet" href="dashboard.css" />
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="navbar">
+    <div class="logo">Project Manas</div>
+    <nav class="nav-links">
+        <a href="forum.html">Forum</a>
+        <a href="stories.html">Stories</a>
+        <a href="chatbot.html">Chatbot</a>
+        <a href="tips.html">Healthy Living</a>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+    </nav>
+    </header>
+
+  <!-- MAIN CONTENT -->
+  <section class="dashboard">
+    <div class="welcome">
+      <h1 id="welcome-heading">Welcome Back </h1>
+      <p>We're glad to have you here. You can talk to mentors, share your thoughts, or explore positive stories.</p>
+    </div>
+
+    <div class="dashboard-grid">
+      <div class="card" onclick="goTo('forum.html')">
+        <h3>🗣 Peer Support Forum</h3>
+        <p>Connect with students who understand what you're going through.</p>
+      </div>
+
+      <div class="card" onclick="goTo('stories.html')">
+        <h3>Stories of Hope</h3>
+        <p>Read journeys from students who overcame challenges.</p>
+      </div>
+
+      <div class="card" onclick="goTo('chatbot.html')">
+        <h3>Manas AI</h3>
+        <p>Talk with our friendly chatbot for quick mental health guidance.</p>
+      </div>
+
+      <div class="card" onclick="goTo('tips.html')">
+        <h3>Self-Care Tips</h3>
+        <p>Simple ways to build peace and mindfulness in your daily life.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>© 2025 Project Manas • A Safe Space for Every Student</p>
+  </footer>
+
+  <script>
+  // Get username stored during login
+  const username = localStorage.getItem("username");
+
+  const heading = document.getElementById("welcome-heading");
+
+  if (username) {
+    heading.textContent = `Welcome back, ${username}`;
+  } else {
+    heading.textContent = "Welcome Back";
+  }
+
+  function goTo(page) {
+    window.location.href = page;
+  }
+
+  function logout() {
+    // Clear saved data
+    localStorage.removeItem("username");
+    window.location.href = "login.html";
+  }
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,125 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  background-color: #f8fdfd;
+  color: #2f4858;
+}
+
+/* NAVBAR */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 60px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1f7a8c;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #2f4858;
+  font-weight: 500;
+}
+
+.nav-links a:hover {
+  color: #1f7a8c;
+}
+
+.logout-btn {
+  background-color: #1f7a8c;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.logout-btn:hover {
+  background-color: #16697a;
+}
+
+/* DASHBOARD */
+.dashboard {
+  padding: 60px;
+  text-align: center;
+}
+
+.welcome h1 {
+  color: #16697a;
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.welcome p {
+  color: #5c6b73;
+  font-size: 1rem;
+  margin-bottom: 40px;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* GRID CARDS */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 25px;
+  justify-content: center;
+}
+
+.card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+.card h3 {
+  color: #1f7a8c;
+  margin-bottom: 10px;
+}
+
+.card p {
+  color: #5c6b73;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* FOOTER */
+.footer {
+  text-align: center;
+  padding: 20px;
+  font-size: 0.9rem;
+  color: #5c6b73;
+  background-color: #ffffff;
+  border-top: 1px solid #e2e8f0;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .dashboard {
+    padding: 40px 20px;
+  }
+}

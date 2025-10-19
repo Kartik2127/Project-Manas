@@ -45,9 +45,11 @@
         <h1>Welcome to Project Manas</h1>
         <p class="subtitle">Choose how you'd like to connect</p>
 
-        <!-- MENTOR LOGIN -->
-        <div class="option mentor-login">
+          <!-- MENTOR LOGIN -->
+          <div class="option mentor-login">
           <h3>Login as Friend / Mentor</h3>
+
+          <!-- GOOGLE LOGIN -->
           <a href="http://127.0.0.1:8000/login/google" class="google-btn">
             <img src="google_icon.png" alt="Google logo" />
             Continue with Google
@@ -55,15 +57,26 @@
 
           <p class="or">or</p>
 
-          <form method="POST" action="http://127.0.0.1:8000/login/email">
+          <!-- TOGGLE BUTTONS -->
+          <div class="tab-buttons">
+            <button id="mentor-login-tab" class="tab active" onclick="showMentorLogin()">Login</button>
+            <button id="mentor-register-tab" class="tab" onclick="showMentorRegister()">Register</button>
+          </div>
+
+          <!-- LOGIN FORM -->
+          <form id="mentor-login-form" method="POST" action="http://127.0.0.1:8000/login/email">
             <input type="email" name="email" placeholder="Email address" required />
             <input type="password" name="password" placeholder="Password" required />
             <button type="submit" class="btn-primary">Login as Mentor</button>
           </form>
+
+          <!-- REGISTER FORM -->
+          <form id="mentor-register-form" class="hidden" method="POST" action="http://127.0.0.1:8000/register/mentor">
+            <input type="email" name="email" placeholder="Email address" required />
+            <input type="password" name="password" placeholder="Create password" required />
+            <button type="submit" class="btn-primary">Register as Mentor</button>
+          </form>
         </div>
-
-        <div class="divider"></div>
-
         <!-- ANONYMOUS LOGIN / REGISTER -->
         <div class="option anonymous">
           <h3>Anonymous Access</h3>
@@ -99,22 +112,156 @@
     <p>© 2025 Project Manas • A safe space for every student</p>
   </footer>
 
-  <!-- TOGGLE SCRIPT -->
+ 
   <script>
-    function showRegister() {
-      document.getElementById('register-form').classList.remove('hidden');
-      document.getElementById('login-form').classList.add('hidden');
-      document.getElementById('register-tab').classList.add('active');
-      document.getElementById('login-tab').classList.remove('active');
-    }
+  // --- TOGGLE BETWEEN REGISTER AND LOGIN ---
+  function showMentorLogin() {
+    document.getElementById('mentor-login-form').classList.remove('hidden');
+    document.getElementById('mentor-register-form').classList.add('hidden');
+    document.getElementById('mentor-login-tab').classList.add('active');
+    document.getElementById('mentor-register-tab').classList.remove('active');
+  }
 
-    function showLogin() {
-      document.getElementById('register-form').classList.add('hidden');
-      document.getElementById('login-form').classList.remove('hidden');
-      document.getElementById('login-tab').classList.add('active');
-      document.getElementById('register-tab').classList.remove('active');
+  function showMentorRegister() {
+    document.getElementById('mentor-register-form').classList.remove('hidden');
+    document.getElementById('mentor-login-form').classList.add('hidden');
+    document.getElementById('mentor-register-tab').classList.add('active');
+    document.getElementById('mentor-login-tab').classList.remove('active');
+  }
+
+  function showRegister() {
+    document.getElementById('register-form').classList.remove('hidden');
+    document.getElementById('login-form').classList.add('hidden');
+    document.getElementById('register-tab').classList.add('active');
+    document.getElementById('login-tab').classList.remove('active');
+  }
+
+  function showLogin() {
+    document.getElementById('register-form').classList.add('hidden');
+    document.getElementById('login-form').classList.remove('hidden');
+    document.getElementById('login-tab').classList.add('active');
+    document.getElementById('register-tab').classList.remove('active');
+  }
+
+  // --- POPUP MESSAGE HANDLER ---
+  function showPopup(message, isError = false) {
+    const popup = document.createElement("div");
+    popup.className = "popup-message";
+    popup.textContent = message;
+    if (isError) popup.style.backgroundColor = "#e63946";
+    document.body.appendChild(popup);
+    setTimeout(() => popup.classList.add("show"), 10);
+    setTimeout(() => {
+      popup.classList.remove("show");
+      setTimeout(() => popup.remove(), 300);
+    }, 2500);
+  }
+
+  // --- MENTOR REGISTER HANDLER ---
+  document.getElementById("mentor-register-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+
+    try {
+      const response = await fetch("http://127.0.0.1:8000/register/mentor", {
+        method: "POST",
+        body: formData
+      });
+      const data = await response.json();
+
+      if (response.ok) {
+        showPopup(`${data.message}`);
+        e.target.reset();
+      } else {
+        showPopup(`${data.detail}`, true);
+      }
+    } catch (error) {
+      showPopup("Server unreachable. Is FastAPI running?", true);
     }
-  </script>
+  });
+
+  // --- MENTOR LOGIN HANDLER ---
+  document.getElementById("mentor-login-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+
+    try {
+      const response = await fetch("http://127.0.0.1:8000/login/email", {
+        method: "POST",
+        body: formData
+      });
+      const data = await response.json();
+
+      if (response.ok) {
+        localStorage.setItem("mentorEmail", formData.get("email"));
+        showPopup(`${data.message}`);
+        
+        setTimeout(() => {
+          window.location.href = "mentor_dashboard.html"; // redirect later
+        }, 1800);
+
+        e.target.reset();
+      } else {
+        showPopup(`${data.detail}`, true);
+      }
+    } catch (error) {
+      showPopup("Server unreachable. Is FastAPI running?", true);
+    }
+  });
+
+  // --- REGISTER HANDLER ---
+  document.getElementById("register-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+
+    try {
+      const response = await fetch("http://127.0.0.1:8000/register/anonymous", {
+        method: "POST",
+        body: formData
+      });
+      const data = await response.json();
+
+      if (response.ok) {
+        showPopup(`${data.message}`);
+        e.target.reset();
+      } else {
+        showPopup(`${data.detail}`, true);
+      }
+    } catch (error) {
+      showPopup("Server unreachable. Is FastAPI running?", true);
+    }
+  });
+
+  // --- LOGIN HANDLER ---
+  document.getElementById("login-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+
+    try {
+      const response = await fetch("http://127.0.0.1:8000/login/anonymous", {
+        method: "POST",
+        body: formData
+      });
+      const data = await response.json();
+
+      if (response.ok) {
+        localStorage.setItem("username", data.username);
+        showPopup(`${data.message}`);
+
+        setTimeout(() => {
+          window.location.href = "dashboard.html"; // (or forum.html later)
+        }, 1800);
+
+        e.target.reset();
+      } else {
+        showPopup(`${data.detail}`, true);
+      }
+    } catch (error) {
+      showPopup("Server unreachable. Is FastAPI running?", true);
+    }
+  });
+</script>
+
 
 </body>
 </html>

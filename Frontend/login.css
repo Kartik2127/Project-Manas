@@ -106,6 +106,54 @@ body {
 }
 
 /* RIGHT PANEL */
+
+.tab-buttons {
+  display: flex;
+  justify-content: center;
+  background-color: #f0f7f7;
+  border-radius: 8px;
+  margin: 15px auto;
+  width: 100%;
+  max-width: 300px;
+}
+
+.tab {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-weight: 600;
+  color: #5c6b73;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.tab.active {
+  background-color: #1f7a8c;
+  color: white;
+}
+
+.hidden {
+  display: none;
+}
+
+.mentor-login form.hidden {
+  display: none !important;
+}
+
+.mentor-login form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.or {
+  text-align: center;
+  color: #888;
+  margin: 10px 0;
+}
+
 .login-right {
   flex: 1;
   padding: 40px 50px;
@@ -279,4 +327,25 @@ input:focus {
   .login-right {
     padding: 40px 30px;
   }
+}
+
+.popup-message {
+  position: fixed;
+  bottom: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #1f7a8c;
+  color: white;
+  padding: 12px 25px;
+  border-radius: 8px;
+  font-weight: 500;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+.popup-message.show {
+  bottom: 30px;
+  opacity: 1;
 }
