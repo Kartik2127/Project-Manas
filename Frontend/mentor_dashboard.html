@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mentor Dashboard | Project Manas</title>
+  <link rel="stylesheet" href="mentor_dashboard.css" />
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="logo">Project Manas</div>
+    <nav class="nav-links">
+      <a href="mentor_dashboard.html" class="active">Dashboard</a>
+      <a href="#">My Replies</a>
+      <a href="#">Profile</a>
+      <a href="#" onclick="logout()">Logout</a>
+    </nav>
+  </header>
+
+  <!-- MAIN SECTION -->
+  <section class="dashboard">
+    <div class="welcome-box">
+      <h1 id="welcome-text">Welcome back, Mentor!</h1>
+      <p class="motivation">
+        “One kind word can change someone’s entire day.”
+      </p>
+      <p class="intro">
+        As a mentor, your guidance can make a real difference in students’ lives.
+        Explore the community, share your thoughts, and respond to those who seek help.
+      </p>
+
+      <div class="quick-links">
+        <div class="card" onclick="scrollToForum()">
+          <h3> Community Forum</h3>
+          <p>View and respond to student posts</p>
+        </div>
+        <div class="card">
+          <h3> My Replies</h3>
+          <p>Track all your past responses</p>
+        </div>
+        <div class="card">
+          <h3> Profile</h3>
+          <p>Edit your mentor details and visibility</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- FORUM SECTION -->
+    <div id="forum-section" class="forum-section">
+      <h2>Community Forum</h2>
+      <p class="subtitle">Reply to students or share your thoughts.</p>
+
+      <!-- POST FORM -->
+      <div class="create-post">
+        <form id="mentor-post-form">
+          <textarea name="message" id="post-message" placeholder="Write something to inspire or guide students..." required></textarea>
+          <button type="submit" class="btn-primary">Post</button>
+        </form>
+      </div>
+
+      <hr />
+
+      <!-- POSTS FEED -->
+      <div id="forum-posts" class="posts-container">
+        <p>Loading posts...</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p>© 2025 Project Manas • Empowering through empathy</p>
+  </footer>
+
+  <!-- SCRIPT -->
+  <script>
+    const mentorEmail = localStorage.getItem("mentorEmail");
+    if (!mentorEmail) {
+      alert("You must be logged in as a mentor!");
+      window.location.href = "login.html";
+    }
+
+    document.getElementById("welcome-text").textContent = `Welcome back, ${mentorEmail.split('@')[0]}!`;
+
+    function scrollToForum() {
+      document.getElementById("forum-section").scrollIntoView({ behavior: "smooth" });
+    }
+
+    // --- Fetch and Display All Posts ---
+    async function fetchPosts() {
+      const res = await fetch("http://127.0.0.1:8000/forum/all");
+      const data = await res.json();
+      const postsDiv = document.getElementById("forum-posts");
+      postsDiv.innerHTML = "";
+
+      data.posts.forEach(post => {
+        const postCard = document.createElement("div");
+        postCard.className = "post-card";
+        postCard.innerHTML = `
+          <h4>
+            ${post.username}
+            ${post.type === "mentor" ? '<span class="badge">Mentor</span>' : ''}
+          </h4>
+          <p>${post.message}</p>
+          <span>${new Date(post.timestamp).toLocaleString()}</span>
+          <div class="reply-section">
+            <textarea id="reply-${post._id}" placeholder="Write a reply..."></textarea>
+            <button onclick="sendReply('${post._id}')">Reply</button>
+          </div>
+          <div id="replies-${post._id}" class="replies"></div>
+        `;
+        postsDiv.appendChild(postCard);
+        fetchReplies(post._id);
+      });
+    }
+
+    // --- Submit Mentor Reply ---
+    async function sendReply(postId) {
+      const replyBox = document.getElementById(`reply-${postId}`);
+      const replyText = replyBox.value.trim();
+      if (!replyText) return alert("Reply cannot be empty!");
+
+      const formData = new FormData();
+      formData.append("post_id", postId);
+      formData.append("username", mentorEmail);
+      formData.append("reply", replyText);
+
+      await fetch("http://127.0.0.1:8000/forum/reply", {
+        method: "POST",
+        body: formData
+      });
+
+      replyBox.value = "";
+      fetchReplies(postId);
+    }
+
+    // --- Fetch Replies ---
+    async function fetchReplies(postId) {
+      const res = await fetch(`http://127.0.0.1:8000/forum/replies/${postId}`);
+      const data = await res.json();
+      const repliesDiv = document.getElementById(`replies-${postId}`);
+      repliesDiv.innerHTML = "";
+
+      data.replies.forEach(r => {
+        const div = document.createElement("div");
+        div.className = `reply ${r.type === "mentor" ? 'mentor' : 'anonymous'}`;
+        div.innerHTML = `
+          <p>
+            <strong>${r.username}</strong>
+            ${r.type === "mentor" ? '<span class="badge">Mentor</span>' : ''} — 
+            ${r.reply}
+          </p>
+          <span>${new Date(r.timestamp).toLocaleString()}</span>
+        `;
+        repliesDiv.appendChild(div);
+      });
+    }
+
+    // --- Mentor Create Post ---
+    document.getElementById("mentor-post-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const message = document.getElementById("post-message").value.trim();
+      if (!message) return;
+
+      const formData = new FormData();
+      formData.append("username", mentorEmail);
+      formData.append("message", message);
+
+      await fetch("http://127.0.0.1:8000/forum/post", {
+        method: "POST",
+        body: formData
+      });
+
+      document.getElementById("post-message").value = "";
+      fetchPosts();
+    });
+
+    // --- Logout ---
+    function logout() {
+      localStorage.removeItem("mentorEmail");
+      window.location.href = "login.html";
+    }
+
+    // Initial Load
+    fetchPosts();
+  </script>
+
+</body>
+</html>

@@ -81,9 +81,13 @@ def login_anonymous(username: str = Form(...), password: str = Form(...)):
 @app.post("/forum/post")
 def create_post(username: str = Form(...), message: str = Form(...)):
     """Add a new post to the forum"""
+    user = db.users.find_one({"$or": [{"email": username}, {"username": username}]})
+    user_type = user.get("type", "anonymous") if user else "anonymous"
+
     post = {
         "username": username,
         "message": message,
+        "type": user_type,
         "timestamp": datetime.utcnow().isoformat()
     }
     db.posts.insert_one(post)
@@ -105,10 +109,14 @@ def add_reply(post_id: str = Form(...), username: str = Form(...), reply: str = 
     if not db.posts.find_one({"_id": ObjectId(post_id)}):
         return JSONResponse({"error": "Post not found"}, status_code=404)
     
+    user = db.users.find_one({"$or": [{"email": username}, {"username": username}]})
+    user_type = user.get("type", "anonymous") if user else "anonymous"
+
     reply_doc = {
         "post_id": post_id,
         "username": username,
         "reply": reply,
+        "type": user_type,
         "timestamp": datetime.utcnow().isoformat()
     }
     db.replies.insert_one(reply_doc)

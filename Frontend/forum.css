@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
 body {
   font-family: 'Poppins', sans-serif;
   margin: 0;
@@ -146,6 +147,18 @@ form button:hover {
   border-radius: 6px;
   padding: 8px 15px;
   cursor: pointer;
+}
+
+.badge {
+  display: inline-block;
+  background-color: #1f7a8c;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 12px;
+  margin-left: 8px;
+  vertical-align: middle;
 }
 
 .replies {
