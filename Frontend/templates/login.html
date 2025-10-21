@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login | Project Manas</title>
-  <link rel="stylesheet" href="login.css" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
 </head>
 <body>
 
@@ -12,7 +12,7 @@
   <header class="navbar">
     <div class="logo">Project Manas</div>
     <nav class="nav-links">
-      <a href="index.html">Home</a>
+    <a href="{{ url_for('home') }}">Home</a>
       <a href="#">Professionals</a>
       <a href="#">Stories</a>
       <a href="#">About</a>
@@ -26,7 +26,7 @@
       <!-- LEFT SIDE -->
       <div class="login-left">
         <div class="illustration-wrapper">
-          <img src="login.jpeg" alt="Peer support illustration" />
+          <img src="{{ url_for('static', filename='images/login.jpeg') }}" alt="Peer support illustration" />
         </div>
         <div class="left-text">
           <h2>Find Comfort With Connection.</h2>
@@ -49,7 +49,7 @@
         <div class="option mentor-login">
           <h3>Login as Friend / Mentor</h3>
           <a href="http://127.0.0.1:8000/login/google" class="google-btn">
-            <img src="google_icon.png" alt="Google logo" />
+            <img src="{{ url_for('static', filename='images/search.png') }}" alt="Google logo" />
             Continue with Google
           </a>
 

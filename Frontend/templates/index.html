@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Project Manas</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
 
@@ -17,7 +17,7 @@
       <a href="#">Stories</a>
       <a href="#">Chatbot</a>
       <a href="#">About</a>
-      <a href="login.html" class="btn-login">Login</a>
+      <a href="{{ url_for('login') }}" class="btn-login">Login</a>
     </nav>
   </header>
 
@@ -29,12 +29,13 @@
         Talk, listen, and heal — safely and anonymously. Project Manas provides a secure space for students to find people to interact, share stories, and seek support.
       </p>
       <div class="hero-buttons">
-        <button class="btn-first" onclick="window.location.href='login.html'">Login / Join Anonymously</button>
+        <button class="btn-first" onclick="window.location.href='{{ url_for('login') }}'">Login / Join Anonymously</button>
         <button class="btn-second" onclick="document.getElementById('features').scrollIntoView({behavior: 'smooth'})">Explore the Platform ↓</button>
       </div>
     </div>
     <div class="hero-img">
-      <img src="meditation_hero.png" alt="Mental health illustration" />
+      <img src="{{ url_for('static', filename='images/meditation_hero.png') }}" alt="Mental health illustration">
+
     </div>
   </section>
 
@@ -82,7 +83,8 @@
         <span>– Anonymous Student, DTU</span>
       </div>
     </div>
-    <p class="story-note">Want to share your story? <a href="login.html">Login or Join Anonymously →</a></p>
+      <p class="story-note">Want to share your story? <a href="{{ url_for('login') }}">Login or Join Anonymously →</a></p>
+
   </section>
 
   <!-- AI CHATBOT PREVIEW -->
@@ -94,7 +96,7 @@
       <div class="chat user">A little stressed before exams...</div>
       <div class="chat bot">That’s okay, You’re not alone. Would you like some breathing tips?</div>
     </div>
-    <p class="cta-note">Want to chat freely? <a href="login.html">Login to talk more →</a></p>
+    <p class="cta-note">Want to chat freely? <a href="{{ url_for('login') }}">Login to talk more →</a></p>
   </section>
 
   <!-- HEALTHY LIFE TIPS -->
@@ -112,7 +114,7 @@
   <section class="cta">
     <h2>Ready to Begin Your Journey?</h2>
     <p>Join anonymously or as a mentor — we’re here for you.</p>
-    <button class="btn-first" onclick="window.location.href='login.html'">Start Now →</button>
+    <button class="btn-first" onclick="window.location.href='{{ url_for('login') }}'">Start Now →</button>
   </section>
 
   <!-- FOOTER -->
