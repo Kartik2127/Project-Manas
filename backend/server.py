@@ -10,7 +10,7 @@ from bson import ObjectId
 
 app = FastAPI()
 
-# Allow frontend to access backend
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  
@@ -19,11 +19,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Connect to MongoDB
+
 client = MongoClient("mongodb://localhost:27017")
 db = client.manas
 
-# ----------- MENTOR LOGIN -----------
+
 @app.post("/register/mentor")
 def register_mentor(email: str = Form(...), password: str = Form(...)):
     existing_user = db.users.find_one({"email": email, "type": "mentor"})
@@ -51,7 +51,7 @@ def login_mentor(email: str = Form(...), password: str = Form(...)):
     return JSONResponse({"message": f"Welcome back, {email}!"})
 
 
-# ----------- REGISTER ANONYMOUS USER -----------
+
 @app.post("/register/anonymous")
 def register_anonymous(username: str = Form(...), password: str = Form(...)):
     existing = db.users.find_one({"username": username})
@@ -67,7 +67,7 @@ def register_anonymous(username: str = Form(...), password: str = Form(...)):
     return JSONResponse({"message": f"Welcome, {username}!, please login to continue."})
 
 
-# ----------- LOGIN ANONYMOUS USER -----------
+
 @app.post("/login/anonymous")
 def login_anonymous(username: str = Form(...), password: str = Form(...)):
     user = db.users.find_one({"username": username})
@@ -79,7 +79,7 @@ def login_anonymous(username: str = Form(...), password: str = Form(...)):
     return JSONResponse({"message": f"Welcome back, {username}!",
                         "username": username})
     
-# ----------- Forum -----------
+
 @app.post("/forum/post")
 def create_post(username: str = Form(...), message: str = Form(...)):
     """Add a new post to the forum"""
@@ -101,7 +101,7 @@ def get_all_posts():
     """Fetch all forum posts"""
     posts = list(db.posts.find().sort("timestamp", -1))
     for p in posts:
-        p["_id"] = str(p["_id"])  # convert ObjectId for JSON
+        p["_id"] = str(p["_id"]) 
     return {"posts": posts}
 
 
@@ -139,9 +139,9 @@ def chatbot_response(message: str = Form(...)):
     from fastapi.responses import JSONResponse
     from fastapi import HTTPException
 
-    print("📩 Received message:", message)
+    print("Received message:", message)
     api_key = os.getenv("COHERE_API_KEY")
-    print("🔑 Cohere Key Present:", bool(api_key))
+    print(" Cohere Key Present:", bool(api_key))
 
     if not api_key:
         raise HTTPException(status_code=500, detail="Cohere API key missing.")
@@ -152,7 +152,7 @@ def chatbot_response(message: str = Form(...)):
     }
 
     payload = {
-        "model": "command-r-08-2024",   # or "command-r" if the free tier limits access
+        "model": "command-r-08-2024",   
         "preamble": "You are ManasAI, an empathetic and supportive mental health companion for students. \
         You listen kindly, validate feelings, and never give medical advice.",
         "message": message,
@@ -161,20 +161,20 @@ def chatbot_response(message: str = Form(...)):
     }
 
     try:
-        print("🚀 Sending request to Cohere /v1/chat...")
+        print(" Sending request to Cohere /v1/chat...")
         res = requests.post("https://api.cohere.ai/v1/chat", headers=headers, json=payload)
-        print("✅ Response status:", res.status_code)
-        print("📦 Raw text:", res.text[:300])
+        print(" Response status:", res.status_code)
+        print(" Raw text:", res.text[:300])
 
         if res.status_code != 200:
             raise HTTPException(status_code=500, detail=f"Cohere API error: {res.text}")
 
         data = res.json()
         reply = data.get("text") or "I'm here to listen. Can you tell me more?"
-        print("💬 Reply:", reply.strip())
+        print(" Reply:", reply.strip())
 
         return JSONResponse({"reply": reply.strip()})
     except Exception as e:
-        print("❌ Exception:", e)
+        print(" Exception:", e)
         raise HTTPException(status_code=500, detail=str(e))
 

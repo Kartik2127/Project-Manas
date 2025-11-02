@@ -1,12 +1,3 @@
-# chat.py
-"""
-Chat orchestrator:
- - loads KB (FAISS + chunks)
- - NLU pipeline (nlu.py)
- - builds a hybrid prompt combining empathy and retrieved docs
- - calls LLM (OpenAI Chat API if OPENAI_API_KEY present, else local HF seq2seq)
- - safety flows: crisis detection, canned empathetic fallback
-"""
 
 import os
 import time
@@ -21,20 +12,17 @@ from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 from nlu import detect_intent, detect_emotion, safety_check
 from build_knowledge_base import load_index, query, EMBEDDING_MODEL, CHUNKS_FILE, INDEX_FILE
 
-# Config via env
 USE_OPENAI = os.environ.get("USE_OPENAI", "true").lower() in ["1", "true", "yes"]
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "")
 OPENAI_MODEL = os.environ.get("OPENAI_MODEL", "gpt-4o")  # set as needed
 LOCAL_SEQ2SEQ = os.environ.get("LOCAL_SEQ2SEQ", "google/flan-t5-large")
 
-# Loading KB
+
 index, chunks_meta = load_index(index_path=INDEX_FILE, chunks_path=CHUNKS_FILE)
 print("Loaded KB index and chunks.")
 
-# Embedding model used at query time (kept lightweight)
 embed_model = SentenceTransformer(EMBEDDING_MODEL)
 
-# If OpenAI is chosen, lazy import openai
 openai = None
 if USE_OPENAI and OPENAI_API_KEY:
     try:
@@ -49,7 +37,6 @@ else:
     USE_OPENAI = False
     openai_loaded = False
 
-# Local HF model (fallback)
 hf_tokenizer = None
 hf_model = None
 if not USE_OPENAI:
@@ -58,7 +45,7 @@ if not USE_OPENAI:
     hf_model = AutoModelForSeq2SeqLM.from_pretrained(LOCAL_SEQ2SEQ)
     print("Local model loaded.")
 
-# Persona + prompt templates
+
 SYSTEM_PERSONA = (
     "You are 'Manas', an empathetic, non-judgmental AI companion designed to support "
     "students with mental health concerns. You validate feelings first, avoid giving medical "
@@ -81,15 +68,12 @@ CRISIS_MODAL = (
 
 def get_retrieved_context(user_text, k=3):
     results = query(index, chunks_meta, user_text, model_name=EMBEDDING_MODEL, k=k)
-    # join with metadata and short-circuit if empty
     if not results:
         return []
     return results
 
 def build_prompt(user_text, retrieved: List[dict], emotion=None, intent=None):
-    # Build a compact context block
     context_block = "\n\n".join([f"[{r['meta']['source']}] {r['chunk']}" for r in retrieved]) if retrieved else ""
-    # Instructions to the LLM
     instructions = (
         SYSTEM_PERSONA + "\n\n"
         "When you respond:\n"
@@ -98,7 +82,6 @@ def build_prompt(user_text, retrieved: List[dict], emotion=None, intent=None):
         "- Ask a gentle follow-up question to continue the conversation.\n"
         "- If the user seems at risk, follow crisis protocol (see end of response) rather than giving normal advice.\n\n"
     )
-    # Add signal about detected emotion / intent so model can adapt tone
     signals = ""
     if emotion:
         signals += f"[DETECTED_EMOTION]={emotion.get('label')} (score={emotion.get('score'):.2f})\n"
@@ -106,7 +89,6 @@ def build_prompt(user_text, retrieved: List[dict], emotion=None, intent=None):
         signals += f"[DETECTED_INTENT]={intent.get('label')} (score={intent.get('score'):.2f})\n"
 
     prompt = f"""{instructions}{signals}\nREFERENCE KNOWLEDGE:\n{context_block}\n\nUSER: \"{user_text}\"\n\nMANAS:"""
-    # Ensure prompt not huge — caller must ensure tokens fit
     return prompt
 
 def call_openai_chat(prompt, max_tokens=256, temperature=0.7):
@@ -132,33 +114,28 @@ def call_local_hf(prompt, max_new_tokens=150, temperature=0.7):
     return text
 
 def canned_empathy(user_text):
-    # simple fallback: pick an empathy template + short reflective sentence
     import random
     base = random.choice(EMPATHY_TEMPLATES)
     return f"{base} Can you tell me a bit more about what's been going on?"
 
 def get_bot_response(user_text):
-    # 1) Safety check right away
+   
     safety = safety_check(user_text)
     if safety["high_risk"]:
         return CRISIS_MODAL, {"escalate": True, "safety": safety}
 
-    # 2) NLU & Emotion
+    
     intent = detect_intent(user_text)
     emotion = detect_emotion(user_text)
 
-    # 3) Retrieve contextual KB chunks for more grounded replies
+    
     retrieved = get_retrieved_context(user_text, k=4)
-
-    # 4) Build prompt and call LLM (OpenAI preferred)
     prompt = build_prompt(user_text, retrieved, emotion=emotion, intent=intent)
     try:
         if USE_OPENAI and openai_loaded:
             reply = call_openai_chat(prompt)
         else:
             reply = call_local_hf(prompt)
-        # safety post-filter (avoid hallucinated clinical claims)
-        # If reply too short or repeats user, give canned empathy
         if not reply or len(reply.split()) < 6:
             return canned_empathy(user_text), {"escalate": False, "safety": safety}
         return reply, {"escalate": False, "safety": safety, "intent": intent, "emotion": emotion}
@@ -166,7 +143,7 @@ def get_bot_response(user_text):
         print("LLM call failed:", e)
         return canned_empathy(user_text), {"escalate": False, "safety": safety, "err": str(e)}
 
-# CLI demo
+
 if __name__ == "__main__":
     print("Manas (demo). Type 'quit' to exit.")
     while True:
