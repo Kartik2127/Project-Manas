@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manas AI Chatbot</title>
+  <link rel="stylesheet" href="chatbot.css" />
+</head>
+<body>
+  <header class="navbar">
+    <div class="logo">Project Manas</div>
+    <nav class="nav-links">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="forum.html">Forum</a>
+      <a href="stories.html">Stories</a>
+      <a href="tips.html">Healthy Living</a>
+      <button class="logout-btn" onclick="logout()">Logout</button>
+    </nav>
+  </header>
+
+  <section class="chat-section">
+    <div class="chat-container" id="chatContainer">
+      <div class="bot-msg">👋 Hi, I’m <b>ManasAI</b>. How are you feeling today?</div>
+    </div>
+
+    <form id="chatForm">
+      <input type="text" id="userInput" placeholder="Type your thoughts..." required />
+      <button type="submit">Send</button>
+    </form>
+  </section>
+
+  <footer class="footer">
+    <p>ManasAI is for emotional support only — not a substitute for professional therapy.</p>
+  </footer>
+
+<script>
+const chatContainer = document.getElementById("chatContainer");
+const form = document.getElementById("chatForm");
+const input = document.getElementById("userInput");
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const userMsg = input.value.trim();
+  if (!userMsg) return;
+
+  appendMessage("user-msg", userMsg);
+  input.value = "";
+
+  const formData = new FormData();
+  formData.append("message", userMsg);
+
+  try {
+    const res = await fetch("http://127.0.0.1:8000/chatbot", {
+      method: "POST",
+      body: formData,
+    });
+    const data = await res.json();
+    appendMessage("bot-msg", data.reply);
+  } catch (error) {
+    appendMessage("bot-msg", "Server error. Try again later.");
+  }
+});
+
+function appendMessage(className, text) {
+  const div = document.createElement("div");
+  div.className = className;
+  div.textContent = text;
+  chatContainer.appendChild(div);
+  chatContainer.scrollTop = chatContainer.scrollHeight;
+}
+
+function logout() {
+  localStorage.removeItem("username");
+  window.location.href = "login.html";
+}
+</script>
+</body>
+</html>

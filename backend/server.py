@@ -1,3 +1,5 @@
+import requests
+import os
 from fastapi import FastAPI, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -130,3 +132,49 @@ def get_replies(post_id: str):
     for r in replies:
         r["_id"] = str(r["_id"])
     return {"replies": replies}
+
+@app.post("/chatbot")
+def chatbot_response(message: str = Form(...)):
+    import os, requests, json
+    from fastapi.responses import JSONResponse
+    from fastapi import HTTPException
+
+    print("📩 Received message:", message)
+    api_key = os.getenv("COHERE_API_KEY")
+    print("🔑 Cohere Key Present:", bool(api_key))
+
+    if not api_key:
+        raise HTTPException(status_code=500, detail="Cohere API key missing.")
+
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json",
+    }
+
+    payload = {
+        "model": "command-r-08-2024",   # or "command-r" if the free tier limits access
+        "preamble": "You are ManasAI, an empathetic and supportive mental health companion for students. \
+        You listen kindly, validate feelings, and never give medical advice.",
+        "message": message,
+        "chat_history": [],
+        "temperature": 0.7
+    }
+
+    try:
+        print("🚀 Sending request to Cohere /v1/chat...")
+        res = requests.post("https://api.cohere.ai/v1/chat", headers=headers, json=payload)
+        print("✅ Response status:", res.status_code)
+        print("📦 Raw text:", res.text[:300])
+
+        if res.status_code != 200:
+            raise HTTPException(status_code=500, detail=f"Cohere API error: {res.text}")
+
+        data = res.json()
+        reply = data.get("text") or "I'm here to listen. Can you tell me more?"
+        print("💬 Reply:", reply.strip())
+
+        return JSONResponse({"reply": reply.strip()})
+    except Exception as e:
+        print("❌ Exception:", e)
+        raise HTTPException(status_code=500, detail=str(e))
+
