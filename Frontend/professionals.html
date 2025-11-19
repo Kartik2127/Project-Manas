@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Professionals | Project Manas</title>
+  <link rel="stylesheet" href="professionals.css" />
+</head>
+<body>
+
+<header class="navbar">
+  <div class="logo">Project Manas</div>
+  <nav class="nav-links">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="stories.html">Stories</a>
+    <a href="chatbot.html">Chatbot</a>
+    <a href="forum.html">Forum</a>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </nav>
+</header>
+
+<section class="pro-section">
+  <h1>Meet Trained Professionals</h1>
+  <p class="subtitle">Certified experts you can reach out to when you need structured help.</p>
+
+  <div class="pro-container">
+
+    <div class="pro-card">
+      <h3>Dr. Aditi Sharma</h3>
+      <p>Clinical Psychologist, 8+ years experience</p>
+      <span>Email: aditi.sharma@example.com</span>
+    </div>
+
+    <div class="pro-card">
+      <h3>Rahul Mehta</h3>
+      <p>Student Counselor, specializes in academic stress</p>
+      <span>Email: rahul.mehta@example.com</span>
+    </div>
+
+    <div class="pro-card">
+      <h3>Dr. Ayesha Khan</h3>
+      <p>Therapist, helps with anxiety & personal growth</p>
+      <span>Email: ayesha.khan@example.com</span>
+    </div>
+
+  </div>
+</section>
+
+<footer class="footer">
+  <p>© 2025 Project Manas • Professional Guidance for Students</p>
+</footer>
+
+<script>
+function logout(){
+  localStorage.removeItem("username");
+  window.location.href="login.html";
+}
+</script>
+
+</body>
+</html>

@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
 
 body {
@@ -5,22 +6,36 @@ body {
   margin: 0;
   background-color: #f8fdfd;
   color: #2f4858;
+  padding-top: 90px;  /* NEW */
 }
+
 
 /* NAVBAR */
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 60px;
+  padding: 15px 20px;
   background-color: #ffffff;
   box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+
+  flex-wrap: wrap;
+  position: fixed;  
+  top: 0;          
+  width: 100%;       
+  z-index: 999;      
+}
+
+.nav-links {
+  margin-left: -40px;  
 }
 
 .logo {
   font-size: 1.5rem;
   font-weight: 700;
   color: #1f7a8c;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
 .nav-links a {
@@ -28,6 +43,7 @@ body {
   text-decoration: none;
   color: #2f4858;
   font-weight: 500;
+  margin-right:10px
 }
 
 .nav-links a:hover {
@@ -219,21 +235,36 @@ body {
   color: #5c6b73;
 }
 
-/* HEALTH TIPS */
+/* TIPS */
 .tips {
-  text-align: center;
   padding: 60px 20px;
-  background-color: #f8fdfd;
+  text-align: center;
 }
 
-.tips-list {
-  list-style: none;
-  padding: 0;
-  color: #5c6b73;
+.tips-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 25px;
+  max-width: 900px;
+  margin: auto;
 }
 
-.tips-list li {
-  margin: 10px 0;
+.tip-card {
+  background: linear-gradient(135deg, #e8f7f8, #ffffff);
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+  transition: 0.3s ease;
+}
+
+.tip-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.tip-icon {
+  font-size: 2.4rem;
+  margin-bottom: 10px;
 }
 
 /* CTA SECTION */
@@ -281,25 +312,20 @@ body {
   color: #1f7a8c;
 }
 
-/* RESPONSIVE */
+@media (max-width: 950px) {
+  .navbar {
+    padding: 15px 20px;   /* reduce padding so Login doesn't overflow */
+  }
+
+  .nav-links a {
+    margin-left: 15px;
+  }
+}
+
 @media (max-width: 768px) {
-  .hero {
-    flex-direction: column-reverse;
-    text-align: center;
-  }
-
-  .hero-buttons {
+  .nav-links {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .btn-first, .btn-second {
-    width: 80%;
-    margin-bottom: 10px;
-  }
-
-  .feature-grid {
-    padding: 0;
+    flex-wrap: wrap;      /* wrap items instead of shrinking */
+    gap: 10px;
   }
 }

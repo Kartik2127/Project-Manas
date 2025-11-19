@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stories of Hope | Project Manas</title>
+  <link rel="stylesheet" href="stories.css" />
+</head>
+<body>
+
+<header class="navbar">
+  <div class="logo">Project Manas</div>
+  <nav class="nav-links">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="forum.html">Forum</a>
+    <a href="chatbot.html">Chatbot</a>
+    <a href="professionals.html">Professionals</a>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </nav>
+</header>
+
+<section class="stories-section">
+  <h1>Stories of Hope</h1>
+  <p class="subtitle">Real experiences from students who overcame challenges.</p>
+
+  <div class="stories-container">
+
+    <div class="story-card">
+      <p>“When I felt alone in college, Manas helped me open up and realize that it’s okay to seek help.”</p>
+      <span>- Student, IIT Delhi</span>
+    </div>
+
+    <div class="story-card">
+      <p>“My belief that I was the only one struggling changed when I reached here.”</p>
+      <span>- Student, NIT Trichy</span>
+    </div>
+
+    <div class="story-card">
+      <p>“Talking to a mentor who understood my pain gave me courage to overcome my anxiety.”</p>
+      <span>- Student, DTU</span>
+    </div>
+
+  </div>
+</section>
+
+<footer class="footer">
+  <p>© 2025 Project Manas • Stories of Strength & Healing</p>
+</footer>
+
+<script>
+function logout() {
+  localStorage.removeItem("username");
+  window.location.href = "login.html";
+}
+</script>
+
+</body>
+</html>
