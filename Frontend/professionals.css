@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+body {
+  margin: 0;
+  background-color: #f8fdfd;
+  font-family: 'Poppins', sans-serif;
+  color: #2f4858;
+}
+
+/* NAVBAR */
+.navbar {
+  padding: 15px 60px;
+  background: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.logo {
+  font-size: 1.6rem;
+  color: #1f7a8c;
+  font-weight: 700;
+}
+
+.nav-links a {
+  text-decoration: none;
+  margin-left: 20px;
+  font-weight: 500;
+  color: #2f4858;
+}
+
+/* PROFESSIONALS SECTION */
+.pro-section {
+  text-align: center;
+  padding: 60px 30px;
+}
+
+.pro-section h1 {
+  color: #16697a;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  color: #5c6b73;
+  margin-bottom: 40px;
+}
+
+.pro-container {
+  max-width: 900px;
+  margin: auto;
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.pro-card {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+}
+
+.pro-card h3 {
+  color: #1f7a8c;
+}
+
+.pro-card span {
+  display: block;
+  margin-top: 10px;
+  color: #16697a;
+}
+
+/* FOOTER */
+.footer {
+  text-align: center;
+  padding: 20px;
+  background: #ffffff;
+  border-top: 1px solid #e2e8f0;
+  margin-top: 40px;
+  color: #5c6b73;
+}

@@ -185,3 +185,19 @@ form button:hover {
   color: #5c6b73;
   font-size: 0.8rem;
 }
+
+.chat-btn {
+  background-color: #1f7a8c;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  margin-right: 8px;
+}
+
+.chat-btn:hover {
+  background-color: #16697a;
+}
+

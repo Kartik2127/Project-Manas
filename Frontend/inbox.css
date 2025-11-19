@@ -1,0 +1,63 @@
+body {
+  font-family: Poppins, sans-serif;
+  background: #f7fafa;
+  margin: 0;
+  color: #2f4858;
+}
+
+/* NAVBAR */
+.navbar {
+  padding: 15px 60px;
+  background: #fff;
+  display: flex;
+  justify-content: space-between;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.nav-links a, .logout-btn {
+  margin-left: 20px;
+  text-decoration: none;
+  color: #1f7a8c;
+  font-weight: 500;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* INBOX */
+.inbox-section {
+  padding: 40px;
+}
+
+.chat-list {
+  margin-top: 20px;
+}
+
+.chat-item {
+  background: white;
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  cursor: pointer;
+  border: 1px solid #dde7ea;
+  transition: 0.2s;
+}
+
+.chat-item:hover {
+  background: #e9f6f7;
+}
+
+.chat-item h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #16697a;
+}
+
+.chat-item p {
+  margin: 5px 0 3px;
+  color: #58737a;
+}
+
+.chat-item small {
+  color: #8aa1a8;
+}

@@ -1,0 +1,95 @@
+body {
+  margin: 0;
+  font-family: Poppins, sans-serif;
+  background: #f5f9f9;
+}
+
+/* NAVBAR */
+.navbar {
+  padding: 15px 50px;
+  display: flex;
+  justify-content: space-between;
+  background: #fff;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.nav-links a, .logout-btn {
+  margin-left: 20px;
+  text-decoration: none;
+  color: #16697a;
+  font-weight: 500;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* CHAT AREA */
+.chat-section {
+  max-width: 800px;
+  margin: auto;
+  margin-top: 20px;
+}
+
+.chat-header {
+  background: #1f7a8c;
+  color: white;
+  padding: 15px;
+  border-radius: 10px 10px 0 0;
+}
+
+.messages-box {
+  height: 70vh;
+  overflow-y: auto;
+  background: #ffffff;
+  padding: 15px;
+  border: 1px solid #dbe2e5;
+  border-top: none;
+}
+
+.msg {
+  max-width: 60%;
+  padding: 10px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+
+.msg-left {
+  background: #eaf4f4;
+  align-self: flex-start;
+}
+
+.msg-right {
+  background: #1f7a8c;
+  color: white;
+  margin-left: auto;
+  text-align: right;
+}
+
+.msg span {
+  display: block;
+  margin-top: 5px;
+  font-size: 0.75rem;
+  opacity: 0.8;
+}
+
+.input-area {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.input-area input {
+  flex: 1;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.input-area button {
+  background: #1f7a8c;
+  color: white;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+}

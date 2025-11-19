@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background-color: #f8fdfd;
+  color: #2f4858;
+}
+
+/* NAVBAR */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 60px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.logo {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #1f7a8c;
+}
+
+.nav-links a {
+  text-decoration: none;
+  margin-left: 20px;
+  color: #2f4858;
+  font-weight: 500;
+}
+
+.logout-btn {
+  background-color: #1f7a8c;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* STORIES SECTION */
+.stories-section {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.stories-section h1 {
+  font-size: 2rem;
+  color: #16697a;
+}
+
+.subtitle {
+  color: #5c6b73;
+  margin-bottom: 30px;
+}
+
+.stories-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 25px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.story-card {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  text-align: left;
+}
+
+.story-card span {
+  display: block;
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: #1f7a8c;
+}
+
+/* FOOTER */
+.footer {
+  text-align: center;
+  padding: 20px;
+  background: #ffffff;
+  color: #5c6b73;
+  border-top: 1px solid #e2e8f0;
+}
