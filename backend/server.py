@@ -137,7 +137,6 @@ def create_post(username: str = Form(...), message: str = Form(...)):
 def get_all_posts():
     """Fetch all forum posts, newest first"""
     posts = list(db.posts.find().sort("timestamp", -1))
-    # Convert ObjectId to string for JSON compatibility
     for p in posts:
         p["_id"] = str(p["_id"]) 
     return {"posts": posts}

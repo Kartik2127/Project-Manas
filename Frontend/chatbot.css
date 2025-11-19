@@ -93,3 +93,22 @@ button:hover {
   background-color: #ffffff;
   border-top: 1px solid #e2e8f0;
 }
+
+#typingIndicator {
+  opacity: 0.8;
+  font-style: italic;
+}
+
+.clear-btn {
+  background-color: #ff6b6b;
+  color: white;
+  border: none;
+  padding: 7px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.clear-btn:hover {
+  background-color: #d9534f;
+}
