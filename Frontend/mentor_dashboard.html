@@ -4,22 +4,20 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mentor Dashboard | Project Manas</title>
-  <link rel="stylesheet" href="mentor_dashboard.css" />
+  <link rel="stylesheet" href="/Frontend/mentor_dashboard.css" />
 </head>
 <body>
 
-  <!-- NAVBAR -->
   <header class="navbar">
     <div class="logo">Project Manas</div>
     <nav class="nav-links">
-      <a href="mentor_dashboard.html" class="active">Dashboard</a>
+      <a href="/mentor-dashboard" class="active">Dashboard</a>
       <a href="#">My Replies</a>
       <a href="#">Profile</a>
       <a href="#" onclick="logout()">Logout</a>
     </nav>
   </header>
 
-  <!-- MAIN SECTION -->
   <section class="dashboard">
     <div class="welcome-box">
       <h1 id="welcome-text">Welcome back, Mentor!</h1>
@@ -47,12 +45,10 @@
       </div>
     </div>
 
-    <!-- FORUM SECTION -->
     <div id="forum-section" class="forum-section">
       <h2>Community Forum</h2>
       <p class="subtitle">Reply to students or share your thoughts.</p>
 
-      <!-- POST FORM -->
       <div class="create-post">
         <form id="mentor-post-form">
           <textarea name="message" id="post-message" placeholder="Write something to inspire or guide students..." required></textarea>
@@ -62,24 +58,21 @@
 
       <hr />
 
-      <!-- POSTS FEED -->
       <div id="forum-posts" class="posts-container">
         <p>Loading posts...</p>
       </div>
     </div>
   </section>
 
-  <!-- FOOTER -->
   <footer class="footer">
     <p>© 2025 Project Manas • Empowering through empathy</p>
   </footer>
 
-  <!-- SCRIPT -->
   <script>
     const mentorEmail = localStorage.getItem("mentorEmail");
     if (!mentorEmail) {
       alert("You must be logged in as a mentor!");
-      window.location.href = "login.html";
+      window.location.href = "/login";
     }
 
     document.getElementById("welcome-text").textContent = `Welcome back, ${mentorEmail.split('@')[0]}!`;
@@ -88,9 +81,8 @@
       document.getElementById("forum-section").scrollIntoView({ behavior: "smooth" });
     }
 
-    // --- Fetch and Display All Posts ---
     async function fetchPosts() {
-      const res = await fetch("http://127.0.0.1:8000/forum/all");
+      const res = await fetch("/forum/all");
       const data = await res.json();
       const postsDiv = document.getElementById("forum-posts");
       postsDiv.innerHTML = "";
@@ -116,7 +108,6 @@
       });
     }
 
-    // --- Submit Mentor Reply ---
     async function sendReply(postId) {
       const replyBox = document.getElementById(`reply-${postId}`);
       const replyText = replyBox.value.trim();
@@ -127,7 +118,8 @@
       formData.append("username", mentorEmail);
       formData.append("reply", replyText);
 
-      await fetch("http://127.0.0.1:8000/forum/reply", {
+
+      await fetch("/forum/reply", {
         method: "POST",
         body: formData
       });
@@ -136,9 +128,8 @@
       fetchReplies(postId);
     }
 
-    // --- Fetch Replies ---
     async function fetchReplies(postId) {
-      const res = await fetch(`http://127.0.0.1:8000/forum/replies/${postId}`);
+      const res = await fetch(`/forum/replies/${postId}`);
       const data = await res.json();
       const repliesDiv = document.getElementById(`replies-${postId}`);
       repliesDiv.innerHTML = "";
@@ -158,7 +149,7 @@
       });
     }
 
-    // --- Mentor Create Post ---
+
     document.getElementById("mentor-post-form").addEventListener("submit", async (e) => {
       e.preventDefault();
       const message = document.getElementById("post-message").value.trim();
@@ -168,7 +159,8 @@
       formData.append("username", mentorEmail);
       formData.append("message", message);
 
-      await fetch("http://127.0.0.1:8000/forum/post", {
+
+      await fetch("/forum/post", {
         method: "POST",
         body: formData
       });
@@ -177,13 +169,10 @@
       fetchPosts();
     });
 
-    // --- Logout ---
     function logout() {
       localStorage.removeItem("mentorEmail");
-      window.location.href = "login.html";
+      window.location.href = "/login";
     }
-
-    // Initial Load
     fetchPosts();
   </script>
 

@@ -4,29 +4,26 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login | Project Manas</title>
-  <link rel="stylesheet" href="login.css" />
+  <link rel="stylesheet" href="/Frontend/login.css" />
 </head>
 <body>
 
-  <!-- HEADER -->
   <header class="navbar">
     <div class="logo">Project Manas</div>
     <nav class="nav-links">
-      <a href="index.html">Home</a>
+      <a href="/">Home</a>
       <a href="#">Professionals</a>
       <a href="#">Stories</a>
       <a href="#">About</a>
     </nav>
   </header>
 
-  <!-- LOGIN SECTION -->
   <section class="login-section">
     <div class="login-card">
 
-      <!-- LEFT SIDE -->
       <div class="login-left">
         <div class="illustration-wrapper">
-          <img src="login.jpeg" alt="Peer support illustration" />
+          <img src="/Frontend/login.jpeg" alt="Peer support illustration" />
         </div>
         <div class="left-text">
           <h2>Find Comfort With Connection.</h2>
@@ -40,44 +37,37 @@
         </div>
       </div>
 
-      <!-- RIGHT SIDE -->
       <div class="login-right">
         <h1>Welcome to Project Manas</h1>
         <p class="subtitle">Choose how you'd like to connect</p>
 
-          <!-- MENTOR LOGIN -->
           <div class="option mentor-login">
           <h3>Login as Friend / Mentor</h3>
 
-          <!-- GOOGLE LOGIN -->
-          <a href="http://127.0.0.1:8000/login/google" class="google-btn">
-            <img src="google_icon.png" alt="Google logo" />
+          <a href="#" class="google-btn" onclick="alert('Google Login coming soon!')">
+            <img src="/Frontend/google_icon.png" alt="Google logo" />
             Continue with Google
           </a>
 
           <p class="or">or</p>
 
-          <!-- TOGGLE BUTTONS -->
           <div class="tab-buttons">
             <button id="mentor-login-tab" class="tab active" onclick="showMentorLogin()">Login</button>
             <button id="mentor-register-tab" class="tab" onclick="showMentorRegister()">Register</button>
           </div>
 
-          <!-- LOGIN FORM -->
-          <form id="mentor-login-form" method="POST" action="http://127.0.0.1:8000/login/email">
+          <form id="mentor-login-form">
             <input type="email" name="email" placeholder="Email address" required />
             <input type="password" name="password" placeholder="Password" required />
             <button type="submit" class="btn-primary">Login as Mentor</button>
           </form>
 
-          <!-- REGISTER FORM -->
-          <form id="mentor-register-form" class="hidden" method="POST" action="http://127.0.0.1:8000/register/mentor">
+          <form id="mentor-register-form" class="hidden">
             <input type="email" name="email" placeholder="Email address" required />
             <input type="password" name="password" placeholder="Create password" required />
             <button type="submit" class="btn-primary">Register as Mentor</button>
           </form>
         </div>
-        <!-- ANONYMOUS LOGIN / REGISTER -->
         <div class="option anonymous">
           <h3>Anonymous Access</h3>
           <p>Stay anonymous with a nickname and password — no personal info required.</p>
@@ -87,15 +77,13 @@
             <button id="login-tab" class="toggle-btn" onclick="showLogin()">Login</button>
           </div>
 
-          <!-- REGISTER FORM -->
-          <form id="register-form" method="POST" action="http://127.0.0.1:8000/register/anonymous" class="auth-form">
+          <form id="register-form" class="auth-form">
             <input type="text" name="username" placeholder="Choose a nickname" required />
             <input type="password" name="password" placeholder="Set a password" required />
             <button type="submit" class="btn-primary">Register</button>
           </form>
 
-          <!-- LOGIN FORM -->
-          <form id="login-form" method="POST" action="http://127.0.0.1:8000/login/anonymous" class="auth-form hidden">
+          <form id="login-form" class="auth-form hidden">
             <input type="text" name="username" placeholder="Enter your nickname" required />
             <input type="password" name="password" placeholder="Enter password" required />
             <button type="submit" class="btn-primary">Login</button>
@@ -107,14 +95,12 @@
     </div>
   </section>
 
-  <!-- FOOTER -->
   <footer class="footer">
     <p>© 2025 Project Manas • A safe space for every student</p>
   </footer>
 
  
   <script>
-  // --- TOGGLE BETWEEN REGISTER AND LOGIN ---
   function showMentorLogin() {
     document.getElementById('mentor-login-form').classList.remove('hidden');
     document.getElementById('mentor-register-form').classList.add('hidden');
@@ -143,7 +129,6 @@
     document.getElementById('register-tab').classList.remove('active');
   }
 
-  // --- POPUP MESSAGE HANDLER ---
   function showPopup(message, isError = false) {
     const popup = document.createElement("div");
     popup.className = "popup-message";
@@ -157,13 +142,12 @@
     }, 2500);
   }
 
-  // --- MENTOR REGISTER HANDLER ---
   document.getElementById("mentor-register-form").addEventListener("submit", async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/register/mentor", {
+      const response = await fetch("/register/mentor", {
         method: "POST",
         body: formData
       });
@@ -180,13 +164,12 @@
     }
   });
 
-  // --- MENTOR LOGIN HANDLER ---
   document.getElementById("mentor-login-form").addEventListener("submit", async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/login/email", {
+      const response = await fetch("/login/email", {
         method: "POST",
         body: formData
       });
@@ -197,7 +180,7 @@
         showPopup(`${data.message}`);
         
         setTimeout(() => {
-          window.location.href = "mentor_dashboard.html"; // redirect later
+          window.location.href = "/mentor-dashboard"; 
         }, 1800);
 
         e.target.reset();
@@ -209,13 +192,12 @@
     }
   });
 
-  // --- REGISTER HANDLER ---
   document.getElementById("register-form").addEventListener("submit", async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/register/anonymous", {
+      const response = await fetch("/register/anonymous", {
         method: "POST",
         body: formData
       });
@@ -232,13 +214,12 @@
     }
   });
 
-  // --- LOGIN HANDLER ---
   document.getElementById("login-form").addEventListener("submit", async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/login/anonymous", {
+      const response = await fetch("/login/anonymous", {
         method: "POST",
         body: formData
       });
@@ -249,7 +230,7 @@
         showPopup(`${data.message}`);
 
         setTimeout(() => {
-          window.location.href = "dashboard.html"; // (or forum.html later)
+          window.location.href = "/dashboard"; 
         }, 1800);
 
         e.target.reset();
@@ -261,7 +242,6 @@
     }
   });
 </script>
-
 
 </body>
 </html>

@@ -4,16 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Peer Support Forum | Project Manas</title>
-  <link rel="stylesheet" href="forum.css" />
+  <link rel="stylesheet" href="/Frontend/forum.css" />
 </head>
 <body>
 
   <header class="navbar">
     <div class="logo">Project Manas</div>
     <nav class="nav-links">
-      <a href="dashboard.html">Dashboard</a>
-      <a href="stories.html">Stories</a>
-      <a href="chatbot.html">Chatbot</a>
+      <a href="/dashboard">Dashboard</a>
+      <a href="#">Stories</a>
+      <a href="/chatbot-ui">Chatbot</a>
       <button class="logout-btn" onclick="logout()">Logout</button>
     </nav>
   </header>
@@ -28,114 +28,110 @@
     </form>
 
     <div id="postsContainer" class="posts-container">
-      <!-- Posts will appear here -->
-    </div>
+      </div>
   </section>
 
   <script>
-const username = localStorage.getItem("username") || "AnonymousUser";
+    const username = localStorage.getItem("username") || "AnonymousUser";
 
-async function loadPosts() {
-  const res = await fetch("http://127.0.0.1:8000/forum/all");
-  const data = await res.json();
-  const container = document.getElementById("postsContainer");
-  container.innerHTML = "";
+    async function loadPosts() {
+      const res = await fetch("/forum/all");
+      const data = await res.json();
+      const container = document.getElementById("postsContainer");
+      container.innerHTML = "";
 
-  for (const post of data.posts) {
-    const div = document.createElement("div");
-    div.classList.add("post");
-    div.innerHTML = `
-      <h3>
-        ${post.username}
-        ${post.type === "mentor" ? '<span class="badge">Mentor</span>' : ''}
-      </h3>
-      <p>${post.message}</p>
-      <small>${new Date(post.timestamp).toLocaleString()}</small>
-      <button class="reply-btn" onclick="toggleReplyBox('${post._id}')">Reply</button>
-      <div class="reply-box" id="reply-box-${post._id}" style="display:none;">
-        <input type="text" id="reply-input-${post._id}" placeholder="Write a reply..." />
-        <button onclick="sendReply('${post._id}')">Send</button>
-      </div>
-      <div class="replies" id="replies-${post._id}"></div>
-    `;
-    container.appendChild(div);
+      for (const post of data.posts) {
+        const div = document.createElement("div");
+        div.classList.add("post");
+        div.innerHTML = `
+          <h3>
+            ${post.username}
+            ${post.type === "mentor" ? '<span class="badge">Mentor</span>' : ''}
+          </h3>
+          <p>${post.message}</p>
+          <small>${new Date(post.timestamp).toLocaleString()}</small>
+          <button class="reply-btn" onclick="toggleReplyBox('${post._id}')">Reply</button>
+          <div class="reply-box" id="reply-box-${post._id}" style="display:none;">
+            <input type="text" id="reply-input-${post._id}" placeholder="Write a reply..." />
+            <button onclick="sendReply('${post._id}')">Send</button>
+          </div>
+          <div class="replies" id="replies-${post._id}"></div>
+        `;
+        container.appendChild(div);
 
-    // Load replies for this post
-    loadReplies(post._id);
-  }
-}
+        loadReplies(post._id);
+      }
+    }
 
+    async function loadReplies(post_id) {
+      const res = await fetch(`/forum/replies/${post_id}`);
+      const data = await res.json();
+      const container = document.getElementById(`replies-${post_id}`);
+      container.innerHTML = "";
 
-async function loadReplies(post_id) {
-  const res = await fetch(`http://127.0.0.1:8000/forum/replies/${post_id}`);
-  const data = await res.json();
-  const container = document.getElementById(`replies-${post_id}`);
-  container.innerHTML = "";
+      data.replies.forEach(r => {
+        const replyDiv = document.createElement("div");
+        replyDiv.classList.add("reply", r.type === "mentor" ? "mentor" : "anonymous");
+        replyDiv.innerHTML = `
+          <p>
+            <strong>${r.username}</strong>
+            ${r.type === "mentor" ? '<span class="badge">Mentor</span>' : ''} — 
+            ${r.reply}
+          </p>
+          <small>${new Date(r.timestamp).toLocaleString()}</small>
+        `;
+        container.appendChild(replyDiv);
+      });
+    }
 
-  data.replies.forEach(r => {
-    const replyDiv = document.createElement("div");
-    replyDiv.classList.add("reply", r.type === "mentor" ? "mentor" : "anonymous");
-    replyDiv.innerHTML = `
-      <p>
-        <strong>${r.username}</strong>
-        ${r.type === "mentor" ? '<span class="badge">Mentor</span>' : ''} — 
-        ${r.reply}
-      </p>
-      <small>${new Date(r.timestamp).toLocaleString()}</small>
-    `;
-    container.appendChild(replyDiv);
-  });
-}
+    function toggleReplyBox(id) {
+      const box = document.getElementById(`reply-box-${id}`);
+      box.style.display = box.style.display === "none" ? "block" : "none";
+    }
 
-function toggleReplyBox(id) {
-  const box = document.getElementById(`reply-box-${id}`);
-  box.style.display = box.style.display === "none" ? "block" : "none";
-}
+    async function sendReply(post_id) {
+      const input = document.getElementById(`reply-input-${post_id}`);
+      const replyText = input.value.trim();
+      if (!replyText) return;
 
-async function sendReply(post_id) {
-  const input = document.getElementById(`reply-input-${post_id}`);
-  const replyText = input.value.trim();
-  if (!replyText) return;
+      const formData = new FormData();
+      formData.append("post_id", post_id);
+      formData.append("username", username);
+      formData.append("reply", replyText);
 
-  const formData = new FormData();
-  formData.append("post_id", post_id);
-  formData.append("username", username);
-  formData.append("reply", replyText);
+      await fetch("/forum/reply", {
+        method: "POST",
+        body: formData
+      });
 
-  await fetch("http://127.0.0.1:8000/forum/reply", {
-    method: "POST",
-    body: formData
-  });
+      input.value = "";
+      loadReplies(post_id);
+    }
 
-  input.value = "";
-  loadReplies(post_id);
-}
+    document.getElementById("postForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const message = document.getElementById("message").value;
 
-document.getElementById("postForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const message = document.getElementById("message").value;
+      const formData = new FormData();
+      formData.append("username", username);
+      formData.append("message", message);
 
-  const formData = new FormData();
-  formData.append("username", username);
-  formData.append("message", message);
+      await fetch("/forum/post", {
+        method: "POST",
+        body: formData
+      });
 
-  await fetch("http://127.0.0.1:8000/forum/post", {
-    method: "POST",
-    body: formData
-  });
+      document.getElementById("message").value = "";
+      loadPosts();
+    });
 
-  document.getElementById("message").value = "";
-  loadPosts();
-});
+    function logout() {
+      localStorage.removeItem("username");
+      window.location.href = "/login";
+    }
 
-function logout() {
-  localStorage.removeItem("username");
-  window.location.href = "login.html";
-}
-
-loadPosts();
-</script>
-
+    loadPosts();
+  </script>
 
 </body>
 </html>

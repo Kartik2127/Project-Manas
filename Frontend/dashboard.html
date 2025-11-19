@@ -4,23 +4,21 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard | Project Manas</title>
-  <link rel="stylesheet" href="dashboard.css" />
+  <link rel="stylesheet" href="/Frontend/dashboard.css" />
 </head>
 <body>
 
-    <!-- HEADER -->
     <header class="navbar">
     <div class="logo">Project Manas</div>
     <nav class="nav-links">
-        <a href="forum.html">Forum</a>
-        <a href="stories.html">Stories</a>
-        <a href="chatbot.html">Chatbot</a>
-        <a href="tips.html">Healthy Living</a>
+        <a href="/forum">Forum</a>
+        <a href="#">Stories</a>
+        <a href="/chatbot-ui">Chatbot</a>
+        <a href="#">Healthy Living</a>
         <button class="logout-btn" onclick="logout()">Logout</button>
     </nav>
     </header>
 
-  <!-- MAIN CONTENT -->
   <section class="dashboard">
     <div class="welcome">
       <h1 id="welcome-heading">Welcome Back </h1>
@@ -28,22 +26,22 @@
     </div>
 
     <div class="dashboard-grid">
-      <div class="card" onclick="goTo('forum.html')">
+      <div class="card" onclick="goTo('/forum')">
         <h3> Peer Support Forum</h3>
         <p>Connect with students who understand what you're going through.</p>
       </div>
 
-      <div class="card" onclick="goTo('stories.html')">
+      <div class="card" onclick="alert('Stories page coming soon!')">
         <h3>Stories of Hope</h3>
         <p>Read journeys from students who overcame challenges.</p>
       </div>
 
-      <div class="card" onclick="goTo('chatbot.html')">
+      <div class="card" onclick="goTo('/chatbot-ui')">
         <h3>Manas AI</h3>
         <p>Talk with our friendly chatbot for quick mental health guidance.</p>
       </div>
 
-      <div class="card" onclick="goTo('tips.html')">
+      <div class="card" onclick="alert('Tips page coming soon!')">
         <h3>Self-Care Tips</h3>
         <p>Simple ways to build peace and mindfulness in your daily life.</p>
       </div>
@@ -55,7 +53,6 @@
   </footer>
 
   <script>
-  // Get username stored during login
   const username = localStorage.getItem("username");
 
   const heading = document.getElementById("welcome-heading");
@@ -71,12 +68,9 @@
   }
 
   function logout() {
-    // Clear saved data
     localStorage.removeItem("username");
-    window.location.href = "login.html";
+    window.location.href = "/login";
   }
 </script>
-
-
 </body>
 </html>
