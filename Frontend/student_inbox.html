@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Mentors | Project Manas</title>
+  <link rel="stylesheet" href="student_inbox.css" />
+</head>
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar">
+  <div class="logo">Project Manas</div>
+  <nav class="nav-links">
+    <a href="dashboard.html">Dashboard</a>
+    <button onclick="logout()" class="logout-btn">Logout</button>
+  </nav>
+</header>
+
+<!-- MAIN LAYOUT -->
+<section class="inbox-container">
+
+  <!-- LEFT PANEL -->
+  <div class="chat-list-panel">
+    <h2>Your Mentors</h2>
+    <div id="chatList" class="chat-list">
+      <p class="loading">Loading your chats...</p>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="chat-preview-panel">
+    <h2>Chat Preview</h2>
+    <div id="previewBox" class="preview-box">
+      <p>Select a mentor from the left to preview messages.</p>
+    </div>
+
+    <button id="openChatBtn" class="open-chat-btn" style="display:none;">
+      Open Full Chat
+    </button>
+  </div>
+
+</section>
+
+<script>
+/* ------------------------------
+   LOAD STUDENT USERNAME
+------------------------------*/
+const studentUsername = localStorage.getItem("username");
+localStorage.setItem("role", "student");
+
+if (!studentUsername) {
+  alert("Please login again.");
+  window.location.href = "login.html";
+}
+
+/* ------------------------------
+   FETCH CHAT LIST
+------------------------------*/
+async function loadChats() {
+  const res = await fetch(`http://127.0.0.1:8000/chat/student/${studentUsername}`);
+  const data = await res.json();
+
+  const chatList = document.getElementById("chatList");
+  chatList.innerHTML = "";
+
+  if (!data.chats || data.chats.length === 0) {
+    chatList.innerHTML = "<p>You haven't chatted with any mentors yet.</p>";
+    return;
+  }
+
+  data.chats.forEach(chat => {
+    const mentorName = chat.mentor;
+    const lastMsg = chat.last_message || "(no messages yet)";
+    const unread = chat.unread_for_student || 0;
+
+    const div = document.createElement("div");
+    div.className = "chat-item";
+
+    div.innerHTML = `
+      <h3>${mentorName}</h3>
+      <p class="last-msg">${lastMsg}</p>
+      ${unread > 0 ? `<span class="unread-badge">${unread}</span>` : ""}
+    `;
+
+    // Use chat.chat_id (string) – backend now always returns it
+    div.onclick = () => previewChat(chat.chat_id, mentorName);
+
+    chatList.appendChild(div);
+  });
+}
+
+/* ------------------------------
+   PREVIEW CHAT
+------------------------------*/
+async function previewChat(chatId, mentorEmail) {
+  localStorage.setItem("currentChatId", chatId);
+  localStorage.setItem("chatPartner", mentorEmail);
+
+  const preview = document.getElementById("previewBox");
+  preview.innerHTML = "<p class='loading'>Loading messages...</p>";
+
+  const res = await fetch(`http://127.0.0.1:8000/chat/${chatId}`);
+  const data = await res.json();
+
+  preview.innerHTML = "";
+
+  if (!data.messages || data.messages.length === 0) {
+    preview.innerHTML = "<p>No messages yet.</p>";
+  } else {
+    data.messages.forEach(m => {
+      const div = document.createElement("div");
+      div.className = "preview-msg";
+
+      div.innerHTML = `
+        <strong>${m.sender === studentUsername ? "You" : mentorEmail}:</strong>
+        <p>${m.text}</p>
+        <span>${new Date(m.timestamp).toLocaleString()}</span>
+      `;
+
+      preview.appendChild(div);
+    });
+  }
+
+  // Mark unread as read for student
+  fetch(`http://127.0.0.1:8000/chat/mark_read/student/${chatId}`, { method: "POST" });
+
+  // Enable button to open full chat window
+  const btn = document.getElementById("openChatBtn");
+  btn.style.display = "block";
+  btn.onclick = () => {
+    window.location.href = "chat.html";
+  };
+}
+
+/* ------------------------------
+   LOGOUT
+------------------------------*/
+function logout() {
+  localStorage.clear();
+  window.location.href = "login.html";
+}
+
+/* ------------------------------
+   INIT
+------------------------------*/
+loadChats();
+setInterval(loadChats, 2000); // Auto-refresh every 2 sec
+</script>
+
+</body>
+</html>

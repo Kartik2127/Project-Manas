@@ -127,6 +127,7 @@ body {
   margin-bottom: 30px;
 }
 
+/* SAME GRID ARCHITECTURE — DO NOT CHANGE */
 .feature-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -134,11 +135,32 @@ body {
   padding: 0 40px;
 }
 
+/* MAKE THE CARD A CLICKABLE BLOCK */
 .feature-card {
   background-color: #ffffff;
   padding: 20px;
   border-radius: 12px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  text-decoration: none;
+  color: inherit;
+  display: block;             /* Very important */
+  transition: all 0.25s ease;
+}
+
+/* HOVER EFFECT */
+.feature-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.10);
+  background-color: #f4fbfc;
+}
+
+.feature-card h3 {
+  color: #16697a;
+  margin-bottom: 8px;
+}
+
+.feature-card:hover h3 {
+  color: #1f7a8c;
 }
 
 /* STORIES */
@@ -160,7 +182,7 @@ body {
   border-radius: 12px;
   padding: 20px;
   width: 280px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.05);
   text-align: left;
 }
 

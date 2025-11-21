@@ -14,6 +14,7 @@
       <a href="forum.html">Forum</a>
       <a href="stories.html">Stories</a>
       <a href="tips.html">Healthy Living</a>
+      <button class="clear-btn" onclick="clearChat()">Clear Chat</button>
       <button class="logout-btn" onclick="logout()">Logout</button>
     </nav>
   </header>
@@ -22,7 +23,7 @@
     <div class="chat-container" id="chatContainer">
       <div class="bot-msg">Hi, I’m <b>ManasAI</b>. How are you feeling today?</div>
     </div>
-
+    <div id="typingIndicator" class="bot-msg" style="display:none;">ManasAI is typing...</div>
     <form id="chatForm">
       <input type="text" id="userInput" placeholder="Type your thoughts..." required />
       <button type="submit">Send</button>
@@ -45,6 +46,7 @@ form.addEventListener("submit", async (e) => {
 
   appendMessage("user-msg", userMsg);
   input.value = "";
+  document.getElementById("typingIndicator").style.display = "block";
 
   const formData = new FormData();
   formData.append("message", userMsg);
@@ -55,8 +57,10 @@ form.addEventListener("submit", async (e) => {
       body: formData,
     });
     const data = await res.json();
+    document.getElementById("typingIndicator").style.display = "none";
     appendMessage("bot-msg", data.reply);
   } catch (error) {
+    document.getElementById("typingIndicator").style.display = "none";
     appendMessage("bot-msg", "Server error. Try again later.");
   }
 });
@@ -72,6 +76,10 @@ function appendMessage(className, text) {
 function logout() {
   localStorage.removeItem("username");
   window.location.href = "login.html";
+}
+function clearChat() {
+  chatContainer.innerHTML = "";
+  appendMessage("bot-msg", "Chat cleared!");
 }
 </script>
 </body>

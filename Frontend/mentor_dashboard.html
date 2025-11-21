@@ -13,8 +13,15 @@
     <div class="logo">Project Manas</div>
     <nav class="nav-links">
       <a href="mentor_dashboard.html" class="active">Dashboard</a>
+
+      <!-- Inbox with badge -->
+      <a href="mentor_inbox.html" id="nav-inbox-link">
+        Inbox
+        <span id="inbox-count" class="inbox-badge" style="display: none;"></span>
+      </a>
+
       <a href="#">My Replies</a>
-      <a href="#">Profile</a>
+      <a href="#" onclick="goToProfile()">Profile</a>
       <a href="#" onclick="logout()">Logout</a>
     </nav>
   </header>
@@ -33,17 +40,28 @@
 
       <div class="quick-links">
         <div class="card" onclick="scrollToForum()">
-          <h3> Community Forum</h3>
+          <h3>Community Forum</h3>
           <p>View and respond to student posts</p>
         </div>
+
+        <div class="card messages-card" onclick="goToInbox()">
+          <h3>
+            Messages
+            <span id="msgBadge" class="badge-count" style="display:none;">0</span>
+          </h3>
+          <p>Check your private conversations</p>
+        </div>
+
         <div class="card">
-          <h3> My Replies</h3>
+          <h3>My Replies</h3>
           <p>Track all your past responses</p>
         </div>
-        <div class="card">
-          <h3> Profile</h3>
+
+        <div class="card" onclick="goToProfile()">
+          <h3>Profile</h3>
           <p>Edit your mentor details and visibility</p>
         </div>
+
       </div>
     </div>
 
@@ -82,10 +100,59 @@
       window.location.href = "login.html";
     }
 
-    document.getElementById("welcome-text").textContent = `Welcome back, ${mentorEmail.split('@')[0]}!`;
+    document.getElementById("welcome-text").textContent =
+      `Welcome back, ${mentorEmail.split('@')[0]}!`;
 
     function scrollToForum() {
       document.getElementById("forum-section").scrollIntoView({ behavior: "smooth" });
+    }
+
+    function goToInbox() {
+      window.location.href = "mentor_inbox.html";
+    }
+
+    function goToProfile() {
+      const email = localStorage.getItem("mentorEmail");
+      if (!email) return alert("Login again.");
+
+      window.location.href = `mentor_profile_edit.html?email=${encodeURIComponent(email)}`;
+    }
+
+    // ==== Load inbox + unread badges ====
+    async function loadInboxBadge() {
+      const navBadge = document.getElementById("inbox-count");
+      const msgBadge = document.getElementById("msgBadge");
+
+      try {
+        const res = await fetch(`http://127.0.0.1:8000/chat/mentor/${mentorEmail}`);
+        const data = await res.json();
+
+        let unreadTotal = 0;
+        if (data.chats) {
+          data.chats.forEach(c => {
+            unreadTotal += c.unread_for_mentor || 0;
+          });
+        }
+
+        // Navbar inbox badge
+        if (unreadTotal > 0) {
+          navBadge.textContent = unreadTotal > 9 ? "9+" : unreadTotal;
+          navBadge.style.display = "inline-flex";
+        } else {
+          navBadge.style.display = "none";
+        }
+
+        // Messages card badge
+        if (unreadTotal > 0) {
+          msgBadge.style.display = "inline-block";
+          msgBadge.textContent = unreadTotal;
+        } else {
+          msgBadge.style.display = "none";
+        }
+
+      } catch (err) {
+        console.error("Failed to load inbox badge:", err);
+      }
     }
 
     // --- Fetch and Display All Posts ---
@@ -158,25 +225,6 @@
       });
     }
 
-    // --- Mentor Create Post ---
-    document.getElementById("mentor-post-form").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const message = document.getElementById("post-message").value.trim();
-      if (!message) return;
-
-      const formData = new FormData();
-      formData.append("username", mentorEmail);
-      formData.append("message", message);
-
-      await fetch("http://127.0.0.1:8000/forum/post", {
-        method: "POST",
-        body: formData
-      });
-
-      document.getElementById("post-message").value = "";
-      fetchPosts();
-    });
-
     // --- Logout ---
     function logout() {
       localStorage.removeItem("mentorEmail");
@@ -185,6 +233,8 @@
 
     // Initial Load
     fetchPosts();
+    loadInboxBadge();
+    setInterval(loadInboxBadge, 5000); // refresh badges every 5s
   </script>
 
 </body>

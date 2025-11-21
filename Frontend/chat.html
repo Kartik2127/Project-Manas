@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chat | Project Manas</title>
+  <link rel="stylesheet" href="chat.css" />
+</head>
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar">
+  <div class="logo">Project Manas</div>
+  <nav class="nav-links">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="#" onclick="goToInbox()">Inbox</a>
+    <button onclick="logout()" class="logout-btn">Logout</button>
+  </nav>
+</header>
+
+<!-- CHAT SECTION -->
+<section class="chat-section">
+
+  <!-- Chat Header -->
+  <div class="chat-header">
+    <h2 id="partnerName">Chat</h2>
+  </div>
+
+  <!-- Messages -->
+  <div id="messages" class="messages-box">
+    <p class="loading">Loading chat...</p>
+  </div>
+
+  <!-- Input -->
+  <div class="input-area">
+    <input type="text" id="msgInput" placeholder="Type a message..." />
+    <button onclick="sendMessage()">Send</button>
+  </div>
+
+</section>
+
+<script>
+const role = localStorage.getItem("role");           // "student" or "mentor"
+const student = localStorage.getItem("username");    // student nickname
+const mentor = localStorage.getItem("mentorEmail");  // mentor email
+const chatId = localStorage.getItem("currentChatId");
+const partner = localStorage.getItem("chatPartner");
+
+// Basic safety check
+if (!chatId || !role || (!student && !mentor)) {
+  alert("Chat session invalid. Please start a chat again from the forum or inbox.");
+  if (role === "mentor") {
+    window.location.href = "mentor_inbox.html";
+  } else {
+    window.location.href = "student_inbox.html";
+  }
+}
+
+// Set header
+if (partner) {
+  document.getElementById("partnerName").textContent = partner;
+}
+
+/* LOAD CHAT */
+async function loadChat() {
+  const msgBox = document.getElementById("messages");
+
+  try {
+    const res = await fetch(`http://127.0.0.1:8000/chat/${chatId}`);
+    const data = await res.json();
+
+    if (!data.messages || data.messages.length === 0) {
+      msgBox.innerHTML = "<p>No messages yet...</p>";
+      return;
+    }
+
+    msgBox.innerHTML = "";
+
+    data.messages.forEach(m => {
+      const div = document.createElement("div");
+
+      const isMine =
+        (role === "student" && m.sender === student) ||
+        (role === "mentor" && m.sender === mentor);
+
+      div.className = isMine ? "msg msg-right" : "msg msg-left";
+
+      div.innerHTML = `
+        <p>${m.text}</p>
+        <span>${new Date(m.timestamp).toLocaleTimeString()}</span>
+      `;
+
+      msgBox.appendChild(div);
+    });
+
+    msgBox.scrollTop = msgBox.scrollHeight;
+
+  } catch (err) {
+    console.error("Chat load error:", err);
+    msgBox.innerHTML = "<p>Could not load messages. Please try again.</p>";
+  }
+}
+
+/* SEND MESSAGE */
+async function sendMessage() {
+  const input = document.getElementById("msgInput");
+  const text = input.value.trim();
+  if (!text) return;
+
+  const sender = role === "student" ? student : mentor;
+
+  const formData = new FormData();
+  formData.append("chat_id", chatId);
+  formData.append("sender", sender);
+  formData.append("text", text);
+
+  await fetch("http://127.0.0.1:8000/chat/send", {
+    method: "POST",
+    body: formData
+  });
+
+  input.value = "";
+  loadChat();
+}
+
+/* REFRESH CHAT */
+setInterval(loadChat, 10000); // every 10s
+
+/* INBOX NAV */
+function goToInbox() {
+  if (role === "student") window.location.href = "student_inbox.html";
+  else window.location.href = "mentor_inbox.html";
+}
+
+/* LOGOUT */
+function logout() {
+  localStorage.clear();
+  window.location.href = "login.html";
+}
+
+// Initial load
+loadChat();
+</script>
+
+</body>
+</html>

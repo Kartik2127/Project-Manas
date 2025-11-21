@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mentor Profile | Project Manas</title>
+  <link rel="stylesheet" href="mentor_profile.css" />
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar">
+  <div class="logo">Project Manas</div>
+  <nav class="nav-links">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="forum.html">Forum</a>
+    <a href="chatbot.html">Chatbot</a>
+    <button onclick="logout()" class="logout-btn">Logout</button>
+  </nav>
+</header>
+
+<section class="profile-container">
+
+  <!-- ========== HEADER CARD ========== -->
+  <div class="profile-header">
+    
+    <div class="profile-left">
+
+      <div>
+        <h1 id="mentorName">Loading...</h1>
+        <p id="mentorOccupation" class="occupation"></p>
+
+        <p class="meta">
+          <span id="mentorCity"></span> • 
+          <span id="mentorCollege"></span>
+        </p>
+
+        <p class="stats">
+          <span id="postsCount"></span> posts • Joined <span id="joinedOn"></span>
+        </p>
+      </div>
+    </div>
+
+    <button id="chatBtn" class="chat-btn">Chat Privately</button>
+  </div>
+
+
+  <!-- ========== ABOUT SECTION ========== -->
+  <div class="profile-card">
+    <h2>About</h2>
+    <p id="mentorBio">Loading bio...</p>
+  </div>
+
+
+  <!-- ========== DETAILS SECTION ========== -->
+  <div class="details-grid">
+
+    <div class="detail-card">
+      <h3>General Details</h3>
+      <p><strong>Age:</strong> <span id="mentorAge"></span></p>
+      <p><strong>Occupation:</strong> <span id="detailOccupation"></span></p>
+      <p><strong>City:</strong> <span id="detailCity"></span></p>
+      <p><strong>College:</strong> <span id="detailCollege"></span></p>
+    </div>
+
+    <div class="detail-card">
+      <h3>Forum Contributions</h3>
+      <p><strong>Total Posts:</strong> <span id="detailPosts"></span></p>
+      <p><strong>Active Since:</strong> <span id="detailJoined"></span></p>
+    </div>
+
+  </div>
+
+</section>
+
+<script>
+const email = new URLSearchParams(window.location.search).get("email");
+
+if (!email) {
+  alert("Invalid profile link.");
+  window.location.href = "mentor_dashboard.html";
+}
+
+let student = localStorage.getItem("username");
+
+// FETCH PROFILE DATA
+async function loadProfile() {
+  const res = await fetch(`http://127.0.0.1:8000/mentor/profile/${email}`);
+  const data = await res.json();
+
+  document.getElementById("mentorName").textContent = data.name;
+  document.getElementById("mentorOccupation").textContent = data.occupation;
+
+  document.getElementById("mentorCity").textContent = data.city;
+  document.getElementById("mentorCollege").textContent = data.college;
+
+  document.getElementById("postsCount").textContent = data.posts_count;
+  document.getElementById("joinedOn").textContent = data.joined_on;
+
+  // About section
+  document.getElementById("mentorBio").textContent = data.bio;
+
+  // Details section
+  document.getElementById("mentorAge").textContent = data.age;
+  document.getElementById("detailOccupation").textContent = data.occupation;
+  document.getElementById("detailCity").textContent = data.city;
+  document.getElementById("detailCollege").textContent = data.college;
+  document.getElementById("detailPosts").textContent = data.posts_count;
+  document.getElementById("detailJoined").textContent = data.joined_on;
+}
+
+loadProfile();
+
+// CHAT BUTTON
+document.getElementById("chatBtn").onclick = async function () {
+  if (!student) {
+    alert("Please login as a student to chat.");
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("student_username", student);
+  formData.append("mentor_email", email);
+
+  const res = await fetch("http://127.0.0.1:8000/chat/start", {
+    method: "POST",
+    body: formData
+  });
+
+  const data = await res.json();
+
+  localStorage.setItem("currentChatId", data.chat_id);
+  localStorage.setItem("chatPartner", email);
+  localStorage.setItem("role", "student");
+
+  window.location.href = "chat.html";
+};
+
+function logout() {
+  localStorage.clear();
+  window.location.href = "login.html";
+}
+</script>
+
+</body>
+</html>

@@ -34,6 +34,27 @@ body {
   margin: 0 auto 20px;
   font-size: 0.95rem;
 }
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Small red notification pill next to Inbox */
+.inbox-badge {
+  display: none;              /* default hidden */
+  align-items: center;
+  justify-content: center;
+  background-color: #e63946;  /* subtle red accent */
+  color: #ffffff;
+  border-radius: 999px;
+  font-size: 10px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 5px;
+  margin-left: 6px;
+  line-height: 1;
+}
 
 /* QUICK LINKS */
 .quick-links {
@@ -51,6 +72,22 @@ body {
   text-align: center;
   cursor: pointer;
   transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.badge-count {
+  background: #e63946;
+  color: white;
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 12px;
+  margin-left: 8px;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: 0.2s;
 }
 
 .card:hover {

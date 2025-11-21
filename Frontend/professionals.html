@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Professionals | Project Manas</title>
+  <link rel="stylesheet" href="professionals.css" />
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar">
+  <div class="logo">Project Manas</div>
+  <nav class="nav-links">
+    <a href="forum.html">Forum</a>
+    <a href="stories.html">Stories</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="chatbot.html">Chatbot</a>
+    <a href="student_inbox.html" class="nav-inbox">
+      Inbox
+      <span id="student-inbox-badge" class="inbox-dot" style="display:none;"></span>
+    </a>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </nav>
+</header>
+
+
+<section class="professionals-section">
+  <h1>Meet Our Mentors</h1>
+  <p class="subtitle">Trusted peers and mentors contributing to a kinder student community.</p>
+
+  <div id="mentorList" class="mentor-list"></div>
+  <div class="ai-section">
+  <h2>Not ready to talk to a mentor?</h2>
+  <p>
+    It’s completely okay to feel unsure. If you’re more comfortable starting with 
+    a private, judgement-free conversation, try Manas AI.
+  </p>
+
+  <button class="ai-btn" onclick="goToAI()">Talk to Manas AI</button>
+</div>
+
+</section>
+
+<script>
+/* -----------------------------
+    DUMMY MENTOR DATA
+----------------------------- */
+const mentors = [
+  {
+    name: "Aarav Mehta",
+    email: "aarav.mehta@example.com",
+    role: "Peer Mentor",
+    description: "Helps students with academic pressure and productivity.",
+    posts: 42,
+    active: "Active for 5 months"
+  },
+  {
+    name: "Riya Sharma",
+    email: "riya.sharma@example.com",
+    role: "Senior Student",
+    description: "Believes in mindful communication and safe expression.",
+    posts: 18,
+    active: "Active for 2 months"
+  },
+  {
+    name: "Kabir Verma",
+    email: "kabir.verma@example.com",
+    role: "Counselling Volunteer",
+    description: "Guides juniors through stress and transition phases.",
+    posts: 33,
+    active: "Active for 7 months"
+  },
+  {
+    name: "Ananya Gupta",
+    email: "ananya.gupta@example.com",
+    role: "Peer Listener",
+    description: "Creates a judgement-free space for emotional support.",
+    posts: 27,
+    active: "Active for 4 months"
+  }
+];
+
+/* -----------------------------
+    RENDER VERTICAL CARDS
+----------------------------- */
+const list = document.getElementById("mentorList");
+
+mentors.forEach(m => {
+  const card = document.createElement("div");
+  card.className = "mentor-card";
+
+  card.innerHTML = `
+    <div class="mentor-info">
+      <h2 class="mentor-name" onclick="openProfile('${m.email}')">${m.name}</h2>
+      <p class="role">${m.role}</p>
+      <p class="description">${m.description}</p>
+      <p class="meta"><strong>Posts:</strong> ${m.posts}</p>
+      <p class="meta"><strong>${m.active}</strong></p>
+    </div>
+
+    <div class="actions">
+      <button class="chat-btn" onclick="startPrivateChat('${m.email}', '${m.name}')">
+        Start Private Chat
+      </button>
+    </div>
+  `;
+
+  list.appendChild(card);
+});
+
+/* -----------------------------
+    PROFILE REDIRECT
+----------------------------- */
+function openProfile(email) {
+  window.location.href = `mentor_profile.html?email=${email}`;
+}
+
+/* -----------------------------
+   START PRIVATE CHAT (OPTION C)
+----------------------------- */
+async function startPrivateChat(mentorEmail, mentorName) {
+  const student = localStorage.getItem("username");
+  if (!student) {
+    alert("Please login again.");
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("student_username", student);
+  formData.append("mentor_email", mentorEmail);
+
+  const res = await fetch("http://127.0.0.1:8000/chat/start", {
+    method: "POST",
+    body: formData
+  });
+
+  const data = await res.json();
+  const chatId = data.chat_id;
+
+  // store chat session
+  localStorage.setItem("currentChatId", chatId);
+  localStorage.setItem("chatPartner", mentorName);
+  localStorage.setItem("mentorEmail", mentorEmail);
+  localStorage.setItem("role", "student");
+
+  window.location.href = "chat.html";
+}
+
+function goToAI() {
+  window.location.href = "chatbot.html";
+}
+
+
+/* -----------------------------
+          LOGOUT
+----------------------------- */
+function logout() {
+  localStorage.clear();
+  window.location.href = "login.html";
+}
+</script>
+
+</body>
+</html>

@@ -39,11 +39,35 @@ body {
   color: #1f7a8c;
 }
 
+/* WhatsApp-like unread dot */
+.inbox-dot {
+  display: inline-flex;
+  background: #e63946;    
+  color: white;
+  font-size: 11px;
+  min-width: 18px;
+  height: 18px;
+  padding: 2px 5px;
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  margin-left: 6px;
+  font-weight: 600;
+  animation: inboxPop 0.3s ease-out;
+}
+
+/* Smooth pop animation */
+@keyframes inboxPop {
+  0% { transform: scale(0.2); opacity: 0; }
+  60% { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
 .logout-btn {
   background-color: #1f7a8c;
   color: white;
   border: none;
-  padding: 8px 15px;
+  padding: 10px 15px;
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.3s ease;

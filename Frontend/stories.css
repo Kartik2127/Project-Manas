@@ -1,0 +1,136 @@
+/* HERO */
+.logout-btn {
+  background-color: #1f7a8c;
+  color: #ffffff;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.stories-hero {
+  background-color: #f5f9f9;
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.stories-hero h1 {
+  color: #16697a;
+  font-size: 2.4rem;
+}
+
+.stories-hero p {
+  color: #5c6b73;
+  max-width: 750px;
+  margin: 10px auto;
+  line-height: 1.6;
+}
+
+/* FEATURED STORY */
+.featured-story {
+  background-color: #ffffff;
+  padding: 60px 20px;
+}
+
+.featured-container {
+  max-width: 900px;
+  margin: auto;
+  text-align: center;
+}
+
+.featured-container h2 {
+  color: #16697a;
+  margin-bottom: 20px;
+}
+
+.featured-box {
+  background-color: #f0f7f7;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+  text-align: left;
+}
+
+.featured-box .quote {
+  color: #2f4858;
+  line-height: 1.6;
+}
+
+.featured-box .author {
+  display: block;
+  margin-top: 12px;
+  color: #1f7a8c;
+  font-size: 0.9rem;
+}
+
+/* ALL STORIES GRID */
+.all-stories {
+  background-color: #f8fdfd;
+  padding: 60px 20px;
+}
+
+.all-stories h2 {
+  color: #16697a;
+  text-align: center;
+}
+
+.stories-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.story-card {
+  background-color: #ffffff;
+  padding: 20px;
+  width: 280px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  text-align: left;
+}
+
+.story-card p {
+  color: #2f4858;
+  line-height: 1.5;
+}
+
+.story-card span {
+  display: block;
+  margin-top: 10px;
+  font-size: 0.85rem;
+  color: #1f7a8c;
+}
+
+/* CTA SHARE */
+.cta-share {
+  background-color: #e6f3f4;
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.cta-share h2 {
+  color: #16697a;
+}
+
+.cta-share p {
+  color: #5c6b73;
+  margin-bottom: 20px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .stories-hero h1 {
+    font-size: 2rem;
+  }
+  .story-card {
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+  }
+  .featured-box {
+    text-align: center;
+  }
+}

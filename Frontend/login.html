@@ -13,9 +13,10 @@
     <div class="logo">Project Manas</div>
     <nav class="nav-links">
       <a href="index.html">Home</a>
-      <a href="#">Professionals</a>
-      <a href="#">Stories</a>
-      <a href="#">About</a>
+      <a href="forum_preview.html">Forum</a>
+      <a href="professionals_preview.html">Professionals</a>
+      <a href="stories.html">Stories</a>
+      <a href="about.html">About</a>
     </nav>
   </header>
 
@@ -49,14 +50,6 @@
           <div class="option mentor-login">
           <h3>Login as Friend / Mentor</h3>
 
-          <!-- GOOGLE LOGIN -->
-          <a href="http://127.0.0.1:8000/login/google" class="google-btn">
-            <img src="google_icon.png" alt="Google logo" />
-            Continue with Google
-          </a>
-
-          <p class="or">or</p>
-
           <!-- TOGGLE BUTTONS -->
           <div class="tab-buttons">
             <button id="mentor-login-tab" class="tab active" onclick="showMentorLogin()">Login</button>
@@ -79,12 +72,12 @@
         </div>
         <!-- ANONYMOUS LOGIN / REGISTER -->
         <div class="option anonymous">
-          <h3>Anonymous Access</h3>
+          <h3>Anonymous Login As Student</h3>
           <p>Stay anonymous with a nickname and password — no personal info required.</p>
 
           <div class="toggle-container">
-            <button id="register-tab" class="toggle-btn active" onclick="showRegister()">Register</button>
             <button id="login-tab" class="toggle-btn" onclick="showLogin()">Login</button>
+            <button id="register-tab" class="toggle-btn active" onclick="showRegister()">Register</button>
           </div>
 
           <!-- REGISTER FORM -->
@@ -209,7 +202,7 @@
     }
   });
 
-  // --- REGISTER HANDLER ---
+  // --- STUDENT REGISTER HANDLER ---
   document.getElementById("register-form").addEventListener("submit", async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -232,7 +225,7 @@
     }
   });
 
-  // --- LOGIN HANDLER ---
+  // --- STUDENT LOGIN HANDLER ---
   document.getElementById("login-form").addEventListener("submit", async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -246,6 +239,7 @@
 
       if (response.ok) {
         localStorage.setItem("username", data.username);
+        localStorage.setItem("role", "student");
         showPopup(`${data.message}`);
 
         setTimeout(() => {

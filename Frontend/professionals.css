@@ -1,0 +1,228 @@
+/* GLOBAL */
+body {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  background: #f8fdfd;
+  color: #2f4858;
+}
+
+/* NAVBAR */
+/* ------------------------------
+   NAVBAR (Project Manas theme)
+------------------------------ */
+
+body {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  background: #f5f9f9;
+  color: #2f4858;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 40px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.04);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.logo {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #1f7a8c;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #2f4858;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.nav-links a:hover {
+  color: #1f7a8c;
+}
+
+/* Inbox item with small badge */
+
+.nav-inbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+}
+
+.inbox-dot {
+  min-width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: #e63946;
+  color: #ffffff;
+  font-size: 0.7rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Logout button */
+
+.logout-btn {
+  background-color: #1f7a8c;
+  color: #ffffff;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  background-color: #16697a;
+}
+
+
+/* PAGE SECTION */
+.professionals-section {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 0 20px;
+}
+
+.professionals-section h1 {
+  font-size: 32px;
+  color: #1f7a8c;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  margin-bottom: 25px;
+  color: #48616f;
+}
+
+/* MENTOR LIST (VERTICAL) */
+.mentor-list {
+  display: flex;
+  flex-direction: column;
+  gap: 28px; /* increased from 18px */
+}
+
+
+/* FULL-WIDTH CARD */
+.mentor-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  background: white;
+  padding: 20px;
+  border-radius: 14px;
+  border: 1px solid #dce5e8;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  transition: 0.2s ease;
+}
+
+.mentor-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.10);
+}
+
+/* LEFT INFO BLOCK */
+.mentor-info {
+  max-width: 70%;
+}
+
+.mentor-name {
+  font-size: 22px;
+  color: #1f7a8c;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 8px;
+}
+
+.role {
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.description {
+  color: #48616f;
+  margin-bottom: 10px;
+}
+
+.meta {
+  font-size: 14px;
+  margin: 4px 0;
+}
+
+/* RIGHT SIDE BUTTON */
+.actions {
+  display: flex;
+  align-items: center;
+}
+
+.chat-btn {
+  padding: 8px 14px;
+  background: #1f7a8c;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.chat-btn:hover {
+  background: #16697a;
+}
+
+/* -------------------------------------------
+   AI SECTION (Below card list)
+------------------------------------------- */
+.ai-section {
+  margin-top: 40px;
+  padding: 28px;
+  background: white;
+  border: 1px solid #dce5e8;
+  border-radius: 14px;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+
+.ai-section h2 {
+  font-size: 24px;
+  color: #1f7a8c;
+  margin-bottom: 10px;
+}
+
+.ai-section p {
+  color: #48616f;
+  font-size: 15px;
+  line-height: 1.5;
+  max-width: 650px;
+  margin: auto;
+  margin-bottom: 18px;
+}
+
+.ai-btn {
+  padding: 10px 22px;
+  background: #1f7a8c;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.ai-btn:hover {
+  background: #16697a;
+}
+

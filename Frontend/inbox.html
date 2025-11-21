@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inbox | Project Manas</title>
+  <link rel="stylesheet" href="inbox.css">
+</head>
+<body>
+
+<header class="navbar">
+  <div class="logo">Project Manas</div>
+  <nav class="nav-links">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="forum.html">Forum</a>
+    <a href="chatbot.html">Chatbot</a>
+    <button onclick="logout()" class="logout-btn">Logout</button>
+  </nav>
+</header>
+
+<section class="inbox-section">
+  <h1>Your Conversations</h1>
+  <p class="subtitle">Select a chat to continue the conversation</p>
+
+  <div id="chatList" class="chat-list">
+    <p>Loading...</p>
+  </div>
+</section>
+
+<script>
+/* ---------------------------------------
+   IDENTIFY USER TYPE
+----------------------------------------*/
+const role = localStorage.getItem("role"); 
+let userId = null;
+
+if (role === "student") {
+    userId = localStorage.getItem("username");
+} else if (role === "mentor") {
+    userId = localStorage.getItem("mentorEmail");
+} else {
+    alert("You are not logged in!");
+    window.location.href = "login.html";
+}
+
+/* ---------------------------------------
+   LOAD CHATS BASED ON ROLE
+----------------------------------------*/
+async function loadChats() {
+    const listDiv = document.getElementById("chatList");
+    listDiv.innerHTML = "<p>Loading chats...</p>";
+
+    let endpoint = "";
+
+    if (role === "student") {
+        endpoint = `http://127.0.0.1:8000/chat/student/${userId}`;
+    } else {
+        endpoint = `http://127.0.0.1:8000/chat/mentor/${userId}`;
+    }
+
+    const res = await fetch(endpoint);
+    const data = await res.json();
+
+    listDiv.innerHTML = "";
+
+    if (data.chats.length === 0) {
+        listDiv.innerHTML = "<p>No conversations yet.</p>";
+        return;
+    }
+
+    data.chats.forEach(chat => {
+        const partner = role === "student" ? chat.mentor : chat.student;
+
+        const div = document.createElement("div");
+        div.classList.add("chat-item");
+
+        div.innerHTML = `
+            <h3>${partner}</h3>
+            <p>${chat.last_message || "No messages yet"}</p>
+            <small>${chat.last_timestamp ? new Date(chat.last_timestamp).toLocaleString() : ""}</small>
+        `;
+
+        div.onclick = () => openChat(chat._id, partner);
+
+        listDiv.appendChild(div);
+    });
+}
+
+/* ---------------------------------------
+   OPEN CHAT
+----------------------------------------*/
+function openChat(chatId, partner) {
+    localStorage.setItem("currentChatId", chatId);
+    localStorage.setItem("chatPartner", partner);
+    window.location.href = "chat.html";
+}
+
+/* ---------------------------------------
+   LOGOUT
+----------------------------------------*/
+function logout() {
+    localStorage.clear();
+    window.location.href = "login.html";
+}
+
+loadChats();
+</script>
+
+</body>
+</html>

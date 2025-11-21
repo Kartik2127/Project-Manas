@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Professionals Preview | Project Manas</title>
+  <link rel="stylesheet" href="professionals_preview.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+<!-- PUBLIC NAVBAR -->
+<header class="navbar">
+  <div class="logo">Project Manas</div>
+  <nav class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="stories.html">Stories</a>
+    <a href="chatbot_preview.html">Chatbot</a>
+    <a href="forum_preview.html">Forum</a>
+    <a href="about.html">About</a>
+    <a href="login.html" class="btn-login">Login</a>
+  </nav>
+</header>
+
+<section class="professionals-section">
+  <h1>Meet Our Mentors</h1>
+  <p class="subtitle">Supportive peers and mentors who help make this community stronger.</p>
+
+  <div class="mentor-list">
+
+    <!-- SAMPLE CARD 1 -->
+    <div class="mentor-card">
+      <div class="mentor-info">
+        <h2 class="mentor-name disabled" onclick="redirectLogin()">Aarav Mehta</h2>
+        <p class="role">Peer Mentor</p>
+        <p class="description">Helps students with academic pressure and productivity.</p>
+        <p class="meta"><strong>Posts:</strong> 42</p>
+        <p class="meta"><strong>Active for 5 months</strong></p>
+      </div>
+      <div class="actions">
+        <button class="chat-btn disabled-btn" onclick="redirectLogin()">Chat Privately</button>
+      </div>
+    </div>
+
+    <!-- SAMPLE CARD 2 -->
+    <div class="mentor-card">
+      <div class="mentor-info">
+        <h2 class="mentor-name disabled" onclick="redirectLogin()">Riya Sharma</h2>
+        <p class="role">Senior Student</p>
+        <p class="description">Believes in mindful communication and safe expression.</p>
+        <p class="meta"><strong>Posts:</strong> 18</p>
+        <p class="meta"><strong>Active for 2 months</strong></p>
+      </div>
+      <div class="actions">
+        <button class="chat-btn disabled-btn" onclick="redirectLogin()">Chat Privately</button>
+      </div>
+    </div>
+
+    <!-- SAMPLE CARD 3 -->
+    <div class="mentor-card">
+      <div class="mentor-info">
+        <h2 class="mentor-name disabled" onclick="redirectLogin()">Kabir Verma</h2>
+        <p class="role">Counselling Volunteer</p>
+        <p class="description">Guides juniors through emotional phases and transitions.</p>
+        <p class="meta"><strong>Posts:</strong> 33</p>
+        <p class="meta"><strong>Active for 7 months</strong></p>
+      </div>
+      <div class="actions">
+        <button class="chat-btn disabled-btn" onclick="redirectLogin()">Chat Privately</button>
+      </div>
+    </div>
+
+    <!-- SAMPLE CARD 4 -->
+    <div class="mentor-card">
+      <div class="mentor-info">
+        <h2 class="mentor-name disabled" onclick="redirectLogin()">Ananya Gupta</h2>
+        <p class="role">Peer Listener</p>
+        <p class="description">Creates a judgment-free space for students.</p>
+        <p class="meta"><strong>Posts:</strong> 27</p>
+        <p class="meta"><strong>Active for 4 months</strong></p>
+      </div>
+      <div class="actions">
+        <button class="chat-btn disabled-btn" onclick="redirectLogin()">Chat Privately</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- AI PREVIEW (Locked) -->
+  <div class="ai-section">
+    <h2>Not ready to talk to a mentor?</h2>
+    <p>You can start with a private conversation using ManasAI — after logging in.</p>
+    <button class="ai-btn" onclick="redirectLogin()">Login to Continue</button>
+  </div>
+
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-content">
+      <div>
+          <h3>Quick Links</h3>
+          <ul>
+              <li><a href="index.html">Home</a></li>
+              <li><a href="stories.html">Stories</a></li>
+              <li><a href="chatbot_preview.html">Chatbot</a></li>
+              <li><a href="forum_preview.html">Forum</a></li>
+          </ul>
+      </div>
+  </div>
+  <p class="disclaimer">This platform is not a substitute for professional therapy.</p>
+</footer>
+
+<script>
+function redirectLogin() {
+  window.location.href = "login.html";
+}
+</script>
+
+</body>
+</html>
