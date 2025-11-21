@@ -1,0 +1,130 @@
+body {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  background: #f8fdfd;
+  color: #2f4858;
+}
+
+/* NAVBAR already imported from styles.css */
+
+/* PAGE SECTION */
+.professionals-section {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 0 20px;
+}
+
+.professionals-section h1 {
+  font-size: 32px;
+  color: #1f7a8c;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  margin-bottom: 25px;
+  color: #48616f;
+}
+
+/* MENTOR LIST */
+.mentor-list {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+/* CARD */
+.mentor-card {
+  display: flex;
+  justify-content: space-between;
+  background: white;
+  padding: 20px;
+  border-radius: 14px;
+  border: 1px solid #dce5e8;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* LEFT INFO */
+.mentor-info {
+  max-width: 70%;
+}
+
+.mentor-name {
+  font-size: 22px;
+  color: #1f7a8c;
+  font-weight: 600;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+
+/* DISABLED Name */
+.mentor-name.disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Chat Button Disabled */
+.disabled-btn {
+  background: #bccfd4;
+  cursor: not-allowed;
+}
+
+.actions {
+  display: flex;
+  align-items: flex-start;
+}
+
+.chat-btn {
+  padding: 8px 14px;
+  background: #1f7a8c;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+/* Override chat button for disabled mode */
+.chat-btn.disabled-btn {
+  background: #9cb4bb;
+  pointer-events: none;
+}
+
+/* AI SECTION */
+.ai-section {
+  margin-top: 40px;
+  padding: 28px;
+  background: white;
+  border: 1px solid #dce5e8;
+  border-radius: 14px;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+
+.ai-section h2 {
+  font-size: 24px;
+  color: #1f7a8c;
+  margin-bottom: 10px;
+}
+
+.ai-section p {
+  color: #48616f;
+  margin-bottom: 18px;
+}
+
+.ai-btn {
+  padding: 10px 22px;
+  background: #1f7a8c;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.ai-btn:hover {
+  background: #16697a;
+}
+
+/* Disabled AI button */
+.ai-btn.disabled {
+  background: #9cb4bb;
+  cursor: not-allowed;
+}

@@ -1,95 +1,201 @@
+/* -------------------------------------------------------
+   GLOBAL (Manas Theme)
+--------------------------------------------------------- */
 body {
   margin: 0;
-  font-family: Poppins, sans-serif;
-  background: #f5f9f9;
-}
-
-/* NAVBAR */
-.navbar {
-  padding: 15px 50px;
+  font-family: "Inter", sans-serif;
+  background: #f0f7f7;
+  color: #2f4858;
+  height: 100vh;
   display: flex;
-  justify-content: space-between;
-  background: #fff;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  flex-direction: column;
 }
 
-.nav-links a, .logout-btn {
-  margin-left: 20px;
+a {
   text-decoration: none;
-  color: #16697a;
-  font-weight: 500;
-  background: none;
+  color: inherit;
+}
+
+/* -------------------------------------------------------
+   NAVBAR
+--------------------------------------------------------- */
+.navbar {
+  height: 60px;
+  padding: 0 20px;
+  background: #ffffff;
+  border-bottom: 1px solid #e0e7ea;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1f7a8c;
+}
+
+.nav-links a,
+.nav-links button {
+  margin-left: 16px;
+  color: #2f4858;
+  font-size: 15px;
+}
+
+.logout-btn {
+  background: #1f7a8c;
+  color: white;
+  padding: 6px 14px;
   border: none;
+  border-radius: 6px;
   cursor: pointer;
 }
+.logout-btn:hover {
+  background: #16697a;
+}
 
-/* CHAT AREA */
+/* -------------------------------------------------------
+   CHAT LAYOUT & HEADER
+--------------------------------------------------------- */
 .chat-section {
-  max-width: 800px;
-  margin: auto;
-  margin-top: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  max-width: 720px;
+  width: 100%;
+  margin: 10px auto;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #dce5e8;
+  overflow: hidden;
 }
 
 .chat-header {
-  background: #1f7a8c;
-  color: white;
-  padding: 15px;
-  border-radius: 10px 10px 0 0;
-}
-
-.messages-box {
-  height: 70vh;
-  overflow-y: auto;
+  height: 65px;
   background: #ffffff;
-  padding: 15px;
-  border: 1px solid #dbe2e5;
-  border-top: none;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  border-bottom: 1px solid #e1ebef;
 }
 
+.chat-header h2 {
+  font-size: 18px;
+  color: #1f7a8c;
+  margin: 0;
+}
+
+/* -------------------------------------------------------
+   MESSAGES AREA
+--------------------------------------------------------- */
+.messages-box {
+  flex: 1;
+  padding: 20px 18px 10px 18px;
+  overflow-y: auto;
+  background: #eef6f6;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Smooth fade-in animation */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Base bubble */
 .msg {
-  max-width: 60%;
-  padding: 10px;
+  max-width: 70%;
+  padding: 10px 14px;
+  margin-bottom: 14px;
   border-radius: 12px;
-  margin-bottom: 10px;
+  font-size: 15px;
+  line-height: 1.4;
+  word-break: break-word;
+  animation: fadeUp 0.2s ease-out;
+  position: relative;
 }
 
+/* Received (left) */
 .msg-left {
-  background: #eaf4f4;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
   align-self: flex-start;
+  border-bottom-left-radius: 2px;
 }
 
+/* Sent (right) */
 .msg-right {
   background: #1f7a8c;
   color: white;
-  margin-left: auto;
+  align-self: flex-end;
+  border-bottom-right-radius: 2px;
+}
+
+/* Timestamp */
+.msg span {
+  display: block;
+  font-size: 10px;
+  margin-top: 6px;
+  opacity: 0.75;
   text-align: right;
 }
 
-.msg span {
-  display: block;
-  margin-top: 5px;
-  font-size: 0.75rem;
-  opacity: 0.8;
-}
-
+/* -------------------------------------------------------
+   INPUT AREA
+--------------------------------------------------------- */
 .input-area {
   display: flex;
-  gap: 10px;
-  margin-top: 10px;
+  padding: 12px;
+  background: #ffffff;
+  border-top: 1px solid #dce5e8;
 }
 
 .input-area input {
   flex: 1;
   padding: 12px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
+  border-radius: 30px;
+  border: 1px solid #bcd4d9;
+  background: #f8fdfd;
+  font-size: 15px;
+  color: #2f4858;
+  outline: none;
+}
+
+.input-area input:focus {
+  border-color: #1f7a8c;
+  background: #ffffff;
 }
 
 .input-area button {
+  margin-left: 10px;
+  padding: 0 22px;
+  height: 44px;
   background: #1f7a8c;
   color: white;
+  border-radius: 30px;
   border: none;
-  padding: 12px 18px;
-  border-radius: 8px;
   cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.input-area button:hover {
+  background: #16697a;
+}
+
+/* -------------------------------------------------------
+   SCROLLBAR (Soft Teal)
+--------------------------------------------------------- */
+.messages-box::-webkit-scrollbar {
+  width: 6px;
+}
+
+.messages-box::-webkit-scrollbar-thumb {
+  background: #9fc9d3;
+  border-radius: 10px;
+}
+
+.messages-box::-webkit-scrollbar-track {
+  background: #e8f4f4;
 }

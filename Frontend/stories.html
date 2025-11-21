@@ -4,55 +4,78 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Stories of Hope | Project Manas</title>
+  <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="stories.css" />
 </head>
+
 <body>
 
-<header class="navbar">
-  <div class="logo">Project Manas</div>
-  <nav class="nav-links">
-    <a href="dashboard.html">Dashboard</a>
-    <a href="forum.html">Forum</a>
-    <a href="chatbot.html">Chatbot</a>
-    <a href="professionals.html">Professionals</a>
-    <button class="logout-btn" onclick="logout()">Logout</button>
-  </nav>
-</header>
+  <header class="navbar">
+    <div class="logo">Project Manas</div>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="professionals_preview.html">Professionals</a>
+      <a href="forum_preview.html">Forum</a>
+      <a href="chatbot_preview.html">Chatbot</a>
+      <a href="about.html">About</a>
+      <a href="login.html" class="btn-login">Login</a>
+    </nav>
+  </header>
 
-<section class="stories-section">
-  <h1>Stories of Hope</h1>
-  <p class="subtitle">Real experiences from students who overcame challenges.</p>
+  <section class="stories-hero">
+    <h1>Stories of Hope</h1>
+    <p>Real experiences shared by students who found strength, courage, and clarity through their journey.</p>
+  </section>
 
-  <div class="stories-container">
-
-    <div class="story-card">
-      <p>“When I felt alone in college, Manas helped me open up and realize that it’s okay to seek help.”</p>
-      <span>- Student, IIT Delhi</span>
+  <section class="featured-story">
+    <div class="featured-container">
+      <h2>Featured Story</h2>
+      <div class="featured-box">
+        <p class="quote">
+          When I first came to college, everything felt overwhelming. I thought I was the only one struggling. 
+          Then I found Manas. Sharing what I felt anonymously made me realize I wasn’t alone.
+        </p>
+        <span class="author">– Anonymous Student, IIT Bombay</span>
+      </div>
     </div>
+  </section>
 
-    <div class="story-card">
-      <p>“My belief that I was the only one struggling changed when I reached here.”</p>
-      <span>- Student, NIT Trichy</span>
+  <section class="all-stories">
+    <div class="container">
+      <h2>Student Stories</h2>
+      <div class="stories-grid">
+        <div class="story-card">
+          <p>Speaking anonymously helped me talk about things I had been bottling up for months.</p>
+          <span>– Student, NIT Trichy</span>
+        </div>
+        <div class="story-card">
+          <p>I realized so many students go through similar anxieties. Just knowing that gave me hope.</p>
+          <span>– Student, DTU Delhi</span>
+        </div>
+        <div class="story-card">
+          <p>The supportive environment at Manas made me feel understood for the first time at college.</p>
+          <span>– Student, VIT Vellore</span>
+        </div>
+      </div>
     </div>
+  </section>
 
-    <div class="story-card">
-      <p>“Talking to a mentor who understood my pain gave me courage to overcome my anxiety.”</p>
-      <span>- Student, DTU</span>
-    </div>
+  <section class="cta-share">
+    <h2>Want to Share Your Story?</h2>
+    <p>Your journey might inspire someone else. You can share anonymously and safely.</p>
+    <button class="btn-first" onclick="window.location.href='login.html'">Share Your Story</button>
+  </section>
 
-  </div>
-</section>
+  <footer class="footer">
+    <p class="disclaimer">This platform is not a substitute for professional therapy or diagnosis.</p>
+  </footer>
 
-<footer class="footer">
-  <p>© 2025 Project Manas • Stories of Strength & Healing</p>
-</footer>
-
-<script>
-function logout() {
-  localStorage.removeItem("username");
-  window.location.href = "login.html";
-}
-</script>
-
+  <script>
+    // If user is logged in, send them to the "After" page immediately
+    if (localStorage.getItem("isLoggedIn") === "true") {
+        window.location.href = "stories_after.html";
+    }
+  </script>
+  <script src="auth.js"></script>
 </body>
 </html>

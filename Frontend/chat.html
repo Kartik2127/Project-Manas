@@ -1,23 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Chat | Project Manas</title>
-  <link rel="stylesheet" href="chat.css">
+  <link rel="stylesheet" href="chat.css" />
 </head>
 <body>
 
 <header class="navbar">
   <div class="logo">Project Manas</div>
   <nav class="nav-links">
-    <a href="inbox.html">Inbox</a>
-    <a href="dashboard.html">Dashboard</a>
+    <a href="index.html">Home</a>
+    <a href="#" onclick="goToInbox()">Back to Inbox</a>
     <button onclick="logout()" class="logout-btn">Logout</button>
   </nav>
 </header>
 
 <section class="chat-section">
+
   <div class="chat-header">
     <h2 id="partnerName">Chat</h2>
   </div>
@@ -27,95 +28,124 @@
   </div>
 
   <div class="input-area">
-    <input type="text" id="msgInput" placeholder="Type a message..." />
+    <input type="text" id="msgInput" placeholder="Type a message..." onkeypress="handleEnter(event)"/>
     <button onclick="sendMessage()">Send</button>
   </div>
+
 </section>
 
 <script>
-/* ---------------------------------------
-   LOAD USER INFO
-----------------------------------------*/
-const role = localStorage.getItem("role");
-const student = localStorage.getItem("username");
-const mentor = localStorage.getItem("mentorEmail");
+const chatId = localStorage.getItem("currentChatId");
+const role = localStorage.getItem("userType"); 
+const myUsername = localStorage.getItem("username"); 
+const partnerName = localStorage.getItem("chatPartner");
 
-let chatId = localStorage.getItem("currentChatId");
-let partner = localStorage.getItem("chatPartner");
+let isFirstLoad = true;
 
-document.getElementById("partnerName").textContent = partner;
-
-/* ---------------------------------------
-   LOAD CHAT HISTORY
-----------------------------------------*/
-async function loadChat() {
-  const msgBox = document.getElementById("messages");
-
-  const res = await fetch(`http://127.0.0.1:8000/chat/${chatId}`);
-  const data = await res.json();
-
-  msgBox.innerHTML = "";
-
-  data.messages.forEach(m => {
-    const div = document.createElement("div");
-
-    const isMine =
-      (role === "student" && m.sender === student) ||
-      (role === "mentor" && m.sender === mentor);
-
-    div.className = isMine ? "msg msg-right" : "msg msg-left";
-
-    div.innerHTML = `
-      <p>${m.text}</p>
-      <span>${new Date(m.timestamp).toLocaleTimeString()}</span>
-    `;
-
-    msgBox.appendChild(div);
-  });
-
-  msgBox.scrollTop = msgBox.scrollHeight;
+if (!chatId || !myUsername) {
+  alert("Session Error. Redirecting to inbox.");
+  goToInbox();
 }
 
-/* ---------------------------------------
-   SEND MESSAGE
-----------------------------------------*/
+if (partnerName) {
+  document.getElementById("partnerName").textContent = partnerName;
+}
+
+async function loadChat() {
+  const msgBox = document.getElementById("messages");
+  const wasAtBottom = msgBox.scrollHeight - msgBox.scrollTop <= msgBox.clientHeight + 50;
+
+  try {
+    const res = await fetch(`/chat/${chatId}`);
+    const data = await res.json();
+
+    if (!data.messages || data.messages.length === 0) {
+      if (msgBox.innerHTML.includes("Loading")) {
+          msgBox.innerHTML = "<p style='text-align:center; color:#888;'>No messages yet. Say hi!</p>";
+      }
+      return;
+    }
+
+    const currentCount = msgBox.querySelectorAll('.msg').length;
+    if (data.messages.length === currentCount) {
+        return; 
+    }
+
+    const oldScroll = msgBox.scrollTop;
+    msgBox.innerHTML = "";
+
+    data.messages.forEach(m => {
+      const div = document.createElement("div");
+      const isMine = (m.sender === myUsername);
+
+      div.className = isMine ? "msg msg-right" : "msg msg-left";
+
+      div.innerHTML = `
+        <p>${m.text}</p>
+        <span>${new Date(m.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+      `;
+
+      msgBox.appendChild(div);
+    });
+
+    if (isFirstLoad || wasAtBottom) {
+        msgBox.scrollTop = msgBox.scrollHeight;
+        isFirstLoad = false;
+    } else {
+        msgBox.scrollTop = oldScroll;
+    }
+
+    const readEndpoint = role === "mentor" 
+        ? `/chat/mark_read/mentor/${chatId}` 
+        : `/chat/mark_read/student/${chatId}`;
+    
+    fetch(readEndpoint, { method: "POST" });
+
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 async function sendMessage() {
   const input = document.getElementById("msgInput");
   const text = input.value.trim();
   if (!text) return;
 
-  const sender = role === "student" ? student : mentor;
-
   const formData = new FormData();
   formData.append("chat_id", chatId);
-  formData.append("sender", sender);
+  formData.append("sender", myUsername);
   formData.append("text", text);
 
-  await fetch("http://127.0.0.1:8000/chat/send", {
-    method: "POST",
-    body: formData
-  });
-
-  input.value = "";
-  loadChat();
+  try {
+    await fetch("/chat/send", {
+      method: "POST",
+      body: formData
+    });
+    
+    input.value = "";
+    isFirstLoad = true; 
+    loadChat(); 
+  } catch(err) {
+    alert("Failed to send message");
+  }
 }
 
-/* ---------------------------------------
-   REFRESH CHAT EVERY 1 SECOND
-----------------------------------------*/
-setInterval(loadChat, 1000);
+function handleEnter(e) {
+    if(e.key === "Enter") sendMessage();
+}
 
-/* ---------------------------------------
-   LOGOUT
-----------------------------------------*/
+function goToInbox() {
+  if (role === "mentor") window.location.href = "mentor_inbox.html";
+  else window.location.href = "student_inbox.html";
+}
+
 function logout() {
   localStorage.clear();
   window.location.href = "login.html";
 }
 
-// Initial load
 loadChat();
+setInterval(loadChat, 3000);
 </script>
-
 </body>
 </html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Professionals Preview | Project Manas</title>
+  <link rel="stylesheet" href="professionals_preview.css" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Additional styles for distinction */
+    .section-title {
+      text-align: center;
+      margin: 3rem 0 1.5rem;
+      font-size: 1.8rem;
+      color: #444;
+    }
+    
+    /* Styles specific to Medical Professionals */
+    .pro-card {
+        border-top: 3px solid #be185d; /* Pinkish border for distinction */
+    }
+    .doc-role {
+        color: #be185d !important; /* Override default role color */
+        font-weight: bold;
+    }
+    .book-btn {
+        background-color: #be185d !important;
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+  </style>
+</head>
+
+<body>
+
+<header class="navbar">
+  <div class="logo">Project Manas</div>
+  <nav class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="stories.html">Stories</a>
+    <a href="chatbot_preview.html">Chatbot</a>
+    <a href="forum_preview.html">Forum</a>
+    <a href="about.html">About</a>
+    <a href="login.html" class="btn-login">Login</a>
+  </nav>
+</header>
+
+<section class="professionals-section">
+  <h1>Find Support</h1>
+  <p class="subtitle">See the types of supportive peers and professionals available in our community.</p>
+
+  <h2 class="section-title">Peer Mentors & Listeners</h2>
+  <div class="mentor-list">
+
+    <div class="mentor-card">
+      <div class="mentor-info">
+        <h2 class="mentor-name disabled" onclick="redirectLogin()">Aarav Mehta</h2>
+        <p class="role">Peer Mentor</p>
+        <p class="description">Helps students with academic pressure and productivity.</p>
+        <p class="meta"><strong>Posts:</strong> 42</p>
+        <p class="meta"><strong>Active for 5 months</strong></p>
+      </div>
+      <div class="actions">
+        <button class="chat-btn disabled-btn" onclick="redirectLogin()">Chat Privately (Login)</button>
+      </div>
+    </div>
+
+    <div class="mentor-card">
+      <div class="mentor-info">
+        <h2 class="mentor-name disabled" onclick="redirectLogin()">Riya Sharma</h2>
+        <p class="role">Senior Student</p>
+        <p class="description">Believes in mindful communication and safe expression.</p>
+        <p class="meta"><strong>Posts:</strong> 18</p>
+        <p class="meta"><strong>Active for 2 months</strong></p>
+      </div>
+      <div class="actions">
+        <button class="chat-btn disabled-btn" onclick="redirectLogin()">Chat Privately (Login)</button>
+      </div>
+    </div>
+
+    <div class="mentor-card">
+      <div class="mentor-info">
+        <h2 class="mentor-name disabled" onclick="redirectLogin()">Kabir Verma</h2>
+        <p class="role">Counselling Volunteer</p>
+        <p class="description">Guides juniors through emotional phases and transitions.</p>
+        <p class="meta"><strong>Posts:</strong> 33</p>
+        <p class="meta"><strong>Active for 7 months</strong></p>
+      </div>
+      <div class="actions">
+        <button class="chat-btn disabled-btn" onclick="redirectLogin()">Chat Privately (Login)</button>
+      </div>
+    </div>
+
+    <div class="mentor-card">
+      <div class="mentor-info">
+        <h2 class="mentor-name disabled" onclick="redirectLogin()">Ananya Gupta</h2>
+        <p class="role">Peer Listener</p>
+        <p class="description">Creates a judgment-free space for students.</p>
+        <p class="meta"><strong>Posts:</strong> 27</p>
+        <p class="meta"><strong>Active for 4 months</strong></p>
+      </div>
+      <div class="actions">
+        <button class="chat-btn disabled-btn" onclick="redirectLogin()">Chat Privately (Login)</button>
+      </div>
+    </div>
+
+  </div>
+
+  <h2 class="section-title" style="margin-top: 4rem;">Medical Professionals</h2>
+  <div class="mentor-list">
+
+    <div class="mentor-card pro-card">
+      <div class="mentor-info">
+        <h2 class="mentor-name disabled" onclick="redirectLogin()">Dr. Anjali Desai</h2>
+        <p class="role doc-role">Clinical Psychologist</p>
+        <p class="description">Specializes in anxiety, depression, and student mental health.</p>
+        <p class="meta"><strong>Experience:</strong> 10 Yrs</p>
+        <p class="meta"><strong>Location:</strong> Mumbai</p>
+      </div>
+      <div class="actions">
+        <button class="chat-btn disabled-btn book-btn" onclick="redirectLogin()">Book Appointment (Login)</button>
+      </div>
+    </div>
+
+    <div class="mentor-card pro-card">
+      <div class="mentor-info">
+        <h2 class="mentor-name disabled" onclick="redirectLogin()">Dr. Rajesh Kumar</h2>
+        <p class="role doc-role">Psychiatrist (MBBS, MD)</p>
+        <p class="description">Expert in clinical diagnosis and medication management.</p>
+        <p class="meta"><strong>Experience:</strong> 15 Yrs</p>
+        <p class="meta"><strong>Location:</strong> Delhi</p>
+      </div>
+      <div class="actions">
+        <button class="chat-btn disabled-btn book-btn" onclick="redirectLogin()">Book Appointment (Login)</button>
+      </div>
+    </div>
+
+     <div class="mentor-card pro-card">
+      <div class="mentor-info">
+        <h2 class="mentor-name disabled" onclick="redirectLogin()">Ms. Sneha Roy</h2>
+        <p class="role doc-role">Therapist & Counsellor</p>
+        <p class="description">Focuses on cognitive behavioral therapy and stress management.</p>
+        <p class="meta"><strong>Experience:</strong> 5 Yrs</p>
+        <p class="meta"><strong>Location:</strong> Bangalore</p>
+      </div>
+      <div class="actions">
+        <button class="chat-btn disabled-btn book-btn" onclick="redirectLogin()">Book Appointment (Login)</button>
+      </div>
+    </div>
+
+  </div>
+
+
+  <div class="ai-section" style="margin-top: 4rem;">
+    <h2>Not ready to talk to a person yet?</h2>
+    <p>You can start with a private conversation using ManasAI — after logging in.</p>
+    <button class="ai-btn" onclick="redirectLogin()">Login to Continue</button>
+  </div>
+
+</section>
+
+<footer class="footer">
+  <div class="footer-content">
+      <div>
+          <h3>Quick Links</h3>
+          <ul>
+              <li><a href="index.html">Home</a></li>
+              <li><a href="stories.html">Stories</a></li>
+              <li><a href="chatbot_preview.html">Chatbot</a></li>
+              <li><a href="forum_preview.html">Forum</a></li>
+          </ul>
+      </div>
+  </div>
+  <p class="disclaimer">This platform is not a substitute for professional therapy.</p>
+</footer>
+
+<script>
+function redirectLogin() {
+  window.location.href = "login.html";
+}
+</script>
+<script src="auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+body {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  background: #f8fdfd;
+  color: #2f4858;
+}
+
+/* NAVBAR */
+.navbar {
+  height: 60px;
+  padding: 0 20px;
+  background: #ffffff;
+  border-bottom: 1px solid #e0e7ea;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1f7a8c;
+}
+
+.nav-links a, .logout-btn {
+  margin-left: 16px;
+  color: #2f4858;
+  font-size: 15px;
+  text-decoration: none;
+}
+
+.logout-btn {
+  background: #1f7a8c;
+  color: #fff;
+  padding: 6px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.logout-btn:hover {
+  background: #16697a;
+}
+
+/* FORM SECTION */
+.edit-container {
+  max-width: 600px;
+  margin: 40px auto;
+  background: #fff;
+  padding: 25px 35px;
+  border-radius: 12px;
+  border: 1px solid #dce5e8;
+}
+
+.edit-container h2 {
+  color: #1f7a8c;
+  margin-bottom: 6px;
+}
+
+.subtitle {
+  font-size: 14px;
+  opacity: 0.7;
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-top: 15px;
+  font-weight: 600;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 12px;
+  margin-top: 6px;
+  border-radius: 8px;
+  border: 1px solid #cfd9de;
+  font-size: 15px;
+  resize: none;
+  outline: none;
+}
+input:focus, textarea:focus {
+  border-color: #1f7a8c;
+}
+
+.save-btn {
+  margin-top: 20px;
+  width: 100%;
+  background: #1f7a8c;
+  color: #fff;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+}
+.save-btn:hover {
+  background: #16697a;
+}
+
+.status {
+  margin-top: 15px;
+  color: green;
+  font-size: 14px;
+}

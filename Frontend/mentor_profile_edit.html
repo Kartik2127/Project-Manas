@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Profile | Project Manas</title>
+  <link rel="stylesheet" href="mentor_profile_edit.css">
+</head>
+
+<body>
+
+<header class="navbar">
+  <div class="logo">Project Manas</div>
+  <nav class="nav-links">
+    <a href="mentor_dashboard.html">Dashboard</a>
+    <a href="#">Profile</a>
+    <button onclick="logout()" class="logout-btn">Logout</button>
+  </nav>
+</header>
+
+<section class="edit-container">
+
+  <h2>Edit Profile</h2>
+  <p class="subtitle">Update your personal information shown to students.</p>
+
+  <form id="editProfileForm">
+    <label>Name</label>
+    <input type="text" id="name" required>
+
+    <label>Occupation</label>
+    <input type="text" id="occupation" required>
+
+    <label>Age</label>
+    <input type="number" id="ageInput" placeholder="Your age">
+
+    <label>Bio</label>
+    <textarea id="bio" maxlength="250" required></textarea>
+
+    <label>City</label>
+    <input type="text" id="cityInput" placeholder="Your city">
+
+    <label>College</label>
+    <input type="text" id="collegeInput" placeholder="Your college">
+    <button type="submit" class="save-btn">Save Changes</button>
+
+  </form>
+
+  <p id="statusMsg" class="status"></p>
+
+</section>
+
+<script>
+// 1. NEW AUTH CHECK
+const username = localStorage.getItem("username");
+const userType = localStorage.getItem("userType");
+
+// Check if logged in AND if the user is actually a mentor
+if (!username || userType !== "mentor") {
+  alert("Access denied. Please login as a mentor.");
+  window.location.href = "login.html";
+}
+
+// Since you are a mentor, your username IS your email
+const mentorEmail = username;
+
+/* LOAD EXISTING PROFILE */
+async function loadProfile() {
+  try {
+    // Using relative path
+    const res = await fetch(`/mentor/profile/${mentorEmail}`);
+    if (!res.ok) throw new Error("Failed to load profile");
+    
+    const data = await res.json();
+
+    document.getElementById("name").value = data.name || "";
+    document.getElementById("occupation").value = data.occupation || "";
+    document.getElementById("ageInput").value = data.age || "";
+    document.getElementById("bio").value = data.bio || "";
+    document.getElementById("cityInput").value = data.city || "";
+    document.getElementById("collegeInput").value = data.college || "";
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+// Load data immediately
+loadProfile();
+
+/* SUBMIT UPDATED PROFILE */
+document.getElementById("editProfileForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const formData = new FormData();
+  formData.append("email", mentorEmail);
+  formData.append("name", document.getElementById("name").value);
+  formData.append("occupation", document.getElementById("occupation").value);
+  formData.append("age", document.getElementById("ageInput").value);
+  formData.append("bio", document.getElementById("bio").value);
+  formData.append("city", document.getElementById("cityInput").value);
+  formData.append("college", document.getElementById("collegeInput").value);
+
+
+  try {
+    const res = await fetch("/mentor/profile/update", {
+      method: "POST",
+      body: formData
+    });
+
+    const data = await res.json();
+    const statusMsg = document.getElementById("statusMsg");
+    
+    if(res.ok) {
+        statusMsg.textContent = "Profile updated successfully!";
+        statusMsg.style.color = "green";
+        // Optional: Redirect back to dashboard after 1 second
+        setTimeout(() => {
+            window.location.href = "mentor_dashboard.html";
+        }, 1000);
+    } else {
+        statusMsg.textContent = "Update failed.";
+        statusMsg.style.color = "red";
+    }
+    
+  } catch (err) {
+    document.getElementById("statusMsg").textContent = "Error connecting to server.";
+  }
+});
+
+function logout() {
+  localStorage.clear();
+  window.location.href = "login.html";
+}
+</script>
+</body>
+</html>

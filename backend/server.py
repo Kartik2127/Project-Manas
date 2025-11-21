@@ -1,166 +1,141 @@
-import requests
 import os
-from dotenv import load_dotenv
+from dotenv import load_dotenv 
 load_dotenv()
-from fastapi import FastAPI, Form, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse, FileResponse
-from fastapi.staticfiles import StaticFiles
-from pymongo import MongoClient
-from passlib.hash import bcrypt
+import requests
 from datetime import datetime
 from bson import ObjectId
+from fastapi import FastAPI, Form, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+from passlib.hash import bcrypt
+from pymongo import MongoClient
+
 
 app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-app.mount("/Frontend", StaticFiles(directory="../Frontend"), name="Frontend")
+client = MongoClient("mongodb://localhost:27017")
+db = client.manas
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+FRONTEND_DIR = os.path.join(BASE_DIR, "../Frontend")
+
 @app.get("/")
 async def read_root():
-    return FileResponse("../Frontend/index.html")
+    return FileResponse(os.path.join(FRONTEND_DIR, "index.html"))
+
 
 @app.get("/login")
 async def read_login():
-    return FileResponse("../Frontend/login.html")
+    return FileResponse(os.path.join(FRONTEND_DIR, "login.html"))
 
-@app.get("/dashboard")
-async def read_dashboard():
-    return FileResponse("../Frontend/dashboard.html")
-
-@app.get("/mentor-dashboard")
-async def read_mentor_dashboard():
-    return FileResponse("../Frontend/mentor_dashboard.html")
-
-@app.get("/forum")
-async def read_forum():
-    return FileResponse("../Frontend/forum.html")
-
-@app.get("/chatbot-ui")
-async def read_chatbot_ui():
-    return FileResponse("../Frontend/chatbot.html")
-
-@app.get("/stories")
-async def read_stories():
-    if os.path.exists("../Frontend/stories.html"):
-        return FileResponse("../Frontend/stories.html")
-    return JSONResponse({"detail": "Stories page coming soon!"})
-
-@app.get("/tips")
-async def read_tips():
-    if os.path.exists("../Frontend/tips.html"):
-        return FileResponse("../Frontend/tips.html")
-    return JSONResponse({"detail": "Healthy Living tips coming soon!"})
-
-
-client = MongoClient("mongodb://localhost:27017")
-db = client.manas
 
 def make_chat_id(mentor_email: str, student_username: str) -> str:
     return f"{mentor_email}__{student_username}"
 
+
+
 @app.post("/register/mentor")
 def register_mentor(email: str = Form(...), password: str = Form(...)):
-    existing_user = db.users.find_one({"email": email, "type": "mentor"})
-    if existing_user:
-        raise HTTPException(status_code=400, detail="Email already registered as a mentor.")
+    if db.users.find_one({"email": email, "type": "mentor"}):
+        raise HTTPException(400, "Email already registered as a mentor.")
 
-    hashed_pw = bcrypt.hash(password)
     db.users.insert_one({
         "email": email,
-        "password": hashed_pw,
-        "type": "mentor"
+        "password": bcrypt.hash(password),
+        "type": "mentor",
+        "joined_on": datetime.utcnow().isoformat()
     })
-    return JSONResponse({"message": f"Welcome, Mentor ({email})! Account created successfully."})
+
+    return {"message": f"Welcome, Mentor ({email})! Account created successfully."}
 
 
 @app.post("/login/email")
 def login_mentor(email: str = Form(...), password: str = Form(...)):
     user = db.users.find_one({"email": email})
     if not user:
-        raise HTTPException(status_code=401, detail="Mentor not found. Please register first.")
+        raise HTTPException(401, "Mentor not found. Please register.")
 
     if not bcrypt.verify(password, user["password"]):
-        raise HTTPException(status_code=401, detail="Invalid password.")
+        raise HTTPException(401, "Invalid password.")
 
-    return JSONResponse({"message": f"Welcome back, {email}!"})
+    return {"message": f"Welcome back, {email}!"}
 
 
 @app.post("/register/anonymous")
 def register_anonymous(username: str = Form(...), password: str = Form(...)):
-    existing = db.users.find_one({"username": username})
-    if existing:
-        raise HTTPException(status_code=400, detail="Nickname already taken. Try another.")
+    if db.users.find_one({"username": username}):
+        raise HTTPException(400, "Nickname already taken.")
 
-    hashed_pw = bcrypt.hash(password)
     db.users.insert_one({
         "username": username,
-        "password": hashed_pw,
-        "type": "anonymous"
+        "password": bcrypt.hash(password),
+        "type": "anonymous",
+        "joined_on": datetime.utcnow().isoformat()
     })
-    return JSONResponse({"message": f"Welcome, {username}!, please login to continue."})
+
+    return {"message": f"Welcome, {username}! Please log in to continue."}
 
 
 @app.post("/login/anonymous")
 def login_anonymous(username: str = Form(...), password: str = Form(...)):
     user = db.users.find_one({"username": username})
     if not user:
-        raise HTTPException(status_code=401, detail="User not found. Please register first.")
+        raise HTTPException(401, "User not found. Please register.")
+
     if not bcrypt.verify(password, user["password"]):
-        raise HTTPException(status_code=401, detail="Invalid password.")
-    
-    return JSONResponse({"message": f"Welcome back, {username}!",
-                         "username": username})
+        raise HTTPException(401, "Invalid password.")
+
+    return {"message": f"Welcome back, {username}!", "username": username}
 
 
 
 @app.post("/forum/post")
 def create_post(username: str = Form(...), message: str = Form(...)):
     user = db.users.find_one({"$or": [{"email": username}, {"username": username}]})
-    user_type = user.get("type", "anonymous") if user else "anonymous"
+    user_type = user["type"] if user else "anonymous"
 
-    post = {
+    db.posts.insert_one({
         "username": username,
         "message": message,
         "type": user_type,
         "timestamp": datetime.utcnow().isoformat()
-    }
-    db.posts.insert_one(post)
-    return JSONResponse({"message": "Post added successfully!"})
+    })
+    return {"message": "Post added successfully!"}
 
 
 @app.get("/forum/all")
 def get_all_posts():
-    """Fetch all forum posts, newest first"""
     posts = list(db.posts.find().sort("timestamp", -1))
     for p in posts:
-        p["_id"] = str(p["_id"]) 
+        p["_id"] = str(p["_id"])
     return {"posts": posts}
 
 
 @app.post("/forum/reply")
 def add_reply(post_id: str = Form(...), username: str = Form(...), reply: str = Form(...)):
     if not db.posts.find_one({"_id": ObjectId(post_id)}):
-        return JSONResponse({"error": "Post not found"}, status_code=404)
-    
-    user = db.users.find_one({"$or": [{"email": username}, {"username": username}]})
-    user_type = user.get("type", "anonymous") if user else "anonymous"
+        raise HTTPException(404, "Post not found")
 
-    reply_doc = {
+    user = db.users.find_one({"$or": [{"email": username}, {"username": username}]})
+    user_type = user["type"] if user else "anonymous"
+
+    db.replies.insert_one({
         "post_id": post_id,
         "username": username,
         "reply": reply,
         "type": user_type,
         "timestamp": datetime.utcnow().isoformat()
-    }
-    db.replies.insert_one(reply_doc)
-    return JSONResponse({"message": "Reply added successfully!"})
+    })
+
+    return {"message": "Reply added"}
 
 
 @app.get("/forum/replies/{post_id}")
@@ -171,133 +146,215 @@ def get_replies(post_id: str):
     return {"replies": replies}
 
 
-<<<<<<< Updated upstream
-=======
-# ---------------- CHAT HELPERS ----------------
-
-def make_chat_id(mentor_email: str, student_username: str):
-    return f"{mentor_email}__{student_username}"
-
-
-# ---------------- START CHAT ----------------
 
 @app.post("/chat/start")
-def start_chat(
-    mentor_email: str = Form(...),
-    student_username: str = Form(...)
-):
-    chat_id = make_chat_id(mentor_email, student_username)
+def start_chat(student_username: str = Form(...), mentor_email: str = Form(...)):
+    return {"chat_id": make_chat_id(mentor_email, student_username)}
 
-    existing = db.chats.find_one({"chat_id": chat_id})
-
-    if existing:
-        return {"chat_id": chat_id, "message": "Chat already exists"}
-
-    db.chats.insert_one({
-        "chat_id": chat_id,
-        "mentor": mentor_email,
-        "student": student_username,
-        "last_message": "",
-        "last_timestamp": datetime.utcnow().isoformat(),
-    })
-
-    return {"chat_id": chat_id, "message": "Chat created"}
-
-
-# ---------------- SEND MESSAGE ----------------
 
 @app.post("/chat/send")
-def send_message(
-    chat_id: str = Form(...),
-    sender: str = Form(...),
-    message: str = Form(...)
-):
-    chat = db.chats.find_one({"chat_id": chat_id})
-    if not chat:
-        raise HTTPException(status_code=404, detail="Chat not found")
+def send_message(chat_id: str = Form(...), sender: str = Form(...), text: str = Form(...)):
 
     ts = datetime.utcnow().isoformat()
 
-    db.messages.insert_one({
-        "chat_id": chat_id,
-        "sender": sender,
-        "message": message,
-        "timestamp": ts
-    })
+    try:
+        mentor_email, student_username = chat_id.split("__", 1)
+    except:
+        raise HTTPException(400, "Invalid chat_id format.")
+
+    chat = db.chats.find_one({"chat_id": chat_id})
+    if not chat:
+        db.chats.insert_one({
+            "chat_id": chat_id,
+            "mentor": mentor_email,
+            "student": student_username,
+            "messages": [],
+            "last_message": "",
+            "last_timestamp": ts,
+            "unread_for_student": 0,
+            "unread_for_mentor": 0
+        })
+
+    msg = {"sender": sender, "text": text, "timestamp": ts}
 
     db.chats.update_one(
         {"chat_id": chat_id},
-        {"$set": {"last_message": message, "last_timestamp": ts}}
+        {
+            "$push": {"messages": msg},
+            "$set": {"last_message": text, "last_timestamp": ts}
+        }
     )
 
-    return {"message": "Message sent"}
+    if sender == mentor_email:
+        db.chats.update_one({"chat_id": chat_id}, {"$inc": {"unread_for_student": 1}})
+    else:
+        db.chats.update_one({"chat_id": chat_id}, {"$inc": {"unread_for_mentor": 1}})
+
+    return {"status": "Message sent"}
 
 
-# ---------------- GET CHAT HISTORY ----------------
+@app.get("/chat/{chat_id}")
+def get_chat(chat_id: str):
+    chat = db.chats.find_one({"chat_id": chat_id})
+    if not chat:
+        raise HTTPException(404, "Chat not found")
 
-@app.get("/chat/history/{chat_id}")
-def get_chat_history(chat_id: str):
-    msgs = list(db.messages.find({"chat_id": chat_id}).sort("timestamp", 1))
-    for m in msgs:
-        m["_id"] = str(m["_id"])
-    return {"messages": msgs}
+    chat["_id"] = str(chat["_id"])
+    return chat
 
-
-# ---------------- MENTOR CHAT LIST ----------------
-
-@app.get("/chat/mentor/{mentor_email}")
-def get_mentor_chats(mentor_email: str):
-    chats = list(db.chats.find({"mentor": mentor_email}).sort("last_timestamp", -1))
-    for c in chats:
-        c["_id"] = str(c["_id"])
-    return {"chats": chats}
-
-
-# ---------------- STUDENT CHAT LIST ----------------
 
 @app.get("/chat/student/{student_username}")
 def get_student_chats(student_username: str):
     chats = list(db.chats.find({"student": student_username}).sort("last_timestamp", -1))
+
     for c in chats:
+        if "chat_id" not in c:
+            c["chat_id"] = make_chat_id(c["mentor"], c["student"])
+            db.chats.update_one({"_id": c["_id"]}, {"$set": {"chat_id": c["chat_id"]}})
         c["_id"] = str(c["_id"])
+
     return {"chats": chats}
 
 
->>>>>>> Stashed changes
-@app.post("/chatbot")
-def chatbot_response(message: str = Form(...)):
-    print(f"Chatbot received: {message}")
-    api_key = os.getenv("COHERE_API_KEY")
-    
-    if not api_key:
-        print("ERROR: COHERE_API_KEY is not set.")
-        raise HTTPException(status_code=500, detail="Cohere API key missing on server.")
+@app.get("/chat/mentor/{mentor_email}")
+def get_mentor_chats(mentor_email: str):
+    chats = list(db.chats.find({"mentor": mentor_email}).sort("last_timestamp", -1))
 
-    headers = {
-        "Authorization": f"Bearer {api_key}",
-        "Content-Type": "application/json",
+    for c in chats:
+        if "chat_id" not in c:
+            c["chat_id"] = make_chat_id(c["mentor"], c["student"])
+            db.chats.update_one({"_id": c["_id"]}, {"$set": {"chat_id": c["chat_id"]}})
+        c["_id"] = str(c["_id"])
+
+    return {"chats": chats}
+
+
+@app.post("/chat/mark_read/student/{chat_id}")
+def mark_read_student(chat_id: str):
+    db.chats.update_one({"chat_id": chat_id}, {"$set": {"unread_for_student": 0}})
+    return {"status": "ok"}
+
+
+@app.post("/chat/mark_read/mentor/{chat_id}")
+def mark_read_mentor(chat_id: str):
+    db.chats.update_one({"chat_id": chat_id}, {"$set": {"unread_for_mentor": 0}})
+    return {"status": "ok"}
+
+
+
+@app.get("/mentor/profile/{email}")
+def get_mentor_profile(email: str):
+    mentor = db.users.find_one({"email": email, "type": "mentor"})
+    if not mentor:
+        raise HTTPException(status_code=404, detail="Mentor not found")
+
+    mentor["_id"] = str(mentor["_id"])
+
+    return {
+        "email": mentor["email"],
+        "name": mentor.get("name", mentor["email"].split("@")[0]),
+        "occupation": mentor.get("occupation", "Mentor"),
+        "age": mentor.get("age", ""),
+        "bio": mentor.get("bio", "You have not added a bio yet."),
+        "city": mentor.get("city", ""),
+        "college": mentor.get("college", ""),
+        "posts_count": db.posts.count_documents({"username": mentor["email"]}),
+        "joined_on": mentor.get("joined_on", "Recently Joined")
     }
 
+
+@app.post("/mentor/profile/update")
+def update_mentor_profile(
+    email: str = Form(...),
+    name: str = Form(...),
+    occupation: str = Form(...),
+    age: str = Form(""),
+    bio: str = Form(...),
+    city: str = Form(""),
+    college: str = Form("")
+):
+    mentor = db.users.find_one({"email": email, "type": "mentor"})
+    if not mentor:
+        raise HTTPException(status_code=404, detail="Mentor not found")
+
+    update_data = {
+        "name": name,
+        "occupation": occupation,
+        "age": age.strip(),
+        "bio": bio,
+        "city": city.strip(),
+        "college": college.strip()
+    }
+
+    db.users.update_one(
+        {"email": email, "type": "mentor"},
+        {"$set": update_data}
+    )
+
+    return {"status": "Profile updated successfully!"}
+
+@app.get("/mentors/all")
+def get_all_mentors():
+    mentors_cursor = db.users.find({"type": "mentor"}, {"password": 0})
+    mentors_list = []
+    for m in mentors_cursor:
+        m["_id"] = str(m["_id"])
+        m["name"] = m.get("name", m["email"].split("@")[0])
+        m["occupation"] = m.get("occupation", "Peer Mentor")
+        m["bio"] = m.get("bio", "Here to listen and support.")
+        mentors_list.append(m)
+
+    return {"mentors": mentors_list}
+
+
+
+@app.post("/chatbot")
+def chatbot_response(message: str = Form(...)):
+    api_key = os.getenv("COHERE_API_KEY")
+    if not api_key:
+        raise HTTPException(500, "Cohere API key missing.")
+
     payload = {
-        "model": "command-r-08-2024",   
-        "preamble": "You are ManasAI, an empathetic and supportive mental health companion for students. \
-        You listen kindly, validate feelings, and never give medical advice.",
+        "model": "command-r-08-2024",
+        "preamble":
+            "You are ManasAI, an empathetic and supportive mental health "
+            "companion for students. You listen kindly, validate feelings, and "
+            "never give medical advice.",
         "message": message,
         "chat_history": [],
         "temperature": 0.7
     }
 
+    headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
+
     try:
         res = requests.post("https://api.cohere.ai/v1/chat", headers=headers, json=payload)
-        
         if res.status_code != 200:
-            print(f"Cohere API Error: {res.text}")
-            raise HTTPException(status_code=500, detail=f"Cohere API error: {res.text}")
+            raise Exception(res.text)
 
-        data = res.json()
-        reply = data.get("text") or "I'm here to listen. Can you tell me more?"
-        return JSONResponse({"reply": reply.strip()})
-        
+        reply = res.json().get("text", "I'm here to listen. Tell me more.")
+        return {"reply": reply.strip()}
+
     except Exception as e:
-        print("Exception during chatbot request:", e)
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(500, f"Cohere API error: {e}")
+
+
+@app.post("/stories/share")
+def share_story(username: str = Form(...), text: str = Form(...)):
+    db.stories.insert_one({
+        "username": username,
+        "text": text,
+        "timestamp": datetime.utcnow().isoformat()
+    })
+    return {"message": "Thank you for sharing your story."}
+
+@app.get("/stories/all")
+def get_all_stories():
+    stories = list(db.stories.find().sort("timestamp", -1))
+    for s in stories:
+        s["_id"] = str(s["_id"])
+    return {"stories": stories}
+
+
+
+app.mount("/", StaticFiles(directory=FRONTEND_DIR), name="ui")

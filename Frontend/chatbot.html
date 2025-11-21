@@ -4,16 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Manas AI Chatbot</title>
-  <link rel="stylesheet" href="/Frontend/chatbot.css" />
+  <link rel="stylesheet" href="chatbot.css" />
 </head>
 <body>
   <header class="navbar">
     <div class="logo">Project Manas</div>
     <nav class="nav-links">
-      <a href="/dashboard">Dashboard</a>
-      <a href="/forum">Forum</a>
-      <a href="#">Stories</a>
-      <a href="#">Healthy Living</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="forum.html">Forum</a>
+      <a href="stories.html">Stories</a>
+      <a href="tips.html">Healthy Living</a>
       <button class="clear-btn" onclick="clearChat()">Clear Chat</button>
       <button class="logout-btn" onclick="logout()">Logout</button>
     </nav>
@@ -41,58 +41,47 @@ const input = document.getElementById("userInput");
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
-
   const userMsg = input.value.trim();
   if (!userMsg) return;
 
   appendMessage("user-msg", userMsg);
   input.value = "";
-
   document.getElementById("typingIndicator").style.display = "block";
 
   const formData = new FormData();
   formData.append("message", userMsg);
 
   try {
-    const res = await fetch("/chatbot", {
+    const res = await fetch("http://127.0.0.1:8000/chatbot", {
       method: "POST",
       body: formData,
     });
-
-    if (!res.ok) {
-      const errorData = await res.json();
-      throw new Error(errorData.detail || "Server Error");
-    }
-
     const data = await res.json();
-
     document.getElementById("typingIndicator").style.display = "none";
-
     appendMessage("bot-msg", data.reply);
-
   } catch (error) {
     document.getElementById("typingIndicator").style.display = "none";
-    appendMessage("bot-msg", "Error: " + error.message);
+    appendMessage("bot-msg", "Server error. Try again later.");
   }
 });
-
 
 function appendMessage(className, text) {
   const div = document.createElement("div");
   div.className = className;
-  div.innerHTML = text; 
+  div.textContent = text;
   chatContainer.appendChild(div);
   chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
 function logout() {
   localStorage.removeItem("username");
-  window.location.href = "/login";
+  window.location.href = "login.html";
 }
 function clearChat() {
   chatContainer.innerHTML = "";
   appendMessage("bot-msg", "Chat cleared!");
 }
 </script>
+<script src="auth.js"></script>
 </body>
 </html>

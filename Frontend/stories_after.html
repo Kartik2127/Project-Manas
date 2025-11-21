@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stories of Hope | Project Manas</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="stories.css" />
+  
+  <style>
+    .modal {
+      display: none; /* Hidden by default */
+      position: fixed; z-index: 1000; left: 0; top: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.6);
+      justify-content: center; align-items: center;
+    }
+    .modal-content {
+      background-color: #fff;
+      padding: 2rem; border-radius: 12px;
+      width: 90%; max-width: 500px;
+      text-align: center; position: relative;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+    .close-btn {
+      position: absolute; top: 10px; right: 20px;
+      font-size: 28px; font-weight: bold; color: #aaa; cursor: pointer;
+    }
+    .close-btn:hover { color: #000; }
+    textarea {
+      width: 100%; height: 150px; padding: 10px;
+      margin: 15px 0; border-radius: 8px; border: 1px solid #ccc;
+      resize: vertical; font-family: inherit;
+    }
+    .modal.active { display: flex; }
+  </style>
+</head>
+
+<body>
+
+  <header class="navbar">
+    <div class="logo">Project Manas</div>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="professionals.html">Professionals</a>
+      <a href="forum.html">Forum</a>
+      <a href="chatbot.html">Chatbot</a>
+      <button onclick="logout()" class="logout-btn">Logout</button>
+    </nav>
+  </header>
+
+  <section class="stories-hero">
+    <h1>Stories of Hope</h1>
+    <p>Real experiences shared by students who found strength, courage, and clarity through their journey.</p>
+  </section>
+
+  <section class="featured-story">
+    <div class="featured-container">
+      <h2>Featured Story</h2>
+      <div class="featured-box">
+        <p class="quote">
+          When I first came to college, everything felt overwhelming. I thought I was the only one struggling. 
+          Then I found Manas. Sharing what I felt anonymously made me realize I wasn’t alone.
+        </p>
+        <span class="author">– Anonymous Student, IIT Bombay</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="all-stories">
+    <div class="container">
+      <h2>Student Stories</h2>
+      
+      <div class="stories-grid" id="stories-grid">
+
+        <div class="story-card">
+          <p>Speaking anonymously helped me talk about things I had been bottling up for months.</p>
+          <span>– Student, NIT Trichy</span>
+        </div>
+        
+        <div class="story-card">
+           <p>I realized so many students go through similar anxieties. Just knowing that gave me hope.</p>
+           <span>– Student, DTU Delhi</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-share">
+    <h2>Want to Share Your Story?</h2>
+    <p>Your journey might inspire someone else. You can share anonymously and safely.</p>
+    <button class="btn-first" onclick="openModal()">Share Your Story</button>
+  </section>
+
+  <div id="storyModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeModal()">&times;</span>
+      <h3>Share Your Journey</h3>
+      <p>Write freely. Your identity is protected.</p>
+      <form id="storyForm">
+        <textarea name="text" placeholder="Type your story here..." required></textarea>
+        <button type="submit" class="btn-first">Submit Story</button>
+      </form>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p class="disclaimer">This platform is not a substitute for professional therapy or diagnosis.</p>
+  </footer>
+
+  <script>
+    // 1. LOGOUT LOGIC
+    function logout() {
+        localStorage.clear();
+        window.location.href = "login.html";
+    }
+
+    // 2. MODAL LOGIC
+    const modal = document.getElementById("storyModal");
+
+    function openModal() {
+        modal.classList.add("active");
+    }
+
+    function closeModal() {
+        modal.classList.remove("active");
+    }
+
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            closeModal();
+        }
+    }
+
+    // 3. SUBMIT STORY LOGIC
+    document.getElementById("storyForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const text = e.target.text.value;
+        const username = localStorage.getItem("username") || "Anonymous";
+
+        const formData = new FormData();
+        formData.append("username", username);
+        formData.append("text", text);
+
+        try {
+            const response = await fetch("/stories/share", {
+                method: "POST",
+                body: formData
+            });
+            
+            if (response.ok) {
+                alert("Story shared successfully!");
+                e.target.reset();
+                closeModal();
+                loadStories(); // Refresh the list
+            } else {
+                alert("Failed to share story.");
+            }
+        } catch (err) {
+            console.error(err);
+            alert("Error connecting to server.");
+        }
+    });
+
+    // 4. LOAD STORIES FROM DATABASE
+    async function loadStories() {
+        try {
+            const response = await fetch("/stories/all");
+            const data = await response.json();
+            const grid = document.getElementById("stories-grid");
+
+            // Clear existing dynamic stories (optional strategy, 
+            // or just keep hardcoded ones and prepend new ones)
+            
+            // Let's prepend DB stories to the grid
+            data.stories.forEach(story => {
+                // Check if this story is already displayed (simple check)
+                if (!document.getElementById(story._id)) {
+                    const card = document.createElement("div");
+                    card.className = "story-card";
+                    card.id = story._id; // prevent duplicates
+                    card.innerHTML = `
+                        <p>${story.text}</p>
+                        <span>– ${story.username}</span>
+                    `;
+                    // Insert after the header or at the beginning of grid
+                    grid.prepend(card); 
+                }
+            });
+        } catch (err) {
+            console.error("Error loading stories:", err);
+        }
+    }
+
+    // Load stories when page opens
+    loadStories();
+  </script>
+  <script src="auth.js"></script>
+</body>
+</html>

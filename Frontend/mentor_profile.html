@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Profile | Project Manas</title>
+  <link rel="stylesheet" href="mentor_profile_edit.css">
+</head>
+
+<body>
+
+<header class="navbar">
+  <div class="logo">Project Manas</div>
+  <nav class="nav-links">
+    <a href="mentor_dashboard.html">Dashboard</a>
+    <a href="mentor_profile.html">Profile</a>
+    <button onclick="logout()" class="logout-btn">Logout</button>
+  </nav>
+</header>
+
+<section class="edit-container">
+
+  <h2>Edit Profile</h2>
+  <p class="subtitle">Update your personal information shown to students.</p>
+
+  <form id="editProfileForm">
+    <label>Name</label>
+    <input type="text" id="name" required>
+
+    <label>Occupation</label>
+    <input type="text" id="occupation" required>
+
+    <label>Age</label>
+    <input type="number" id="ageInput" placeholder="Your age">
+
+    <label>Bio</label>
+    <textarea id="bio" maxlength="250" required></textarea>
+
+    <label>City</label>
+    <input type="text" id="cityInput" placeholder="Your city">
+
+    <label>College</label>
+    <input type="text" id="collegeInput" placeholder="Your college">
+    <button type="submit" class="save-btn">Save Changes</button>
+
+  </form>
+
+  <p id="statusMsg" class="status"></p>
+
+</section>
+
+<script>
+const mentorEmail = localStorage.getItem("mentorEmail");
+if (!mentorEmail) {
+  alert("Login required.");
+  window.location.href = "login.html";
+}
+
+/* LOAD EXISTING PROFILE */
+async function loadProfile() {
+  const res = await fetch(`http://127.0.0.1:8000/mentor/profile/${mentorEmail}`);
+  const data = await res.json();
+
+  document.getElementById("name").value = data.name;
+  document.getElementById("occupation").value = data.occupation;
+  document.getElementById("ageInput").value = data.age;
+  document.getElementById("bio").value = data.bio;
+  document.getElementById("cityInput").value = data.city;
+  document.getElementById("collegeInput").value = data.college;
+
+}
+
+loadProfile();
+
+/* SUBMIT UPDATED PROFILE */
+document.getElementById("editProfileForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const formData = new FormData();
+  formData.append("email", mentorEmail);
+  formData.append("name", document.getElementById("name").value);
+  formData.append("occupation", document.getElementById("occupation").value);
+  formData.append("age", document.getElementById("ageInput").value);
+  formData.append("bio", document.getElementById("bio").value);
+  formData.append("city", document.getElementById("cityInput").value);
+  formData.append("college", document.getElementById("collegeInput").value);
+
+
+  const res = await fetch("http://127.0.0.1:8000/mentor/profile/update", {
+    method: "POST",
+    body: formData
+  });
+
+  const data = await res.json();
+  document.getElementById("statusMsg").textContent = data.status;
+});
+
+function logout() {
+  localStorage.clear();
+  window.location.href = "login.html";
+}
+</script>
+<script src="auth.js"></script>
+</body>
+</html>

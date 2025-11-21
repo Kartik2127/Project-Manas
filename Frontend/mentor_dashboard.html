@@ -4,16 +4,21 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mentor Dashboard | Project Manas</title>
-  <link rel="stylesheet" href="/Frontend/mentor_dashboard.css" />
+  <link rel="stylesheet" href="mentor_dashboard.css" />
 </head>
 <body>
 
   <header class="navbar">
     <div class="logo">Project Manas</div>
     <nav class="nav-links">
-      <a href="/mentor-dashboard" class="active">Dashboard</a>
-      <a href="#">My Replies</a>
-      <a href="#">Profile</a>
+      <a href="mentor_dashboard.html" class="active">Dashboard</a>
+
+      <a href="mentor_inbox.html" id="nav-inbox-link">
+        Inbox
+        <span id="inbox-count" class="inbox-badge" style="display: none;"></span>
+      </a>
+
+      <a href="#" onclick="goToProfile()">Profile</a>
       <a href="#" onclick="logout()">Logout</a>
     </nav>
   </header>
@@ -31,17 +36,23 @@
 
       <div class="quick-links">
         <div class="card" onclick="scrollToForum()">
-          <h3> Community Forum</h3>
+          <h3>Community Forum</h3>
           <p>View and respond to student posts</p>
         </div>
-        <div class="card">
-          <h3> My Replies</h3>
-          <p>Track all your past responses</p>
+
+        <div class="card messages-card" onclick="goToInbox()">
+          <h3>
+            Messages
+            <span id="msgBadge" class="badge-count" style="display:none;">0</span>
+          </h3>
+          <p>Check your private conversations</p>
         </div>
-        <div class="card">
-          <h3> Profile</h3>
+
+        <div class="card" onclick="goToProfile()">
+          <h3>Profile</h3>
           <p>Edit your mentor details and visibility</p>
         </div>
+
       </div>
     </div>
 
@@ -69,43 +80,111 @@
   </footer>
 
   <script>
-    const mentorEmail = localStorage.getItem("mentorEmail");
-    if (!mentorEmail) {
-      alert("You must be logged in as a mentor!");
-      window.location.href = "/login";
+    // 1. AUTHENTICATION CHECK
+    // We check for 'username' (new system) OR 'mentorEmail' (old system fallback)
+    const username = localStorage.getItem("username") || localStorage.getItem("mentorEmail");
+    const userType = localStorage.getItem("userType");
+    const isLoggedIn = localStorage.getItem("isLoggedIn");
+
+    // If no username is found, kick them out
+    if (!username) {
+      alert("Session expired. Please login as a mentor again.");
+      window.location.href = "login.html";
     }
 
-    document.getElementById("welcome-text").textContent = `Welcome back, ${mentorEmail.split('@')[0]}!`;
+    // If using new system, enforce 'mentor' type
+    if (localStorage.getItem("username") && userType !== "mentor") {
+       alert("Access denied. This area is for Mentors only.");
+       window.location.href = "index.html";
+    }
 
+    // Set the email for API calls
+    const mentorEmail = username;
+
+    // Update Welcome Text
+    if(mentorEmail) {
+        document.getElementById("welcome-text").textContent = `Welcome back, ${mentorEmail.split('@')[0]}!`;
+    }
+
+    // 2. NAVIGATION FUNCTIONS
     function scrollToForum() {
       document.getElementById("forum-section").scrollIntoView({ behavior: "smooth" });
     }
 
-    async function fetchPosts() {
-      const res = await fetch("/forum/all");
-      const data = await res.json();
-      const postsDiv = document.getElementById("forum-posts");
-      postsDiv.innerHTML = "";
+    function goToInbox() {
+      window.location.href = "mentor_inbox.html";
+    }
 
-      data.posts.forEach(post => {
-        const postCard = document.createElement("div");
-        postCard.className = "post-card";
-        postCard.innerHTML = `
-          <h4>
-            ${post.username}
-            ${post.type === "mentor" ? '<span class="badge">Mentor</span>' : ''}
-          </h4>
-          <p>${post.message}</p>
-          <span>${new Date(post.timestamp).toLocaleString()}</span>
-          <div class="reply-section">
-            <textarea id="reply-${post._id}" placeholder="Write a reply..."></textarea>
-            <button onclick="sendReply('${post._id}')">Reply</button>
-          </div>
-          <div id="replies-${post._id}" class="replies"></div>
-        `;
-        postsDiv.appendChild(postCard);
-        fetchReplies(post._id);
-      });
+    function goToProfile() {
+      // We don't need to pass email in URL anymore, the profile page checks localStorage
+      window.location.href = "mentor_profile_edit.html";
+    }
+
+    function logout() {
+      localStorage.clear();
+      window.location.href = "login.html";
+    }
+
+    // 3. API FUNCTIONS (Forum & Inbox)
+    async function loadInboxBadge() {
+      const navBadge = document.getElementById("inbox-count");
+      const msgBadge = document.getElementById("msgBadge");
+
+      try {
+        const res = await fetch(`/chat/mentor/${mentorEmail}`);
+        if(!res.ok) return; 
+        const data = await res.json();
+
+        let unreadTotal = 0;
+        if (data.chats) {
+          data.chats.forEach(c => {
+            unreadTotal += c.unread_for_mentor || 0;
+          });
+        }
+
+        if (navBadge) {
+            navBadge.textContent = unreadTotal > 9 ? "9+" : unreadTotal;
+            navBadge.style.display = unreadTotal > 0 ? "inline-flex" : "none";
+        }
+        if (msgBadge) {
+            msgBadge.textContent = unreadTotal;
+            msgBadge.style.display = unreadTotal > 0 ? "inline-block" : "none";
+        }
+
+      } catch (err) {
+        console.log("Inbox check failed - server might be offline");
+      }
+    }
+
+    async function fetchPosts() {
+      try {
+        const res = await fetch("/forum/all");
+        const data = await res.json();
+        const postsDiv = document.getElementById("forum-posts");
+        postsDiv.innerHTML = "";
+
+        data.posts.forEach(post => {
+            const postCard = document.createElement("div");
+            postCard.className = "post-card";
+            postCard.innerHTML = `
+            <h4>
+                ${post.username}
+                ${post.type === "mentor" ? '<span class="badge">Mentor</span>' : ''}
+            </h4>
+            <p>${post.message}</p>
+            <span>${new Date(post.timestamp).toLocaleString()}</span>
+            <div class="reply-section">
+                <textarea id="reply-${post._id}" placeholder="Write a reply..."></textarea>
+                <button onclick="sendReply('${post._id}')">Reply</button>
+            </div>
+            <div id="replies-${post._id}" class="replies"></div>
+            `;
+            postsDiv.appendChild(postCard);
+            fetchReplies(post._id);
+        });
+      } catch(err) {
+          document.getElementById("forum-posts").innerHTML = "<p>Unable to load posts.</p>";
+      }
     }
 
     async function sendReply(postId) {
@@ -117,7 +196,6 @@
       formData.append("post_id", postId);
       formData.append("username", mentorEmail);
       formData.append("reply", replyText);
-
 
       await fetch("/forum/reply", {
         method: "POST",
@@ -149,32 +227,10 @@
       });
     }
 
-
-    document.getElementById("mentor-post-form").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const message = document.getElementById("post-message").value.trim();
-      if (!message) return;
-
-      const formData = new FormData();
-      formData.append("username", mentorEmail);
-      formData.append("message", message);
-
-
-      await fetch("/forum/post", {
-        method: "POST",
-        body: formData
-      });
-
-      document.getElementById("post-message").value = "";
-      fetchPosts();
-    });
-
-    function logout() {
-      localStorage.removeItem("mentorEmail");
-      window.location.href = "/login";
-    }
+    // 4. INITIALIZATION
     fetchPosts();
+    loadInboxBadge();
+    setInterval(loadInboxBadge, 5000);
   </script>
-
 </body>
 </html>

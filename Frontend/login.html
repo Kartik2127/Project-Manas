@@ -4,17 +4,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login | Project Manas</title>
-  <link rel="stylesheet" href="/Frontend/login.css" />
+  <link rel="stylesheet" href="login.css" />
 </head>
 <body>
 
   <header class="navbar">
     <div class="logo">Project Manas</div>
     <nav class="nav-links">
-      <a href="/">Home</a>
-      <a href="#">Professionals</a>
-      <a href="#">Stories</a>
-      <a href="#">About</a>
+      <a href="index.html">Home</a>
+      <a href="forum_preview.html">Forum</a>
+      <a href="professionals_preview.html">Professionals</a>
+      <a href="stories.html">Stories</a>
+      <a href="about.html">About</a>
     </nav>
   </header>
 
@@ -23,7 +24,7 @@
 
       <div class="login-left">
         <div class="illustration-wrapper">
-          <img src="/Frontend/login.jpeg" alt="Peer support illustration" />
+          <img src="login.jpeg" alt="Peer support illustration" />
         </div>
         <div class="left-text">
           <h2>Find Comfort With Connection.</h2>
@@ -44,13 +45,6 @@
           <div class="option mentor-login">
           <h3>Login as Friend / Mentor</h3>
 
-          <a href="#" class="google-btn" onclick="alert('Google Login coming soon!')">
-            <img src="/Frontend/google_icon.png" alt="Google logo" />
-            Continue with Google
-          </a>
-
-          <p class="or">or</p>
-
           <div class="tab-buttons">
             <button id="mentor-login-tab" class="tab active" onclick="showMentorLogin()">Login</button>
             <button id="mentor-register-tab" class="tab" onclick="showMentorRegister()">Register</button>
@@ -68,13 +62,14 @@
             <button type="submit" class="btn-primary">Register as Mentor</button>
           </form>
         </div>
+
         <div class="option anonymous">
-          <h3>Anonymous Access</h3>
+          <h3>Anonymous Login As Student</h3>
           <p>Stay anonymous with a nickname and password — no personal info required.</p>
 
           <div class="toggle-container">
-            <button id="register-tab" class="toggle-btn active" onclick="showRegister()">Register</button>
             <button id="login-tab" class="toggle-btn" onclick="showLogin()">Login</button>
+            <button id="register-tab" class="toggle-btn active" onclick="showRegister()">Register</button>
           </div>
 
           <form id="register-form" class="auth-form">
@@ -99,7 +94,6 @@
     <p>© 2025 Project Manas • A safe space for every student</p>
   </footer>
 
- 
   <script>
   function showMentorLogin() {
     document.getElementById('mentor-login-form').classList.remove('hidden');
@@ -156,11 +150,12 @@
       if (response.ok) {
         showPopup(`${data.message}`);
         e.target.reset();
+        showMentorLogin();
       } else {
         showPopup(`${data.detail}`, true);
       }
     } catch (error) {
-      showPopup("Server unreachable. Is FastAPI running?", true);
+      showPopup("Server unreachable.", true);
     }
   });
 
@@ -176,32 +171,32 @@
       const data = await response.json();
 
       if (response.ok) {
-        localStorage.setItem("mentorEmail", formData.get("email"));
+        localStorage.setItem("username", formData.get("email"));
+        localStorage.setItem("userType", "mentor");
+        localStorage.setItem("isLoggedIn", "true");
+
         showPopup(`${data.message}`);
         
         setTimeout(() => {
-          window.location.href = "/mentor-dashboard"; 
-        }, 1800);
+          window.location.href = "mentor_dashboard.html"; 
+        }, 1000);
 
         e.target.reset();
       } else {
         showPopup(`${data.detail}`, true);
       }
     } catch (error) {
-      showPopup("Server unreachable. Is FastAPI running?", true);
+      showPopup("Server unreachable.", true);
     }
   });
 
-<<<<<<< Updated upstream
-=======
-  // --- STUDENT REGISTER HANDLER ---
->>>>>>> Stashed changes
+
   document.getElementById("register-form").addEventListener("submit", async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
 
     try {
-      const response = await fetch("/register/anonymous", {
+      const response = await fetch("/register/anonymous", { 
         method: "POST",
         body: formData
       });
@@ -210,24 +205,21 @@
       if (response.ok) {
         showPopup(`${data.message}`);
         e.target.reset();
+        showLogin();
       } else {
         showPopup(`${data.detail}`, true);
       }
     } catch (error) {
-      showPopup("Server unreachable. Is FastAPI running?", true);
+      showPopup("Server unreachable.", true);
     }
   });
 
-<<<<<<< Updated upstream
-=======
-  // --- STUDENT LOGIN HANDLER ---
->>>>>>> Stashed changes
   document.getElementById("login-form").addEventListener("submit", async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
 
     try {
-      const response = await fetch("/login/anonymous", {
+      const response = await fetch("/login/anonymous", { // Relative path
         method: "POST",
         body: formData
       });
@@ -235,22 +227,26 @@
 
       if (response.ok) {
         localStorage.setItem("username", data.username);
-        localStorage.setItem("role", "student");
+        localStorage.setItem("userType", "student");
+        localStorage.setItem("isLoggedIn", "true");
+
         showPopup(`${data.message}`);
 
         setTimeout(() => {
-          window.location.href = "/dashboard"; 
-        }, 1800);
+          window.location.href = "dashboard.html"; 
+        }, 1000);
 
         e.target.reset();
       } else {
         showPopup(`${data.detail}`, true);
       }
     } catch (error) {
-      showPopup("Server unreachable. Is FastAPI running?", true);
+      showPopup("Server unreachable.", true);
     }
   });
-</script>
+  </script>
+
+  <script src="auth.js"></script>
 
 </body>
 </html>

@@ -4,21 +4,28 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard | Project Manas</title>
-  <link rel="stylesheet" href="/Frontend/dashboard.css" />
+  <link rel="stylesheet" href="dashboard.css" />
 </head>
+
 <body>
 
+    <!-- HEADER -->
     <header class="navbar">
     <div class="logo">Project Manas</div>
     <nav class="nav-links">
-        <a href="/forum">Forum</a>
-        <a href="#">Stories</a>
-        <a href="/chatbot-ui">Chatbot</a>
-        <a href="#">Healthy Living</a>
+        <a href="forum.html">Forum</a>
+        <a href="stories_after.html">Stories</a>
+        <a href="chatbot.html">Chatbot</a>
+        <a href="student_inbox.html" class="nav-inbox">
+          Inbox
+          <span id="student-inbox-badge" class="inbox-dot" style="display:none;"></span>
+        </a>
+
         <button class="logout-btn" onclick="logout()">Logout</button>
     </nav>
     </header>
 
+  <!-- MAIN CONTENT -->
   <section class="dashboard">
     <div class="welcome">
       <h1 id="welcome-heading">Welcome Back </h1>
@@ -26,24 +33,24 @@
     </div>
 
     <div class="dashboard-grid">
-      <div class="card" onclick="goTo('/forum')">
+      <div class="card" onclick="goTo('forum.html')">
         <h3> Peer Support Forum</h3>
         <p>Connect with students who understand what you're going through.</p>
       </div>
 
-      <div class="card" onclick="alert('Stories page coming soon!')">
+      <div class="card" onclick="goTo('stories_after.html')">
         <h3>Stories of Hope</h3>
         <p>Read journeys from students who overcame challenges.</p>
       </div>
 
-      <div class="card" onclick="goTo('/chatbot-ui')">
+      <div class="card" onclick="goTo('chatbot.html')">
         <h3>Manas AI</h3>
         <p>Talk with our friendly chatbot for quick mental health guidance.</p>
       </div>
 
-      <div class="card" onclick="alert('Tips page coming soon!')">
-        <h3>Self-Care Tips</h3>
-        <p>Simple ways to build peace and mindfulness in your daily life.</p>
+      <div class="card" onclick="goTo('Professionals.html')">
+        <h3>Mentors</h3>
+        <p>Talk to the mentors who can guide you with there experience and knowledge.</p>
       </div>
     </div>
   </section>
@@ -53,6 +60,7 @@
   </footer>
 
   <script>
+  // Get username stored during login
   const username = localStorage.getItem("username");
 
   const heading = document.getElementById("welcome-heading");
@@ -68,9 +76,40 @@
   }
 
   function logout() {
+    // Clear saved data
     localStorage.removeItem("username");
-    window.location.href = "/login";
+    window.location.href = "login.html";
   }
+  async function loadStudentInboxBadge() {
+  const username = localStorage.getItem("username");
+  if (!username) return;
+
+  const badge = document.getElementById("student-inbox-badge");
+  if (!badge) return;
+
+  try {
+    const res = await fetch(`http://127.0.0.1:8000/chat/student/${username}`);
+    const data = await res.json();
+
+    let unread = 0;
+    data.chats.forEach(c => unread += c.unread_for_student || 0);
+
+    if (unread > 0) {
+      badge.textContent = unread > 9 ? "9+" : unread;
+      badge.style.display = "inline-flex";
+    } else {
+      badge.style.display = "none";
+    }
+
+  } catch (err) {
+    console.error("Inbox badge error:", err);
+  }
+}
+
+loadStudentInboxBadge();
+setInterval(loadStudentInboxBadge, 4000);
 </script>
+
+<script src="auth.js"></script>
 </body>
 </html>

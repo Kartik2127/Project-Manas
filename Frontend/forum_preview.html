@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forum Preview | Project Manas</title>
+  <link rel="stylesheet" href="forum_preview.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <!-- PUBLIC NAVBAR -->
+  <header class="navbar">
+    <div class="logo">Project Manas</div>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="professionals_preview.html">Professionals</a>
+      <a href="stories.html">Stories</a>
+      <a href="chatbot_preview.html">Chatbot</a>
+      <a href="about.html">About</a>
+      <a href="login.html" class="btn-login">Login</a>
+    </nav>
+  </header>
+
+  <section class="forum-section">
+    <h1>Peer Support Forum</h1>
+    <p class="intro">Talk, share, and find support — but first, please log in to participate</p>
+
+    <!-- DISABLED POST BOX -->
+    <div class="disabled-post-box">
+      <input type="text" placeholder="Login to write a post..." disabled>
+      <button class="login-btn" onclick="window.location.href='login.html'">Login</button>
+    </div>
+
+    <!-- SAMPLE POSTS -->
+    <div class="posts-container">
+
+      <div class="post">
+        <h4>AnonymousUser</h4>
+        <p>I’ve been feeling overwhelmed with academic stress lately.</p>
+        <small>2 days ago</small>
+
+        <button class="disabled-btn" onclick="redirectLogin()">Login To Reply</button>
+
+        <div class="replies">
+          <div class="reply">
+            <p><strong>SupportiveMember</strong> — It’s okay to feel this way. You’re not alone.</p>
+            <small>1 day ago</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="post">
+        <h4>AnonymousUser</h4>
+        <p>Feeling lonely in college. Does anyone else relate?</p>
+        <small>5 days ago</small>
+
+        <button class="disabled-btn" onclick="redirectLogin()">Login To Reply</button>
+      </div>
+
+      <div class="post">
+        <h4>
+          mentor123@example.com
+          <span class="badge">Mentor</span>
+        </h4>
+        <p>If you're going through a difficult phase, remember to reach out. We’re here to help.</p>
+        <small>1 week ago</small>
+
+        <button class="disabled-btn" onclick="redirectLogin()">Login To Reply</button>
+        <button class="disabled-chat" onclick="redirectLogin()">Login to Chat Privately</button>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div>
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="stories.html">Stories</a></li>
+          <li><a href="chatbot_preview.html">Chatbot</a></li>
+          <li><a href="forum_preview.html">Forum</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="disclaimer">This platform is not a substitute for professional therapy or diagnosis.</p>
+  </footer>
+
+<script>
+function redirectLogin() {
+  window.location.href = "login.html";
+}
+</script>
+<script src="auth.js"></script>
+</body>
+</html>
