@@ -80,33 +80,26 @@
   </footer>
 
   <script>
-    // 1. AUTHENTICATION CHECK
-    // We check for 'username' (new system) OR 'mentorEmail' (old system fallback)
     const username = localStorage.getItem("username") || localStorage.getItem("mentorEmail");
     const userType = localStorage.getItem("userType");
     const isLoggedIn = localStorage.getItem("isLoggedIn");
 
-    // If no username is found, kick them out
     if (!username) {
       alert("Session expired. Please login as a mentor again.");
       window.location.href = "login.html";
     }
 
-    // If using new system, enforce 'mentor' type
     if (localStorage.getItem("username") && userType !== "mentor") {
        alert("Access denied. This area is for Mentors only.");
        window.location.href = "index.html";
     }
 
-    // Set the email for API calls
     const mentorEmail = username;
 
-    // Update Welcome Text
     if(mentorEmail) {
         document.getElementById("welcome-text").textContent = `Welcome back, ${mentorEmail.split('@')[0]}!`;
     }
 
-    // 2. NAVIGATION FUNCTIONS
     function scrollToForum() {
       document.getElementById("forum-section").scrollIntoView({ behavior: "smooth" });
     }
@@ -116,7 +109,6 @@
     }
 
     function goToProfile() {
-      // We don't need to pass email in URL anymore, the profile page checks localStorage
       window.location.href = "mentor_profile_edit.html";
     }
 
@@ -125,7 +117,6 @@
       window.location.href = "login.html";
     }
 
-    // 3. API FUNCTIONS (Forum & Inbox)
     async function loadInboxBadge() {
       const navBadge = document.getElementById("inbox-count");
       const msgBadge = document.getElementById("msgBadge");
@@ -155,6 +146,34 @@
         console.log("Inbox check failed - server might be offline");
       }
     }
+
+    document.getElementById("mentor-post-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const messageInput = document.getElementById("post-message");
+      const message = messageInput.value.trim();
+
+      if (!message) return;
+
+      const formData = new FormData();
+      formData.append("username", mentorEmail);
+      formData.append("message", message);
+
+      try {
+        const res = await fetch("/forum/post", {
+          method: "POST",
+          body: formData
+        });
+
+        if (res.ok) {
+          messageInput.value = "";
+          fetchPosts();
+        } else {
+          alert("Failed to post message.");
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    });
 
     async function fetchPosts() {
       try {
@@ -227,7 +246,6 @@
       });
     }
 
-    // 4. INITIALIZATION
     fetchPosts();
     loadInboxBadge();
     setInterval(loadInboxBadge, 5000);

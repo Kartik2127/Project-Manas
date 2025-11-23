@@ -1,16 +1,3 @@
-/* GLOBAL */
-body {
-  margin: 0;
-  font-family: "Inter", sans-serif;
-  background: #f8fdfd;
-  color: #2f4858;
-}
-
-/* NAVBAR */
-/* ------------------------------
-   NAVBAR (Project Manas theme)
------------------------------- */
-
 body {
   margin: 0;
   font-family: "Inter", sans-serif;
@@ -53,8 +40,6 @@ body {
   color: #1f7a8c;
 }
 
-/* Inbox item with small badge */
-
 .nav-inbox {
   display: inline-flex;
   align-items: center;
@@ -74,8 +59,6 @@ body {
   justify-content: center;
 }
 
-/* Logout button */
-
 .logout-btn {
   background-color: #1f7a8c;
   color: #ffffff;
@@ -90,8 +73,6 @@ body {
   background-color: #16697a;
 }
 
-
-/* PAGE SECTION */
 .professionals-section {
   max-width: 900px;
   margin: 30px auto;
@@ -109,15 +90,40 @@ body {
   color: #48616f;
 }
 
-/* MENTOR LIST (VERTICAL) */
+.tabs-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin: 20px 0 30px 0;
+}
+
+.tab-btn {
+  padding: 10px 25px;
+  background: #e0e7ea;
+  border: none;
+  border-radius: 25px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.3s;
+  font-weight: 600;
+  color: #48616f;
+}
+
+.tab-btn.active {
+  background: #1f7a8c;
+  color: white;
+}
+
+.hidden {
+  display: none !important;
+}
+
 .mentor-list {
   display: flex;
   flex-direction: column;
-  gap: 28px; /* increased from 18px */
+  gap: 20px;
 }
 
-
-/* FULL-WIDTH CARD */
 .mentor-card {
   display: flex;
   justify-content: space-between;
@@ -135,7 +141,10 @@ body {
   box-shadow: 0 6px 14px rgba(0,0,0,0.10);
 }
 
-/* LEFT INFO BLOCK */
+.expert-card {
+  border-top: 4px solid #be185d;
+}
+
 .mentor-info {
   max-width: 70%;
 }
@@ -144,12 +153,29 @@ body {
   font-size: 22px;
   color: #1f7a8c;
   font-weight: 600;
-  cursor: pointer;
   margin-bottom: 8px;
+}
+
+.clickable-name {
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  transition: all 0.2s;
+}
+
+.clickable-name:hover {
+  color: #16697a;
+  text-decoration-color: #16697a;
 }
 
 .role {
   font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.expert-role {
+  color: #be185d;
+  font-weight: 700;
   margin-bottom: 5px;
 }
 
@@ -163,10 +189,17 @@ body {
   margin: 4px 0;
 }
 
-/* RIGHT SIDE BUTTON */
+.expert-meta {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 15px;
+}
+
 .actions {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
 }
 
 .chat-btn {
@@ -184,9 +217,36 @@ body {
   background: #16697a;
 }
 
-/* -------------------------------------------
-   AI SECTION (Below card list)
-------------------------------------------- */
+.btn-book {
+  background: #be185d;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.btn-book:hover {
+  background: #9d124d;
+}
+
+.btn-call {
+  background: white;
+  border: 1px solid #be185d;
+  color: #be185d;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.btn-call:hover {
+  background: #fff0f5;
+}
+
 .ai-section {
   margin-top: 40px;
   padding: 28px;
@@ -226,3 +286,80 @@ body {
   background: #16697a;
 }
 
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.6);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal.active {
+  display: flex;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 450px;
+  position: relative;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  text-align: left;
+  border: 1px solid #dce5e8;
+}
+
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 28px;
+  color: #aaa;
+  cursor: pointer;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.close-btn:hover {
+  color: #000;
+}
+
+.profile-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 1rem;
+}
+
+.profile-avatar {
+  width: 80px;
+  height: 80px;
+  background: #caf0f8;
+  color: #0077b6;
+  border-radius: 50%;
+  margin: 0 auto 10px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.detail-row {
+  margin-bottom: 12px;
+  font-size: 1rem;
+  color: #444;
+  display: flex;
+}
+
+.detail-row strong {
+  color: #1f7a8c;
+  width: 90px;
+  flex-shrink: 0;
+}

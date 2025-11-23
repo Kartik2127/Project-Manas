@@ -80,9 +80,16 @@ async function loadChat() {
 
       div.className = isMine ? "msg msg-right" : "msg msg-left";
 
+      const timeIST = new Date(m.timestamp).toLocaleTimeString("en-IN", {
+        timeZone: "Asia/Kolkata",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true
+      });
+
       div.innerHTML = `
         <p>${m.text}</p>
-        <span>${new Date(m.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+        <span>${timeIST}</span>
       `;
 
       msgBox.appendChild(div);

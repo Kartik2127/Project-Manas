@@ -2,7 +2,7 @@ import os
 from dotenv import load_dotenv 
 load_dotenv()
 import requests
-from datetime import datetime
+from datetime import datetime, timezone
 from bson import ObjectId
 from fastapi import FastAPI, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -51,7 +51,7 @@ def register_mentor(email: str = Form(...), password: str = Form(...)):
         "email": email,
         "password": bcrypt.hash(password),
         "type": "mentor",
-        "joined_on": datetime.utcnow().isoformat()
+        "joined_on": datetime.now(timezone.utc).isoformat()
     })
 
     return {"message": f"Welcome, Mentor ({email})! Account created successfully."}
@@ -78,7 +78,7 @@ def register_anonymous(username: str = Form(...), password: str = Form(...)):
         "username": username,
         "password": bcrypt.hash(password),
         "type": "anonymous",
-        "joined_on": datetime.utcnow().isoformat()
+        "joined_on": datetime.now(timezone.utc).isoformat()
     })
 
     return {"message": f"Welcome, {username}! Please log in to continue."}
@@ -106,7 +106,7 @@ def create_post(username: str = Form(...), message: str = Form(...)):
         "username": username,
         "message": message,
         "type": user_type,
-        "timestamp": datetime.utcnow().isoformat()
+        "timestamp": datetime.now(timezone.utc).isoformat()
     })
     return {"message": "Post added successfully!"}
 
@@ -132,7 +132,7 @@ def add_reply(post_id: str = Form(...), username: str = Form(...), reply: str = 
         "username": username,
         "reply": reply,
         "type": user_type,
-        "timestamp": datetime.utcnow().isoformat()
+        "timestamp": datetime.now(timezone.utc).isoformat()
     })
 
     return {"message": "Reply added"}
@@ -155,7 +155,7 @@ def start_chat(student_username: str = Form(...), mentor_email: str = Form(...))
 @app.post("/chat/send")
 def send_message(chat_id: str = Form(...), sender: str = Form(...), text: str = Form(...)):
 
-    ts = datetime.utcnow().isoformat()
+    ts = datetime.now(timezone.utc).isoformat()
 
     try:
         mentor_email, student_username = chat_id.split("__", 1)
@@ -344,7 +344,7 @@ def share_story(username: str = Form(...), text: str = Form(...)):
     db.stories.insert_one({
         "username": username,
         "text": text,
-        "timestamp": datetime.utcnow().isoformat()
+        "timestamp": datetime.now(timezone.utc).isoformat()
     })
     return {"message": "Thank you for sharing your story."}
 

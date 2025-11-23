@@ -71,13 +71,22 @@ async function loadChats() {
     data.chats.forEach(chat => {
         const partner = role === "student" ? chat.mentor : chat.student;
 
+        const timeIST = chat.last_timestamp ? new Date(chat.last_timestamp).toLocaleString("en-IN", {
+            timeZone: "Asia/Kolkata",
+            day: "2-digit",
+            month: "short",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true
+        }) : "";
+
         const div = document.createElement("div");
         div.classList.add("chat-item");
 
         div.innerHTML = `
             <h3>${partner}</h3>
             <p>${chat.last_message || "No messages yet"}</p>
-            <small>${chat.last_timestamp ? new Date(chat.last_timestamp).toLocaleString() : ""}</small>
+            <small>${timeIST}</small>
         `;
 
         div.onclick = () => openChat(chat._id, partner);

@@ -27,16 +27,32 @@
       <button type="submit">Post</button>
     </form>
 
-    <div id="postsContainer" class="posts-container">
-      <!-- Posts will appear here -->
-    </div>
+    <div id="postsContainer" class="posts-container"></div>
   </section>
+
+  <div id="profileModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeModal()">&times;</span>
+      
+      <div class="profile-avatar" id="mAvatar">A</div>
+      <h2 id="mName">Name</h2>
+      <p id="mRole" style="color:#1f7a8c; font-weight:600; margin-bottom:10px;">Role</p>
+      
+      <div style="text-align:left; margin-bottom:20px; color:#555; font-size:0.95rem;">
+        <p><strong>Bio:</strong> <span id="mBio">...</span></p>
+        <p><strong>College:</strong> <span id="mCollege">...</span></p>
+        <p><strong>City:</strong> <span id="mCity">...</span></p>
+      </div>
+
+      <button id="mChatBtn" class="modal-btn">Start Private Chat</button>
+    </div>
+  </div>
 
   <script>
 const username = localStorage.getItem("username") || "AnonymousUser";
 
 async function loadPosts() {
-  const res = await fetch("http://127.0.0.1:8000/forum/all");
+  const res = await fetch("/forum/all");
   const data = await res.json();
   const container = document.getElementById("postsContainer");
   container.innerHTML = "";
@@ -44,25 +60,42 @@ async function loadPosts() {
   for (const post of data.posts) {
     const div = document.createElement("div");
     div.classList.add("post");
+    
+    let headerHtml = "";
+    if (post.type === "mentor") {
+        headerHtml = `
+            <div class="post-header">
+                <span class="mentor-link" onclick="fetchAndShowProfile('${post.username}')">
+                    ${post.username.split('@')[0]}
+                </span>
+                <span class="badge">Mentor</span>
+                <button class="chat-icon-btn" onclick="startChatWithMentor('${post.username}', '${post.username.split('@')[0]}')">
+                    Chat
+                </button>
+            </div>
+        `;
+    } else {
+        headerHtml = `<div class="post-header"><strong>${post.username}</strong></div>`;
+    }
+
+    const timeIST = new Date(post.timestamp).toLocaleString("en-IN", {
+        timeZone: "Asia/Kolkata",
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true
+    });
+
     div.innerHTML = `
-      <h4>
-        ${
-          post.type === "mentor"
-            ? `<a href="mentor_profile.html?email=${post.username}" class="mentor-link">${post.username}</a>`
-            : post.username
-        }
-        ${post.type === "mentor" ? '<span class="badge">Mentor</span>' : ''}
-      </h4>
-
+      ${headerHtml}
       <p>${post.message}</p>
-      <small>${new Date(post.timestamp).toLocaleString()}</small>
-
-      <button class="reply-btn" onclick="toggleReplyBox('${post._id}')">Reply</button>
-
-      ${post.type === "mentor" ? `
-        <button class="chat-btn" onclick="startChatWithMentor('${post.username}')">
-          Chat Privately
-        </button>` : ''}
+      <small style="color:#888;">${timeIST}</small>
+      
+      <div style="margin-top:8px;">
+        <button class="reply-btn" onclick="toggleReplyBox('${post._id}')">Reply</button>
+      </div>
 
       <div class="reply-box" id="reply-box-${post._id}" style="display:none;">
         <input type="text" id="reply-input-${post._id}" placeholder="Write a reply..." />
@@ -70,32 +103,39 @@ async function loadPosts() {
       </div>
       
       <div class="replies" id="replies-${post._id}"></div>
-`   ;
+    `;
 
     container.appendChild(div);
-
-    // Load replies for this post
     loadReplies(post._id);
   }
 }
 
-
 async function loadReplies(post_id) {
-  const res = await fetch(`http://127.0.0.1:8000/forum/replies/${post_id}`);
+  const res = await fetch(`/forum/replies/${post_id}`);
   const data = await res.json();
   const container = document.getElementById(`replies-${post_id}`);
   container.innerHTML = "";
 
   data.replies.forEach(r => {
     const replyDiv = document.createElement("div");
-    replyDiv.classList.add("reply", r.type === "mentor" ? "mentor" : "anonymous");
+    replyDiv.classList.add("reply");
+    
+    const nameHtml = r.type === "mentor" 
+        ? `<span class="mentor-link" onclick="fetchAndShowProfile('${r.username}')">${r.username.split('@')[0]}</span> <span class="badge">Mentor</span>`
+        : `<strong>${r.username}</strong>`;
+
+    const timeIST = new Date(r.timestamp).toLocaleString("en-IN", {
+        timeZone: "Asia/Kolkata",
+        day: "2-digit",
+        month: "short",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true
+    });
+
     replyDiv.innerHTML = `
-      <p>
-        <strong>${r.username}</strong>
-        ${r.type === "mentor" ? '<span class="badge">Mentor</span>' : ''} — 
-        ${r.reply}
-      </p>
-      <small>${new Date(r.timestamp).toLocaleString()}</small>
+      <p>${nameHtml} — ${r.reply}</p>
+      <small>${timeIST}</small>
     `;
     container.appendChild(replyDiv);
   });
@@ -103,7 +143,7 @@ async function loadReplies(post_id) {
 
 function toggleReplyBox(id) {
   const box = document.getElementById(`reply-box-${id}`);
-  box.style.display = box.style.display === "none" ? "block" : "none";
+  box.style.display = box.style.display === "none" ? "flex" : "none";
 }
 
 async function sendReply(post_id) {
@@ -116,7 +156,7 @@ async function sendReply(post_id) {
   formData.append("username", username);
   formData.append("reply", replyText);
 
-  await fetch("http://127.0.0.1:8000/forum/reply", {
+  await fetch("/forum/reply", {
     method: "POST",
     body: formData
   });
@@ -125,10 +165,47 @@ async function sendReply(post_id) {
   loadReplies(post_id);
 }
 
-async function startChatWithMentor(mentorEmail) {
+async function fetchAndShowProfile(email) {
+  try {
+    const res = await fetch(`/mentor/profile/${email}`);
+    if(!res.ok) return alert("Could not load profile.");
+    
+    const m = await res.json();
+    
+    document.getElementById("mName").textContent = m.name || email.split('@')[0];
+    document.getElementById("mAvatar").textContent = (m.name || email).charAt(0).toUpperCase();
+    document.getElementById("mRole").textContent = m.occupation || "Peer Mentor";
+    document.getElementById("mBio").textContent = m.bio || "No bio available";
+    document.getElementById("mCollege").textContent = m.college || "Hidden";
+    document.getElementById("mCity").textContent = m.city || "Hidden";
+
+    const btn = document.getElementById("mChatBtn");
+    btn.onclick = () => startChatWithMentor(email, m.name || email);
+
+    document.getElementById("profileModal").classList.add("active");
+
+  } catch(err) {
+    console.error(err);
+  }
+}
+
+function closeModal() {
+  document.getElementById("profileModal").classList.remove("active");
+}
+
+window.onclick = function(e) {
+  if(e.target == document.getElementById("profileModal")) closeModal();
+}
+
+async function startChatWithMentor(mentorEmail, mentorName) {
     const student = localStorage.getItem("username");
-    if (!student) {
-        alert("You must be logged in as a student.");
+    if (!student || student === "AnonymousUser") {
+        alert("You must be logged in to chat.");
+        window.location.href = "login.html";
+        return;
+    }
+    if (student === mentorEmail) {
+        alert("You cannot chat with yourself!");
         return;
     }
 
@@ -138,7 +215,7 @@ async function startChatWithMentor(mentorEmail) {
     formData.append("student_username", student);
     formData.append("mentor_email", mentorEmail);
 
-    const res = await fetch("http://127.0.0.1:8000/chat/start", {
+    const res = await fetch("/chat/start", {
         method: "POST",
         body: formData
     });
@@ -146,17 +223,15 @@ async function startChatWithMentor(mentorEmail) {
     const data = await res.json();
 
     if (!data.chat_id) {
-        alert("Error: chat ID missing.");
+        alert("Error starting chat.");
         return;
     }
 
-    // Use ObjectId returned by backend
     localStorage.setItem("currentChatId", data.chat_id);
-    localStorage.setItem("chatPartner", mentorEmail);
+    localStorage.setItem("chatPartner", mentorName);
 
     window.location.href = "chat.html";
 }
-
 
 document.getElementById("postForm").addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -166,7 +241,7 @@ document.getElementById("postForm").addEventListener("submit", async (e) => {
   formData.append("username", username);
   formData.append("message", message);
 
-  await fetch("http://127.0.0.1:8000/forum/post", {
+  await fetch("/forum/post", {
     method: "POST",
     body: formData
   });

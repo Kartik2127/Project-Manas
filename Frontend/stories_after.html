@@ -9,7 +9,7 @@
   
   <style>
     .modal {
-      display: none; /* Hidden by default */
+      display: none;
       position: fixed; z-index: 1000; left: 0; top: 0;
       width: 100%; height: 100%;
       background-color: rgba(0,0,0,0.6);
@@ -41,7 +41,6 @@
   <header class="navbar">
     <div class="logo">Project Manas</div>
     <nav class="nav-links">
-      <a href="index.html">Home</a>
       <a href="professionals.html">Professionals</a>
       <a href="forum.html">Forum</a>
       <a href="chatbot.html">Chatbot</a>
@@ -110,13 +109,11 @@
   </footer>
 
   <script>
-    // 1. LOGOUT LOGIC
     function logout() {
         localStorage.clear();
         window.location.href = "login.html";
     }
 
-    // 2. MODAL LOGIC
     const modal = document.getElementById("storyModal");
 
     function openModal() {
@@ -133,7 +130,6 @@
         }
     }
 
-    // 3. SUBMIT STORY LOGIC
     document.getElementById("storyForm").addEventListener("submit", async (e) => {
         e.preventDefault();
         const text = e.target.text.value;
@@ -153,7 +149,7 @@
                 alert("Story shared successfully!");
                 e.target.reset();
                 closeModal();
-                loadStories(); // Refresh the list
+                loadStories();
             } else {
                 alert("Failed to share story.");
             }
@@ -163,28 +159,21 @@
         }
     });
 
-    // 4. LOAD STORIES FROM DATABASE
     async function loadStories() {
         try {
             const response = await fetch("/stories/all");
             const data = await response.json();
             const grid = document.getElementById("stories-grid");
 
-            // Clear existing dynamic stories (optional strategy, 
-            // or just keep hardcoded ones and prepend new ones)
-            
-            // Let's prepend DB stories to the grid
             data.stories.forEach(story => {
-                // Check if this story is already displayed (simple check)
                 if (!document.getElementById(story._id)) {
                     const card = document.createElement("div");
                     card.className = "story-card";
-                    card.id = story._id; // prevent duplicates
+                    card.id = story._id;
                     card.innerHTML = `
                         <p>${story.text}</p>
                         <span>– ${story.username}</span>
                     `;
-                    // Insert after the header or at the beginning of grid
                     grid.prepend(card); 
                 }
             });
@@ -193,7 +182,6 @@
         }
     }
 
-    // Load stories when page opens
     loadStories();
   </script>
   <script src="auth.js"></script>

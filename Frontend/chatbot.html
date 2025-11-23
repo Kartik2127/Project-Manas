@@ -13,7 +13,6 @@
       <a href="dashboard.html">Dashboard</a>
       <a href="forum.html">Forum</a>
       <a href="stories.html">Stories</a>
-      <a href="tips.html">Healthy Living</a>
       <button class="clear-btn" onclick="clearChat()">Clear Chat</button>
       <button class="logout-btn" onclick="logout()">Logout</button>
     </nav>
@@ -52,7 +51,7 @@ form.addEventListener("submit", async (e) => {
   formData.append("message", userMsg);
 
   try {
-    const res = await fetch("http://127.0.0.1:8000/chatbot", {
+    const res = await fetch("/chatbot", {
       method: "POST",
       body: formData,
     });
@@ -68,7 +67,7 @@ form.addEventListener("submit", async (e) => {
 function appendMessage(className, text) {
   const div = document.createElement("div");
   div.className = className;
-  div.textContent = text;
+  div.innerHTML = text; 
   chatContainer.appendChild(div);
   chatContainer.scrollTop = chatContainer.scrollHeight;
 }
@@ -79,7 +78,7 @@ function logout() {
 }
 function clearChat() {
   chatContainer.innerHTML = "";
-  appendMessage("bot-msg", "Chat cleared!");
+  appendMessage("bot-msg", "Chat cleared! How else can I help?");
 }
 </script>
 <script src="auth.js"></script>
