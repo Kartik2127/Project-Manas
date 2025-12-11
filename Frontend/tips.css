@@ -7,7 +7,7 @@ body {
   margin: 0;
 }
 
-/* NAVBAR */
+
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -35,7 +35,6 @@ body {
   color: #1f7a8c;
 }
 
-/* TIPS PAGE */
 .tips-page {
   text-align: center;
   padding: 60px 30px;
@@ -84,7 +83,6 @@ body {
   line-height: 1.5;
 }
 
-/* FOOTER */
 .footer {
   text-align: center;
   padding: 20px;
@@ -95,7 +93,6 @@ body {
   margin-top: 40px;
 }
 
-/* RESPONSIVE */
 @media (max-width: 768px) {
   .tips-page {
     padding: 40px 20px;

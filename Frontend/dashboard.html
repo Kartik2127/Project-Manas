@@ -9,7 +9,7 @@
 
 <body>
 
-    <!-- HEADER -->
+   
     <header class="navbar">
     <div class="logo">Project Manas</div>
     <nav class="nav-links">
@@ -25,7 +25,6 @@
     </nav>
     </header>
 
-  <!-- MAIN CONTENT -->
   <section class="dashboard">
     <div class="welcome">
       <h1 id="welcome-heading">Welcome Back </h1>
@@ -60,7 +59,6 @@
   </footer>
 
   <script>
-  // Get username stored during login
   const username = localStorage.getItem("username");
 
   const heading = document.getElementById("welcome-heading");
@@ -76,7 +74,6 @@
   }
 
   function logout() {
-    // Clear saved data
     localStorage.removeItem("username");
     window.location.href = "login.html";
   }

@@ -9,7 +9,6 @@ from nltk.tokenize import word_tokenize
 
 lemmatizer = WordNetLemmatizer()
 
-# ---------------- Knowledge Base ----------------
 knowledge_base = {
     "greetings": {
         "patterns": ["hello", "hi", "hey", "I want to talk", "what's up", "good morning", "good evening"],

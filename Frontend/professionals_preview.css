@@ -5,9 +5,6 @@ body {
   color: #2f4858;
 }
 
-/* NAVBAR already imported from styles.css */
-
-/* PAGE SECTION */
 .professionals-section {
   max-width: 900px;
   margin: 30px auto;
@@ -25,14 +22,12 @@ body {
   color: #48616f;
 }
 
-/* MENTOR LIST */
 .mentor-list {
   display: flex;
   flex-direction: column;
   gap: 28px;
 }
 
-/* CARD */
 .mentor-card {
   display: flex;
   justify-content: space-between;
@@ -43,7 +38,6 @@ body {
   box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
-/* LEFT INFO */
 .mentor-info {
   max-width: 70%;
 }
@@ -55,14 +49,11 @@ body {
   margin-bottom: 8px;
   cursor: pointer;
 }
-
-/* DISABLED Name */
 .mentor-name.disabled {
   cursor: not-allowed;
   opacity: 0.7;
 }
 
-/* Chat Button Disabled */
 .disabled-btn {
   background: #bccfd4;
   cursor: not-allowed;
@@ -81,14 +72,11 @@ body {
   border-radius: 6px;
   font-size: 14px;
 }
-
-/* Override chat button for disabled mode */
 .chat-btn.disabled-btn {
   background: #9cb4bb;
   pointer-events: none;
 }
 
-/* AI SECTION */
 .ai-section {
   margin-top: 40px;
   padding: 28px;
@@ -123,7 +111,6 @@ body {
   background: #16697a;
 }
 
-/* Disabled AI button */
 .ai-btn.disabled {
   background: #9cb4bb;
   cursor: not-allowed;

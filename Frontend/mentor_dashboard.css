@@ -6,7 +6,6 @@ body {
   margin: 0;
 }
 
-/* WELCOME SECTION */
 .welcome-box {
   background-color: #ffffff;
   border-radius: 16px;
@@ -40,12 +39,11 @@ body {
   gap: 20px;
 }
 
-/* Small red notification pill next to Inbox */
 .inbox-badge {
-  display: none;              /* default hidden */
+  display: none;             
   align-items: center;
   justify-content: center;
-  background-color: #e63946;  /* subtle red accent */
+  background-color: #e63946;  
   color: #ffffff;
   border-radius: 999px;
   font-size: 10px;
@@ -56,7 +54,6 @@ body {
   line-height: 1;
 }
 
-/* QUICK LINKS */
 .quick-links {
   display: flex;
   flex-wrap: wrap;
@@ -184,7 +181,6 @@ textarea {
   padding: 2px 8px;
   border-radius: 12px;
   margin-left: 8px;
-  /* vertical-align: middle; */
 }
 
 .post-card {
@@ -200,12 +196,6 @@ textarea {
   color: #1f7a8c;
 }
 
-/* .post-card span {
-  display: block;
-  font-size: 0.8rem;
-  color: #7a8b94;
-  margin-bottom: 10px;
-} */
 
 .reply-section {
   display: flex;

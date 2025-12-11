@@ -5,7 +5,6 @@ body {
   color: #2f4858;
 }
 
-/* NAVBAR */
 .navbar {
   padding: 15px 60px;
   background: #fff;
@@ -24,7 +23,6 @@ body {
   cursor: pointer;
 }
 
-/* INBOX */
 .inbox-section {
   padding: 40px;
 }

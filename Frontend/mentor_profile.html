@@ -56,7 +56,6 @@ if (!mentorEmail) {
   window.location.href = "login.html";
 }
 
-/* LOAD EXISTING PROFILE */
 async function loadProfile() {
   const res = await fetch(`http://127.0.0.1:8000/mentor/profile/${mentorEmail}`);
   const data = await res.json();
@@ -72,7 +71,6 @@ async function loadProfile() {
 
 loadProfile();
 
-/* SUBMIT UPDATED PROFILE */
 document.getElementById("editProfileForm").addEventListener("submit", async (e) => {
   e.preventDefault();
 

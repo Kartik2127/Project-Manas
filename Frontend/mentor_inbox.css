@@ -4,7 +4,7 @@
   box-sizing: border-box;
 }
 
-/* GLOBAL */
+
 body {
   margin: 0;
   font-family: "Poppins", sans-serif;
@@ -12,7 +12,7 @@ body {
   color: #2f4858;
 }
 
-/* NAVBAR */
+
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -55,7 +55,7 @@ body {
   background-color: #c62839;
 }
 
-/* MAIN LAYOUT */
+
 .inbox-container {
   display: flex;
   height: calc(100vh - 80px);
@@ -73,7 +73,6 @@ body {
   margin-top: -20px;
 }
 
-/* LEFT PANEL – students list */
 .chat-list-panel {
   flex: 0 0 30%;
   background-color: #ffffff;
@@ -127,7 +126,6 @@ body {
   color: #5c6b73;
 }
 
-/* RIGHT PANEL – chat preview */
 .chat-preview-panel {
   flex: 1;
   background-color: transparent;
@@ -180,7 +178,6 @@ body {
   color: #7a8b94;
 }
 
-/* button */
 .open-chat-btn {
   margin-top: 12px;
   align-self: flex-start;
@@ -200,7 +197,6 @@ body {
   background-color: #16697a;
 }
 
-/* SCROLLBARS */
 .chat-list::-webkit-scrollbar,
 .preview-box::-webkit-scrollbar {
   width: 7px;
@@ -212,7 +208,6 @@ body {
   border-radius: 10px;
 }
 
-/* RESPONSIVE */
 @media (max-width: 900px) {
   .inbox-container {
     flex-direction: column;

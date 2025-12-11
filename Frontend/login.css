@@ -7,7 +7,6 @@ body {
   color: #2f4858;
 }
 
-/* NAVBAR */
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -34,7 +33,6 @@ body {
   color: #1f7a8c;
 }
 
-/* LOGIN SECTION */
 .login-section {
   display: flex;
   justify-content: center;
@@ -55,7 +53,6 @@ body {
   animation: fadeIn 1.2s ease-in;
 }
 
-/* LEFT PANEL */
 .login-left {
   flex: 1;
   background: linear-gradient(160deg, #e6f3f4 0%, #f0fafa 100%);
@@ -105,7 +102,6 @@ body {
   box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
 
-/* RIGHT PANEL */
 
 .tab-buttons {
   display: flex;
@@ -171,7 +167,6 @@ body {
   margin-bottom: 30px;
 }
 
-/* OPTION BLOCKS */
 .option {
   margin-bottom: 25px;
   text-align: center;
@@ -182,7 +177,6 @@ body {
   margin-bottom: 10px;
 }
 
-/* GOOGLE BUTTON */
 .google-btn {
   display: flex;
   align-items: center;
@@ -215,7 +209,6 @@ body {
   font-size: 0.9rem;
 }
 
-/* FORMS */
 .auth-form {
   max-width: 300px;
   margin: 0 auto;
@@ -252,7 +245,6 @@ input:focus {
   background-color: #16697a;
 }
 
-/* TOGGLE BUTTONS */
 .toggle-container {
   display: flex;
   justify-content: center;
@@ -280,7 +272,6 @@ input:focus {
   color: #fff;
 }
 
-/* HIDE/SHOW FORMS */
 .hidden {
   display: none;
 }
@@ -298,7 +289,6 @@ input:focus {
   width: 80%;
 }
 
-/* FOOTER */
 .footer {
   text-align: center;
   padding: 20px;
@@ -308,13 +298,11 @@ input:focus {
   border-top: 1px solid #e2e8f0;
 }
 
-/* ANIMATIONS */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* RESPONSIVE */
 @media (max-width: 900px) {
   .login-card {
     flex-direction: column;

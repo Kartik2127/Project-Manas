@@ -50,23 +50,17 @@
 </section>
 
 <script>
-// 1. NEW AUTH CHECK
 const username = localStorage.getItem("username");
 const userType = localStorage.getItem("userType");
-
-// Check if logged in AND if the user is actually a mentor
 if (!username || userType !== "mentor") {
   alert("Access denied. Please login as a mentor.");
   window.location.href = "login.html";
 }
 
-// Since you are a mentor, your username IS your email
-const mentorEmail = username;
 
-/* LOAD EXISTING PROFILE */
+const mentorEmail = username;
 async function loadProfile() {
   try {
-    // Using relative path
     const res = await fetch(`/mentor/profile/${mentorEmail}`);
     if (!res.ok) throw new Error("Failed to load profile");
     
@@ -83,10 +77,7 @@ async function loadProfile() {
   }
 }
 
-// Load data immediately
 loadProfile();
-
-/* SUBMIT UPDATED PROFILE */
 document.getElementById("editProfileForm").addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -112,7 +103,6 @@ document.getElementById("editProfileForm").addEventListener("submit", async (e) 
     if(res.ok) {
         statusMsg.textContent = "Profile updated successfully!";
         statusMsg.style.color = "green";
-        // Optional: Redirect back to dashboard after 1 second
         setTimeout(() => {
             window.location.href = "mentor_dashboard.html";
         }, 1000);

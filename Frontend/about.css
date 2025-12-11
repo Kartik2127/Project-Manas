@@ -1,4 +1,3 @@
-/* ABOUT HERO */
 .about-hero {
   background-color: #f5f9f9;
   padding: 80px 30px;
@@ -18,7 +17,6 @@
   line-height: 1.6;
 }
 
-/* SECTION BASE STYLE */
 section {
   padding: 60px 20px;
 }
@@ -29,7 +27,6 @@ section {
   text-align: center;
 }
 
-/* MISSION */
 .mission h2, .offer h2, .vision h2 {
   color: #16697a;
 }
@@ -41,7 +38,6 @@ section {
   margin: 15px auto;
 }
 
-/* WHAT WE OFFER SECTION */
 
 .offer {
   padding: 60px 20px;
@@ -57,16 +53,15 @@ section {
   color: #16697a;
 }
 
-/* FLEX GRID FOR CARDS */
+
 .offer-grid {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;   /* Centers rows with fewer items */
+  justify-content: center;  
   gap: 20px;
   margin-top: 30px;
 }
 
-/* CARD STYLE */
 .offer-card {
   background-color: #ffffff;
   padding: 20px;
@@ -74,7 +69,6 @@ section {
   box-shadow: 0 2px 6px rgba(0,0,0,0.05);
   text-align: left;
 
-  /* This controls width and makes 3 per row on desktop */
   flex: 0 1 280px;
   max-width: 280px;
 }
@@ -89,7 +83,6 @@ section {
   line-height: 1.5;
 }
 
-/* MOBILE: MAKE CARDS FULL WIDTH */
 @media (max-width: 768px) {
   .offer-card {
     flex: 1 1 100%;
@@ -98,12 +91,10 @@ section {
   }
 }
 
-/* VISION */
 .vision {
   background-color: #f0f7f7;
 }
 
-/* CTA */
 .cta {
   background-color: #e6f3f4;
   text-align: center;
@@ -118,13 +109,11 @@ section {
   margin-bottom: 20px;
 }
 
-/* ACTIVE NAV LINK */
 .nav-links a.active {
   font-weight: 700;
   color: #16697a;
 }
 
-/* RESPONSIVE */
 @media (max-width: 768px) {
   .about-hero h1 {
     font-size: 1.9rem;

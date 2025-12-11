@@ -4,7 +4,7 @@
   box-sizing: border-box;
 }
 
-/* GLOBAL */
+
 body {
   margin: 0;
   font-family: "Poppins", sans-serif;
@@ -12,7 +12,7 @@ body {
   color: #2f4858;
 }
 
-/* NAVBAR – same style as other pages */
+
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -65,7 +65,7 @@ body {
   margin-top: -20px;
 }
 
-/* MAIN LAYOUT */
+
 .inbox-container {
   display: flex;
   height: calc(100vh - 80px);
@@ -73,7 +73,6 @@ body {
   gap: 20px;
 }
 
-/* LEFT PANEL – chat list */
 .chat-list-panel {
   flex: 0 0 30%;
   background-color: #ffffff;
@@ -101,7 +100,7 @@ body {
   color: #5c6b73;
 }
 
-/* each chat item */
+
 .chat-item {
   padding: 10px 12px;
   background-color: #f4fbfc;
@@ -128,7 +127,6 @@ body {
   color: #5c6b73;
 }
 
-/* RIGHT PANEL – preview */
 .chat-preview-panel {
   flex: 1;
   background-color: transparent;
@@ -142,7 +140,6 @@ body {
   color: #1f7a8c;
 }
 
-/* preview box */
 .preview-box {
   flex: 1;
   background-color: #ffffff;
@@ -158,7 +155,6 @@ body {
   color: #5c6b73;
 }
 
-/* individual preview message */
 .preview-msg {
   background-color: #f5fbfc;
   border-radius: 10px;
@@ -183,7 +179,6 @@ body {
   color: #7a8b94;
 }
 
-/* open full chat button */
 .open-chat-btn {
   margin-top: 12px;
   align-self: flex-start;
@@ -203,7 +198,6 @@ body {
   background-color: #16697a;
 }
 
-/* SCROLLBARS */
 .chat-list::-webkit-scrollbar,
 .preview-box::-webkit-scrollbar {
   width: 7px;
@@ -215,7 +209,7 @@ body {
   border-radius: 10px;
 }
 
-/* RESPONSIVE */
+
 @media (max-width: 900px) {
   .inbox-container {
     flex-direction: column;

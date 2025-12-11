@@ -1,5 +1,4 @@
 
-
 from transformers import pipeline
 import os
 zero_shot = pipeline("zero-shot-classification", model="facebook/bart-large-mnli")
